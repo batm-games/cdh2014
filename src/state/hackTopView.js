@@ -54,7 +54,6 @@ State.prototype = {
   createEnemies: function() {
     for(var i=1;i<=3;i++) {
       var enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlaszebra','standby-1.png', 40);
-      LifeUtils.giveLife(enemy, 30);
       this.enemies.push(enemy);
     }
   },

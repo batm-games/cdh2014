@@ -13,6 +13,7 @@ var TVEnemy = {
     game.physics.arcade.enable(enemy);
     enemy.body.collideWorldBounds = true;
     enemy.body.velocity.x = enemySpeed;
+    LifeUtils.giveLife(enemy, 30);
     return enemy;
   },
   updateEnemy: function(enemy) {
