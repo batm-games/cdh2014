@@ -27,8 +27,8 @@ game.state.add('Demo4'   , require('./state/demo4')   , false);//(key,state,auto
 game.state.add('Demo5'   , require('./state/demo5')   , false);//(key,state,autoStart)
 game.state.add('Platformer'   , require('./state/demoPlatform')   , false);//(key,state,autoStart)
 game.state.add('TopView'   , require('./state/demoTopView')   , false);//(key,state,autoStart)
-// game.state.add('Demo6'   , require('./state/demo6')   , false);//(key,state,autoStart)
+game.state.add('hackTopView'   , require('./state/hackTopView')   , false);//(key,state,autoStart)
 game.state.add('MainMenu', require('./state/mainMenu'), false);//(key,state,autoStart)
 
 
-game.state.start('TopView');
+game.state.start('hackTopView');

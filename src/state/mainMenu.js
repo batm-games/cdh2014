@@ -17,7 +17,7 @@ State.prototype = {
       {key:'Demo4',label: 'demo4.js: Tweens + Spritesheet + Tint'},
       {key:'Demo5',label: 'demo5.js: Camera'},
       {key:'Platformer',label: 'Platform Thaer'},
-      {key:'TopView',label: 'Top View Gabriel'}
+      {key:'hackTopView',label: 'hackTopView'}
     ];
     for(var i=0;i<demos.length;i++){
       var demo = demos[i];      
