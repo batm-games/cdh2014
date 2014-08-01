@@ -1,0 +1,42 @@
+Phaser Template
+=========
+
+Version
+----
+
+0.0.1
+
+TODO
+----
+
+* ~~sprites + atlas~~
+* ~~Vector Arithmetic~~
+* ~~Tweens~~
+* ~~Mouse + Keyboard Input~~
+* ~~States AKA Scenes~~
+* TileMaps
+* sound
+* physics
+* ~~camera~~
+* shaders
+* emitters
+* multiplayer
+
+Installation
+--------------
+
+```sh
+npm install
+```
+
+Starting the server
+--------------
+
+```sh
+gulp
+```
+
+License
+----
+
+MIT

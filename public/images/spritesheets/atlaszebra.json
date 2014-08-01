@@ -1,0 +1,76 @@
+{"frames": [
+
+{
+	"filename": "jump-1.png",
+	"frame": {"x":2,"y":2,"w":166,"h":196},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":166,"h":196},
+	"sourceSize": {"w":166,"h":196}
+},
+{
+	"filename": "standby-1.png",
+	"frame": {"x":610,"y":2,"w":128,"h":178},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":19,"y":18,"w":128,"h":178},
+	"sourceSize": {"w":166,"h":196}
+},
+{
+	"filename": "standby-2.png",
+	"frame": {"x":886,"y":2,"w":128,"h":174},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":19,"y":22,"w":128,"h":174},
+	"sourceSize": {"w":166,"h":196}
+},
+{
+	"filename": "standby-3.png",
+	"frame": {"x":1016,"y":2,"w":128,"h":170},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":19,"y":26,"w":128,"h":170},
+	"sourceSize": {"w":166,"h":196}
+},
+{
+	"filename": "stop-1.png",
+	"frame": {"x":464,"y":2,"w":144,"h":178},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":18,"w":144,"h":178},
+	"sourceSize": {"w":166,"h":196}
+},
+{
+	"filename": "stop-2.png",
+	"frame": {"x":740,"y":2,"w":144,"h":174},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":22,"w":144,"h":174},
+	"sourceSize": {"w":166,"h":196}
+},
+{
+	"filename": "walk-1.png",
+	"frame": {"x":320,"y":2,"w":142,"h":184},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":11,"w":142,"h":184},
+	"sourceSize": {"w":166,"h":196}
+},
+{
+	"filename": "walk-2.png",
+	"frame": {"x":170,"y":2,"w":148,"h":184},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":9,"y":12,"w":148,"h":184},
+	"sourceSize": {"w":166,"h":196}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker ",
+	"version": "1.0",
+	"image": "atlaszebra-1.png",
+	"format": "RGBA8888",
+	"size": {"w":1146,"h":200},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:72ce06224e2a1bb8c633f0cd2436b99f:13600afd6d612388dc43245e8ea9ff6d:cb25c7a58a4ff06bde38a047b89f4371$"
+}
+}
