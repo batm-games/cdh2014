@@ -1,6 +1,7 @@
 /**
 Globals:
     game
+    game.stats
     StateUtils
     X, Y
     halfX, halfY
@@ -20,7 +21,10 @@ Y = game.height;
 X = game.width;
 halfX = X * 0.5;
 halfY = Y * 0.5;
-require('./utils/AssetManager');
+
+// boot (loads images for all the states)
+game.state.add('boot', require('./state/boot'), false);
+
 game.state.add('Demo1'   , require('./state/demo1')   , false);//(key,state,autoStart)
 game.state.add('Demo2'   , require('./state/demo2')   , false);//(key,state,autoStart)
 game.state.add('Demo3'   , require('./state/demo3')   , false);//(key,state,autoStart)
@@ -33,5 +37,4 @@ game.state.add('Level0', require('./state/level/Level0'), false);//(key,state,au
 game.state.add('MainMenu', require('./state/mainMenu'), false);//(key,state,autoStart)
 game.state.add('Light', require('./state/lightTest'), false);//(key,state,autoStart)
 
-game.state.start('Level0');
-
+game.state.start('boot');

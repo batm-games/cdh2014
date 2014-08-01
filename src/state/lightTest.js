@@ -7,12 +7,6 @@ function State() {
 
 State.prototype = {
     preload: function () {
-        game.load.image('fire01', './images/fire01.png', 32, 32);
-        game.load.image('fire02', './images/fire02.png', 32, 32);
-        game.load.image('fire03', './images/fire03.png', 32, 32);
-
-        game.load.image('laser', './images/laser05.png', 32, 32);
-        game.load.image('pedro', './images/pedrito.png', 64, 128);
     },
     create: function () {
         var game = this.game;

@@ -8,7 +8,7 @@ var Level0 = function () {
     AbstractLevel.call(this, 'world1');
 };
 
-Level0.prototype = Object.create(AbstractLevel);
+Level0.prototype = Object.create(AbstractLevel.prototype);
 
 _.merge(Level0.prototype, {
     preload: function () {

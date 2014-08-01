@@ -1,6 +1,7 @@
 /**
  * Created by tlatif on 8/1/2014.
  */
+var _ = require('lodash');
 var AssetManager = {
     assetMap: {
         world1: {
@@ -12,7 +13,12 @@ var AssetManager = {
                 id: 'tileset',
                 url: './assets/tilemaps/tileset.png'
             }
+        },
 
+        // created before the states are added
+        images: {
+            fire: './images/fire01.png',
+            pedro: './images/pedrito.png'
         }
     },
     loadWorldAssets: function (world) {
@@ -22,6 +28,11 @@ var AssetManager = {
     },
     getConfig: function (name) {
         return this.assetMap[name];
+    },
+    loadImages: function () {
+        _.forOwn(this.assetMap.images, function (v, k) {
+             game.load.image(k, v);
+        });
     }
 };
 window.AssetManager = AssetManager;

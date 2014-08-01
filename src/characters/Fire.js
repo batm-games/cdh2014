@@ -12,7 +12,7 @@ function Fire() {
     emitter.maxParticleSpeed.y = -5;
     emitter.minParticleSpeed.x = -10;
     emitter.maxParticleSpeed.x = 10;
-    emitter.makeParticles(['fire01']);
+    emitter.makeParticles(['fire']);
 
     emitter.gravity = -100;
     emitter.setScale(1, 0, 1, 0, 3000);
