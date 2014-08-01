@@ -51,9 +51,9 @@ State.prototype = {
 
   createEnemies: function() {
     var enemiesArray = this.enemiesArray = [];
-    for(var i=0;i<10;i++) {
-      enemiesArray[i] = TVEnemy;
-      enemiesArray[i].createEnemy(X*0.0,Y*0.50, 'atlaszebra','standby-1.png');
+    for(var i=0;i<3;i++) {
+      enemiesArray[i] = new TVEnemy();
+      enemiesArray[i].createEnemy(i * 10,Y*0.50, 'atlaszebra','standby-1.png', 40);
     }
   },
   updatePlayer : function(player,controls){
@@ -120,9 +120,10 @@ State.prototype = {
     this.updatePlayer(this.players[0],this.controls[0]);
     this.updatePlayer(this.players[1],this.controls[1]);
     this.mergedPlayersAction(this.players[0],this.players[1]);
-//    this.updateEnemies();
-      this.enemiesArray[0].updateEnemy();
-      this.enemiesArray[1].updateEnemy();
+    this.updateEnemies();
+
+//      this.enemiesArray[0].updateEnemy();
+//      this.enemiesArray[1].updateEnemy();
   },
   shutdown: function(){}
 };
