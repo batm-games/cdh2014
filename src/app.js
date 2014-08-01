@@ -29,6 +29,7 @@ game.state.add('Platformer'   , require('./state/demoPlatform')   , false);//(ke
 game.state.add('TopView'   , require('./state/demoTopView')   , false);//(key,state,autoStart)
 game.state.add('hackTopView'   , require('./state/hackTopView')   , false);//(key,state,autoStart)
 game.state.add('MainMenu', require('./state/mainMenu'), false);//(key,state,autoStart)
+game.state.add('Light', require('./state/lightTest'), false);//(key,state,autoStart)
 
 
-game.state.start('MainMenu');
+game.state.start('Light');
