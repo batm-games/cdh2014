@@ -30,6 +30,8 @@ State.prototype = {
     game.physics.arcade.enable(player);
     player.body.collideWorldBounds = true;
 
+    LifeUtils.giveLife(player,100);
+
     this.players.push(player);
   },
   createGameObjects : function(){
