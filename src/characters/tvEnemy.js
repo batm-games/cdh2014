@@ -2,7 +2,7 @@
  * Created by user on 8/1/14.
  */
 var TVEnemy = {
-    ENEMY_SPEED :200
+    ENEMY_SPEED :20
 };
 
 TVEnemy.createEnemy = function(x, y, key, frame) {
@@ -19,16 +19,16 @@ TVEnemy.createEnemy = function(x, y, key, frame) {
     enemy.body.collideWorldBounds = true;
 }
 
-TVEnemy.updateEnemy = function(controls) {
-//    var dir = new Phaser.Point(0,0);
-//    if(controls.left.isDown) {dir.x -= 1;}
-//    if(controls.right.isDown){dir.x += 1;}
-//    if(controls.up.isDown)   {dir.y -= 1;}
-//    if(controls.down.isDown) {dir.y += 1;}
-//
-//    dir.setMagnitude(this.ENEMY_SPEED);
-//    this.enemy.body.velocity.x = dir.x;
-//    this.enemy.body.velocity.y = dir.y;
+TVEnemy.updateEnemy = function() {
+    var dir = new Phaser.Point(0,0);
+    dir.x += 1;
+    dir.setMagnitude(this.ENEMY_SPEED);
+    this.enemy.body.velocity.x = dir.x;
+    if(this.enemy.body.onWall()) {
+        console.log('wall');
+        this.enemy.position.x = 0;
+    }
+
 }
 
 module.exports = TVEnemy;

@@ -1,5 +1,6 @@
 function State() {
   this.PLAYER_SPEED = 200;
+  this.PLAYERS_JOINED_TEAS_DISTANCE = 50;
 }
 
 State.prototype = {
@@ -47,6 +48,14 @@ State.prototype = {
     };
     this.controls.push(control);
   },
+
+  createEnemies: function() {
+    var enemiesArray = this.enemiesArray = [];
+    for(var i=0;i<10;i++) {
+      enemiesArray[i] = TVEnemy;
+      enemiesArray[i].createEnemy(X*0.0,Y*0.50, 'atlaszebra','standby-1.png');
+    }
+  },
   updatePlayer : function(player,controls){
     var dir = new Phaser.Point(0,0);
     if(controls.l.isDown){dir.x -= 1;}
@@ -56,9 +65,11 @@ State.prototype = {
 
     if(controls.action.isDown){
       player.tint = 0x00ff00;
+      player.teaPower = true;
       dir = new Phaser.Point(0,0);
     }else{
       player.tint = 0xffffff;
+      player.teaPower = false;
     }
 
     dir.setMagnitude(this.PLAYER_SPEED);
@@ -69,15 +80,27 @@ State.prototype = {
       player.scale.x *= -1;
     }
   },
+  mergedPlayersAction : function(player1,player2){
+    if(player1.teaPower && player2.teaPower && player1.position.distance(player2.position) <= this.PLAYERS_JOINED_TEAS_DISTANCE){
+      player1.tint = 0x0000ff;
+      player2.tint = 0x0000ff;
+    }
+  },
   initVariables : function(){
     this.players = [];
     this.controls = [];
+  },
+  updateEnemies : function() {
+      for(var enemy in this.enemiesArray) {
+          this.enemiesArray[enemy].updateEnemy();
+      }
   },
   create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.initVariables();
     this.createMap();
     this.createGameObjects();
+    this.createEnemies();
     this.createPlayers();
     this.createPlayers();
     this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.NUMPAD_0);
@@ -92,9 +115,14 @@ State.prototype = {
     game.physics.arcade.collide(this.players[0], this.layer);
     game.physics.arcade.collide(this.players[1], this.layer);
     var delta = event.time.elapsed / 1000.0;
-    //begin update
+    
+    //Players Action!
     this.updatePlayer(this.players[0],this.controls[0]);
     this.updatePlayer(this.players[1],this.controls[1]);
+    this.mergedPlayersAction(this.players[0],this.players[1]);
+//    this.updateEnemies();
+      this.enemiesArray[0].updateEnemy();
+      this.enemiesArray[1].updateEnemy();
   },
   shutdown: function(){}
 };
