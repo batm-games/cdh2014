@@ -33,4 +33,4 @@ game.state.add('Level0', require('./state/level/Level0'), false);//(key,state,au
 game.state.add('MainMenu', require('./state/mainMenu'), false);//(key,state,autoStart)
 game.state.add('Light', require('./state/lightTest'), false);//(key,state,autoStart)
 
-game.state.start('Light');
+game.state.start('hackTopView');

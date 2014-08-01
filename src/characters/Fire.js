@@ -12,15 +12,17 @@ function Fire() {
     emitter.maxParticleSpeed.y = -5;
     emitter.minParticleSpeed.x = -10;
     emitter.maxParticleSpeed.x = 10;
-    emitter.makeParticles(['fire']);
+    emitter.makeParticles(['fire01']);
 
     emitter.gravity = -100;
-    emitter.setAlpha(1, 0, 5000);
     emitter.setScale(1, 0, 1, 0, 3000);
 
-    emitter.start(false, 2000, 10);
+    emitter.start(false, 2000, 15);
 
+    this.intensity = 5;
     this.frames = [];
+
+    this.setIntensity(this.intensity);
 }
 
 Fire.prototype = {
@@ -30,6 +32,16 @@ Fire.prototype = {
      */
     setFrames: function (frames) {
         this.frames = frames;
+    },
+
+    setIntensity: function (n) {
+        n = Math.max(n, 0);
+        this.emitter.setAlpha(1, 0, n * 1000);
+        this.intensity = n;
+    },
+
+    setIntensityDelta: function (delta) {
+        this.setIntensity(this.intensity + delta);
     },
 
     update: function (player, frame) {
