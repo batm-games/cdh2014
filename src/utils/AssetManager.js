@@ -6,7 +6,7 @@ var AssetManager = {
         world1: {
             map: {
                 id: 'map',
-                url: './assets/tilemaps/tv_map1.json'
+                url: './assets/tilemaps/world-map0.json'
             },
             tileset: {
                 id: 'tileset',
