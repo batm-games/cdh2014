@@ -8,6 +8,7 @@ Globals:
 **/
 StateUtils = require('./utils/stateUtils');
 TVEnemy = require('./characters/tvEnemy');
+LifeUtils = require('./utils/LifeUtils');
 
 game = new Phaser.Game(1280, 640, Phaser.AUTO, 'game');
 
