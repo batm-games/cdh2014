@@ -2,7 +2,7 @@
  * Created by user on 8/1/14.
  */
 var TVEnemy = {
-    ENEMY_SPEED :200
+    ENEMY_SPEED :20
 };
 
 TVEnemy.createEnemy = function(x, y, key, frame) {
