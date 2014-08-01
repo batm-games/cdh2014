@@ -22,8 +22,10 @@ X = game.width;
 halfX = X * 0.5;
 halfY = Y * 0.5;
 
-// boot (loads images for all the states)
+// boot
 game.state.add('boot', require('./state/boot'), false);
+// load (loads assets for all the states)
+game.state.add('load', require('./state/load'), false);
 
 game.state.add('Demo1'   , require('./state/demo1')   , false);//(key,state,autoStart)
 game.state.add('Demo2'   , require('./state/demo2')   , false);//(key,state,autoStart)

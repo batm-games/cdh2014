@@ -1,7 +1,7 @@
 /**
  * Created by tlatif on 7/22/2014.
  */
-var bootState = {
+module.exports = {
     preload: function () {
         //game.load.image('progressBar', 'assets/progressBar.png');
     },
