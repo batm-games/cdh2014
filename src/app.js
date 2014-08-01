@@ -7,7 +7,7 @@ Globals:
 **/
 StateUtils = require('./utils/stateUtils');
 
-game = new Phaser.Game(1280, 622, Phaser.AUTO, 'game');
+game = new Phaser.Game(1280, 640, Phaser.AUTO, 'game');
 
 var stats = game.stats = this.stats = new Stats();
 stats.domElement.style.position = 'absolute';
