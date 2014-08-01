@@ -1,6 +1,6 @@
 /* global game: false */
 
-var emitter, pedro;
+var fire, pedro;
 var Fire = require('../characters/Fire');
 function State() {
 }
@@ -18,22 +18,8 @@ State.prototype = {
 
         pedro = game.add.sprite(halfX, halfY, 'pedro', 0);
 
-        // emitter example
-        emitter = game.add.emitter(halfX, halfY, 400);
-        emitter.blendMode = PIXI.blendModes.ADD;
-        emitter.minParticleAlpha = 0;
-        emitter.maxParticleAlpha = 0.0001;
-        emitter.minParticleSpeed.y = 0;
-        emitter.maxParticleSpeed.y = -5;
-        emitter.minParticleSpeed.x = -10;
-        emitter.maxParticleSpeed.x = 10;
-        emitter.makeParticles(['fire']);
-
-        emitter.gravity = -100;
-        emitter.setAlpha(1, 0, 5000);
-        emitter.setScale(1, 0, 1, 0, 3000);
-
-        emitter.start(false, 2000, 10);
+        fire = new Fire();
+        fire.setFrames([{ x: 7, y: 40 }]);
 
         // blender.add example
 //        for (var i  = 0; i < 40; i += 1) {
@@ -67,8 +53,9 @@ State.prototype = {
             // If the RIGHT key is down, set the player velocity to move right
             pedro.x += delta;
         }
-        emitter.x = pedro.x + 7;
-        emitter.y = pedro.y + 33;
+        fire.update(pedro, 0);
+//        emitter.x = pedro.x + 7;
+//        emitter.y = pedro.y + 33;
     },
 
     // This function should return true when the player activates the "go left" control
