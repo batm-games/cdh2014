@@ -2,8 +2,8 @@
  * Created by tlatif on 8/1/2014.
  */
 var _ = require('lodash');
-require ('../../world/BaseWorld');
-
+var BaseWorld = require ('../../world/BaseWorld');
+var Player = require('../../characters/Player');
 var AbstractLevel = function (worldName) {
     this.worldName = worldName;
 };
@@ -17,6 +17,10 @@ AbstractLevel.prototype = {
         var instances = world.createWorld();
         this.map = instances.map;
         this.layers = instances.layers;
+    },
+    createPlayer: function (config) {
+        var conf = config || {};
+        this.player = new Player(game, conf);
     }
 };
 

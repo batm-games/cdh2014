@@ -35,4 +35,4 @@ BaseWorld.prototype.createWorld = function () {
         layers: layers
     };
 };
-window.BaseWorld = BaseWorld;
+module.exports = BaseWorld;

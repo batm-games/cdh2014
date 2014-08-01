@@ -12,7 +12,6 @@ Level0.prototype = Object.create(AbstractLevel.prototype);
 
 _.merge(Level0.prototype, {
     preload: function () {
-        AssetManager.loadWorldAssets(this.worldName);
     },
     create: function () {
         this.initWorld([
@@ -21,6 +20,11 @@ _.merge(Level0.prototype, {
                 collisionTiles: [1]
             }
         ]);
+        this.createPlayer();
+    },
+    update: function () {
+        game.physics.arcade.collide(this.player.getPhaserInstance(), this.layers[0]);
+        this.player.controlPlayer();
     }
 
 });
