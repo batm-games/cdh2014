@@ -48,6 +48,14 @@ State.prototype = {
     };
     this.controls.push(control);
   },
+
+  createEnemies: function() {
+    var enemiesArray = this.enemiesArray = [];
+    for(var i=0;i<10;i++) {
+      enemiesArray[i] = TVEnemy;
+      enemiesArray[i].createEnemy(X*0.0,Y*0.50, 'atlaszebra','standby-1.png');
+    }
+  },
   updatePlayer : function(player,controls){
     var dir = new Phaser.Point(0,0);
     if(controls.l.isDown){dir.x -= 1;}
@@ -82,6 +90,11 @@ State.prototype = {
     this.players = [];
     this.controls = [];
   },
+  updateEnemies : function() {
+      for(var enemy in this.enemiesArray) {
+          this.enemiesArray[enemy].updateEnemy();
+      }
+  },
   create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.initVariables();
@@ -106,6 +119,9 @@ State.prototype = {
     this.updatePlayer(this.players[0],this.controls[0]);
     this.updatePlayer(this.players[1],this.controls[1]);
     this.mergedPlayersAction(this.players[0],this.players[1]);
+//    this.updateEnemies();
+      this.enemiesArray[0].updateEnemy();
+      this.enemiesArray[1].updateEnemy();
   },
   shutdown: function(){}
 };
