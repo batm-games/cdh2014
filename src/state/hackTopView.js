@@ -50,10 +50,9 @@ State.prototype = {
   },
 
   createEnemies: function() {
-    var enemiesArray = this.enemiesArray = [];
-    for(var i=0;i<3;i++) {
-      enemiesArray[i] = new TVEnemy();
-      enemiesArray[i].createEnemy(i * 10,Y*0.50, 'atlaszebra','standby-1.png', 40);
+    for(var i=1;i<=3;i++) {
+      var enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlaszebra','standby-1.png', 40);
+      this.enemies.push(enemy);
     }
   },
   updatePlayer : function(player,controls){
@@ -89,11 +88,12 @@ State.prototype = {
   initVariables : function(){
     this.players = [];
     this.controls = [];
+    this.enemies = [];
   },
   updateEnemies : function() {
-      for(var enemy in this.enemiesArray) {
-          this.enemiesArray[enemy].updateEnemy();
-      }
+    for(var enemy in this.enemies) {
+      TVEnemy.updateEnemy(this.enemies[enemy]);
+    }
   },
   create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -121,9 +121,6 @@ State.prototype = {
     this.updatePlayer(this.players[1],this.controls[1]);
     this.mergedPlayersAction(this.players[0],this.players[1]);
     this.updateEnemies();
-
-//      this.enemiesArray[0].updateEnemy();
-//      this.enemiesArray[1].updateEnemy();
   },
   shutdown: function(){}
 };
