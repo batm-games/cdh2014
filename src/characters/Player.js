@@ -38,9 +38,9 @@ Player.prototype.jump = function (doubleJump) {
 };
 Player.prototype.controlPlayer = function () {
     if (this.controls.left.isDown) {
-        this.movePlayer(-1, 0);
+        this.movePlayer(-1);
     } else if (this.controls.right.isDown) {
-        this.movePlayer(1, 0);
+        this.movePlayer(1);
     } else {
         this.stopMoving();
     }
@@ -52,8 +52,8 @@ Player.prototype.controlPlayer = function () {
 Player.prototype.getPhaserInstance = function () {
     return this.player;
 };
-Player.DEFAULT_SPEED = 100;
-Player.DEFAULT_JUMP_POWER = 300;
+Player.DEFAULT_SPEED = 200;
+Player.DEFAULT_JUMP_POWER = 500;
 Player.DEFAULT_SPRITE = 'pedro';
 Player.DEFAULT_X = 50;
 Player.DEFAULT_Y = 50;
