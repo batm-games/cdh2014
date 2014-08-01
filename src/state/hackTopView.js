@@ -1,5 +1,6 @@
 function State() {
   this.PLAYER_SPEED = 200;
+  this.PLAYERS_JOINED_TEAS_DISTANCE = 50;
 }
 
 State.prototype = {
@@ -56,9 +57,11 @@ State.prototype = {
 
     if(controls.action.isDown){
       player.tint = 0x00ff00;
+      player.teaPower = true;
       dir = new Phaser.Point(0,0);
     }else{
       player.tint = 0xffffff;
+      player.teaPower = false;
     }
 
     dir.setMagnitude(this.PLAYER_SPEED);
@@ -67,6 +70,12 @@ State.prototype = {
 
     if(dir.x != 0 && player.scale.x < 0 != dir.x < 0){
       player.scale.x *= -1;
+    }
+  },
+  mergedPlayersAction : function(player1,player2){
+    if(player1.teaPower && player2.teaPower && player1.position.distance(player2.position) <= this.PLAYERS_JOINED_TEAS_DISTANCE){
+      player1.tint = 0x0000ff;
+      player2.tint = 0x0000ff;
     }
   },
   initVariables : function(){
@@ -92,9 +101,11 @@ State.prototype = {
     game.physics.arcade.collide(this.players[0], this.layer);
     game.physics.arcade.collide(this.players[1], this.layer);
     var delta = event.time.elapsed / 1000.0;
-    //begin update
+    
+    //Players Action!
     this.updatePlayer(this.players[0],this.controls[0]);
     this.updatePlayer(this.players[1],this.controls[1]);
+    this.mergedPlayersAction(this.players[0],this.players[1]);
   },
   shutdown: function(){}
 };
