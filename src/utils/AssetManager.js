@@ -12,7 +12,9 @@ var AssetManager = {
             tileset: {
                 id: 'tileset',
                 url: './assets/tilemaps/tileset.png'
-            }
+            },
+            width: 2000,
+            height: 1400
         },
 
         // created before the states are added

@@ -13,11 +13,9 @@
  *  }
  * @constructor
  */
-function BaseWorld (game, map, tileset, layers) {
-    this.game = game;
-    this.map = map;
-    this.tileset = tileset;
-    this.layers = layers;
+var _ = require('lodash');
+function BaseWorld (config) {
+    _.merge(this, config);
 }
 BaseWorld.prototype.createWorld = function () {
     var map = game.add.tilemap(this.map);

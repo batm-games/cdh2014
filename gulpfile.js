@@ -57,7 +57,7 @@ gulp.task('setWatch', function () {
 });
 
 gulp.task('watch', ['setWatch', 'browserSync'], function () {
-  gulp.watch('src/**/*', ['browserify']);
+//  gulp.watch('src/**/*', ['browserify']);
   // gulp.watch('src/images/**', ['images']);
   // gulp.watch(['src/assets/**', 'src/index.html'], ['copy']);
 });

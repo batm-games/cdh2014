@@ -13,7 +13,14 @@ AbstractLevel.prototype = {
         var worldIds = AssetManager.getConfig(this.worldName);
         var mapId = worldIds.map.id;
         var tilesetId = worldIds.tileset.id;
-        var world = new BaseWorld(game, mapId, tilesetId, layerConfig);
+        var world = new BaseWorld({
+            map: mapId,
+            tileset: tilesetId,
+            layers: layerConfig,
+            width: worldIds.width,
+            height: worldIds.height
+        });
+        game.world.setBounds(0, 0, world.width, world.height);
         var instances = world.createWorld();
         this.map = instances.map;
         this.layers = instances.layers;

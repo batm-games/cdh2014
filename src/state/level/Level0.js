@@ -3,6 +3,7 @@
  */
 var _ = require('lodash');
 var AbstractLevel = require('./AbstractLevel');
+var Fire = require('../../characters/Fire');
 
 var Level0 = function () {
     AbstractLevel.call(this, 'world1');
@@ -13,6 +14,10 @@ Level0.prototype = Object.create(AbstractLevel.prototype);
 _.merge(Level0.prototype, {
     preload: function () {
     },
+    createFire: function () {
+        this.fire = new Fire(this.player);
+        this.fire.setFrames([{ x: -25, y: -30 }]);
+    },
     create: function () {
         this.initWorld([
             {
@@ -21,10 +26,17 @@ _.merge(Level0.prototype, {
             }
         ]);
         this.createPlayer();
+        this.createFire();
+        game.camera.follow(this.player.getSprite());
     },
     update: function () {
-        game.physics.arcade.collide(this.player.getPhaserInstance(), this.layers[0]);
+        game.stats.update();
+        game.physics.arcade.collide(
+            this.player.getSprite(),
+            this.layers[0]
+        );
         this.player.controlPlayer();
+        this.fire.update(0);
     }
 
 });

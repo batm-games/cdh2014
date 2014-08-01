@@ -9,30 +9,30 @@ var Player = function (game, config) {
     var y = config.y || Player.DEFAULT_Y;
 
     this.game = game;
-    this.player = game.add.sprite(x, y, sprite);
-    this.player.anchor.setTo(0.5, 0.5);
-    game.physics.arcade.enable(this.player);
-    this.player.body.gravity.y = 500;
-    this.player.collideWorldBounds = true;
+    this.sprite = game.add.sprite(x, y, sprite);
+    this.sprite.anchor.setTo(0.5, 0.5);
+    game.physics.arcade.enable(this.sprite);
+    this.sprite.body.gravity.y = 500;
+    this.sprite.collideWorldBounds = true;
     this.createControls(config.controls);
 };
 Player.prototype.createControls = function (controls) {
     this.controls = this.game.input.keyboard.createCursorKeys();
 };
 Player.prototype.movePlayer = function (dx, dy) {
-    this.player.body.velocity.x = dx * this.speed;
+    this.sprite.body.velocity.x = dx * this.speed;
     if (typeof dy === 'number') {
-        this.player.body.velocity.y = dy * this.jumpPower;
+        this.sprite.body.velocity.y = dy * this.jumpPower;
     }
 };
 Player.prototype.stopMoving = function (onY) {
-    this.player.body.velocity.x = 0;
+    this.sprite.body.velocity.x = 0;
     if (onY) {
-        this.player.body.velocity.y = 0;
+        this.sprite.body.velocity.y = 0;
     }
 };
 Player.prototype.jump = function (doubleJump) {
-    if (this.player.body.onFloor() || doubleJump) {
+    if (this.sprite.body.onFloor() || doubleJump) {
         this.movePlayer(0, -1);
     }
 };
@@ -45,12 +45,12 @@ Player.prototype.controlPlayer = function () {
         this.stopMoving();
     }
 
-    if (this.controls.up.isDown && this.player.body.onFloor()) {
+    if (this.controls.up.isDown && this.sprite.body.onFloor()) {
         this.jump();
     }
 };
-Player.prototype.getPhaserInstance = function () {
-    return this.player;
+Player.prototype.getSprite = function () {
+    return this.sprite;
 };
 Player.DEFAULT_SPEED = 200;
 Player.DEFAULT_JUMP_POWER = 500;

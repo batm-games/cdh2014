@@ -3,7 +3,7 @@
  */
 //var AssetManager = require('../utils/AssetManager');
 
-function Fire() {
+function Fire(owner) {
     var emitter = this.emitter = game.add.emitter(0, 0, 400);
     emitter.blendMode = PIXI.blendModes.ADD;
     emitter.minParticleAlpha = 0;
@@ -14,13 +14,14 @@ function Fire() {
     emitter.maxParticleSpeed.x = 10;
     emitter.makeParticles(['fire']);
 
-    emitter.gravity = -100;
+    emitter.gravity = -500;
     emitter.setScale(1, 0, 1, 0, 3000);
 
     emitter.start(false, 2000, 15);
 
-    this.intensity = 5;
+    this.intensity = 1;
     this.frames = [];
+    this.owner = owner;
 
     this.setIntensity(this.intensity);
 }
@@ -32,25 +33,28 @@ Fire.prototype = {
      */
     setFrames: function (frames) {
         this.frames = frames;
+        return this;
     },
 
     setIntensity: function (n) {
         n = Math.max(n, 0);
         this.emitter.setAlpha(1, 0, n * 1000);
         this.intensity = n;
+        return this;
     },
 
     setIntensityDelta: function (delta) {
         this.setIntensity(this.intensity + delta);
+        return this;
     },
 
-    update: function (player, frame) {
+    update: function (frame) {
         var current = this.frames[frame];
         if (!current) {
             throw 'no current frame';
         }
-        this.emitter.x = player.x + current.x;
-        this.emitter.y = player.y + current.y;
+        this.emitter.x = this.owner.getSprite().x + current.x;
+        this.emitter.y = this.owner.getSprite().y + current.y;
     }
 };
 
