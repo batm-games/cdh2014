@@ -36,13 +36,14 @@ State.prototype = {
     torch.scale.set(0.5,0.5);
     torch.z = 0;
   },
-  createControls: function(ku,kr,kd,kl){
+  createControls: function(ku,kr,kd,kl,kaction){
     //this.cursors = game.input.keyboard.createCursorKeys();
     control = {
       'u' : game.input.keyboard.addKey(ku),
       'r' : game.input.keyboard.addKey(kr),
       'd' : game.input.keyboard.addKey(kd),
-      'l' : game.input.keyboard.addKey(kl)
+      'l' : game.input.keyboard.addKey(kl),
+      'action' : game.input.keyboard.addKey(kaction)
     };
     this.controls.push(control);
   },
@@ -52,6 +53,13 @@ State.prototype = {
     if(controls.r.isDown){dir.x += 1;}
     if(controls.u.isDown){dir.y -= 1;}
     if(controls.d.isDown){dir.y += 1;}
+
+    if(controls.action.isDown){
+      player.tint = 0x00ff00;
+      dir = new Phaser.Point(0,0);
+    }else{
+      player.tint = 0xffffff;
+    }
 
     dir.setMagnitude(this.PLAYER_SPEED);
     player.body.velocity.x = dir.x;
@@ -72,8 +80,8 @@ State.prototype = {
     this.createGameObjects();
     this.createPlayers();
     this.createPlayers();
-    this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT);
-    this.createControls(Phaser.Keyboard.W,Phaser.Keyboard.D,Phaser.Keyboard.S,Phaser.Keyboard.A);
+    this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.NUMPAD_0);
+    this.createControls(Phaser.Keyboard.W,Phaser.Keyboard.D,Phaser.Keyboard.S,Phaser.Keyboard.A,Phaser.Keyboard.SPACEBAR);
 
     this.players[1].x += 10;
     
