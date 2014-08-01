@@ -31,6 +31,6 @@ game.state.add('TopView'   , require('./state/demoTopView')   , false);//(key,st
 game.state.add('hackTopView'   , require('./state/hackTopView')   , false);//(key,state,autoStart)
 game.state.add('Level0', require('./state/level/Level0'), false);//(key,state,autoStart)
 game.state.add('MainMenu', require('./state/mainMenu'), false);//(key,state,autoStart)
+game.state.add('Light', require('./state/lightTest'), false);//(key,state,autoStart)
 
-game.state.start('MainMenu');
-
+game.state.start('hackTopView');
