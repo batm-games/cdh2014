@@ -31,4 +31,4 @@ game.state.add('hackTopView'   , require('./state/hackTopView')   , false);//(ke
 game.state.add('MainMenu', require('./state/mainMenu'), false);//(key,state,autoStart)
 
 
-game.state.start('hackTopView');
+game.state.start('MainMenu');

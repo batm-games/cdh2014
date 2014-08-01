@@ -1,4 +1,5 @@
 function State() {
+  this.PLAYER_SPEED = 200;
 }
 
 State.prototype = {
@@ -6,13 +7,11 @@ State.prototype = {
     game.load.image('tileset', './assets/tilemaps/tileset.png');
     game.load.tilemap('map', './assets/tilemaps/tv_map1.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('dog', './images/sprites/baddie.png', 32, 32);
+    game.load.spritesheet('torch', './images/sprites/torch.png');
 
     game.load.atlas('atlaszebra', './images/spritesheets/atlaszebra.png', './images/spritesheets/atlaszebra.json');    
   },
-  create: function () {
-    console.log('!');
-    game.physics.startSystem(Phaser.Physics.ARCADE);
-
+  createMap : function(){
     // Create the tilemap
     this.map = game.add.tilemap('map');
     //this.map.setTileSize(32,32);
@@ -21,14 +20,52 @@ State.prototype = {
     // Create the layer, by specifying the name of the Tiled layer
     this.layer = this.map.createLayer('Tile Layer 1');
     this.layer.resizeWorld();
-
+    this.map.setCollision(1,true,this.layer);
+  },
+  createPlayers: function(){
+    var player = this.player = game.add.sprite(X*0.30,Y*0.50, 'atlaszebra','standby-1.png');
+    player.animations.add('walk', ['walk-1.png','walk-2.png'], 10, true);
+    player.animations.add('stop', ['stop-1.png','stop-2.png'], 10, true);
+    player.animations.play('walk');
+    player.anchor.set(0.5,0.5);
+    player.scale.set(0.25,0.25);
+    game.physics.arcade.enable(player);
+    player.body.collideWorldBounds = true;
+  },
+  createGameObjects : function(){
+    var torch = game.add.sprite(X*0.25,Y*0.35, 'torch');
+    torch.scale.set(0.5,0.5);
+    torch.z = 0;
+  },
+  createControls: function(){
+    this.cursors = game.input.keyboard.createCursorKeys();
+  },
+  create: function() {
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.createMap();
+    this.createGameObjects();
+    this.createPlayers();
+    this.createControls();
+    
     StateUtils.createDemoHomeButton();
+  },
+  updatePlayer : function(player,controls){
+    var dir = new Phaser.Point(0,0);
+    if(controls.left.isDown) {dir.x -= 1;}
+    if(controls.right.isDown){dir.x += 1;}
+    if(controls.up.isDown)   {dir.y -= 1;}
+    if(controls.down.isDown) {dir.y += 1;}
+
+    dir.setMagnitude(this.PLAYER_SPEED);
+    player.body.velocity.x = dir.x;
+    player.body.velocity.y = dir.y;
   },
   update: function (event) {
     game.stats.update();
+    game.physics.arcade.collide(this.player, this.layer);
     var delta = event.time.elapsed / 1000.0;
     //begin update
-    
+    this.updatePlayer(this.player,this.cursors);
   },
   shutdown: function(){}
 };
