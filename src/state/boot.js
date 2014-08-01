@@ -1,12 +1,13 @@
 /**
- * Created by mauricio on 8/1/14.
+ * Created by tlatif on 7/22/2014.
  */
-var assetManager = require('../utils/AssetManager');
-module.exports = {
+var bootState = {
     preload: function () {
-        assetManager.loadImages();
+        //game.load.image('progressBar', 'assets/progressBar.png');
     },
     create: function () {
-        game.state.start('Light');
+        //game.stage.backgroundColor = '#3498db';
+        game.physics.startSystem(Phaser.Physics.ARCADE);
+        game.state.start('load');
     }
 };
