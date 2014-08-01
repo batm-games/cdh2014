@@ -32,6 +32,28 @@ State.prototype = {
 
     LifeUtils.giveLife(player,100);
 
+    player.attack = function(){
+      return function(){
+        if(player.attacking){return;}
+
+        player.attacking = true;
+        var deltaX = player.width * 0.5;
+        console.log(deltaX);
+        var torch = game.add.sprite(player.x + deltaX,player.y, 'torch');
+        torch.anchor.set(0.5,0.5);
+        torch.scale.set(0.25,0.25);
+
+        var tween = game.add.tween(torch)
+        .to({alpha: 0.3}, 1000)
+        .start();
+
+        tween.onComplete.add(function(){
+          torch.kill();
+          player.attacking = false;
+        });
+      }();
+    };
+
     this.players.push(player);
   },
   createGameObjects : function(){
@@ -39,14 +61,15 @@ State.prototype = {
     torch.scale.set(0.5,0.5);
     torch.z = 0;
   },
-  createControls: function(ku,kr,kd,kl,kaction){
+  createControls: function(ku,kr,kd,kl,kAttack,kTea){
     //this.cursors = game.input.keyboard.createCursorKeys();
     control = {
       'u' : game.input.keyboard.addKey(ku),
       'r' : game.input.keyboard.addKey(kr),
       'd' : game.input.keyboard.addKey(kd),
       'l' : game.input.keyboard.addKey(kl),
-      'action' : game.input.keyboard.addKey(kaction)
+      'attack' : game.input.keyboard.addKey(kAttack),
+      'tea' : game.input.keyboard.addKey(kTea)
     };
     this.controls.push(control);
   },
@@ -64,7 +87,7 @@ State.prototype = {
     if(controls.u.isDown){dir.y -= 1;}
     if(controls.d.isDown){dir.y += 1;}
 
-    if(controls.action.isDown){
+    if(controls.tea.isDown){
       player.tint = 0x00ff00;
       player.teaPower = true;
       dir = new Phaser.Point(0,0);
@@ -79,6 +102,10 @@ State.prototype = {
 
     if(dir.x != 0 && player.scale.x < 0 != dir.x < 0){
       player.scale.x *= -1;
+    }
+
+    if(controls.attack.isDown){
+      player.attack();
     }
   },
   mergedPlayersAction : function(player1,player2){
@@ -105,8 +132,8 @@ State.prototype = {
     this.createEnemies();
     this.createPlayers();
     this.createPlayers();
-    this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.NUMPAD_0);
-    this.createControls(Phaser.Keyboard.W,Phaser.Keyboard.D,Phaser.Keyboard.S,Phaser.Keyboard.A,Phaser.Keyboard.SPACEBAR);
+    this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.NUMPAD_0,Phaser.Keyboard.NUMPAD_1);
+    this.createControls(Phaser.Keyboard.W,Phaser.Keyboard.D,Phaser.Keyboard.S,Phaser.Keyboard.A,Phaser.Keyboard.C,Phaser.Keyboard.V);
 
     this.players[1].x += 10;
     
