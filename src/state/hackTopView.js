@@ -100,6 +100,7 @@ State.prototype = {
     this.initVariables();
     this.createMap();
     this.createGameObjects();
+    this.createEnemies();
     this.createPlayers();
     this.createPlayers();
     this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.NUMPAD_0);
