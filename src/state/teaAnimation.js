@@ -1,3 +1,5 @@
+var Fire = require('../characters/Fire');
+
 function State() {
 }
 
@@ -27,15 +29,35 @@ State.prototype = {
     torch.anchor.set(0.5,0.5);
     var tween = game.add.tween(torch).to(
       {y:-Y*0.47 + Y*2.5}
-      ,15000
+      ,12000
     )
     .easing(Phaser.Easing.Exponential.Out)
     .start();
 
     tween.onComplete.add(
-      function(){
+      function() {
         var text = "Click to start\ngame!";
         var style = { font: "65px Arial", fill: "#00ff00", align: "center" };
+
+        var fire = new Fire(torch);
+        fire.setFrames([{ x: 0, y: 0 }]);
+        fire.setIntensity(100);
+        var k = 50;
+        fire.emitter.gravity = -1500;
+
+        fire.emitter.setScale(3, 0, 3, 0, 3000);
+//        fire.emitter.gravity = -1000;
+        fire.emitter.minParticleSpeed.x = -k;
+        fire.emitter.maxParticleSpeed.x = k;
+        fire.emitter.x = torch.x;
+        fire.emitter.y = torch.y;
+        fire.emitter.start(false, 2000, 50);
+
+//        var lightMask = new LightMask(this.fire);
+//        var tween = game.add.tween(torch).to(
+//            {y:-Y*0.47 + Y*2.5}
+//            ,15000
+//        );
 
         var t = game.add.text(X*2.0,Y*2.0, text, style);
       }

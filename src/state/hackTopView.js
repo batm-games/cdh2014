@@ -321,22 +321,27 @@ State.prototype = {
     this.torches = game.add.group();
     this.zebras = game.add.group();
   },
-  updateEnemies : function(player, delta) {
+  updateEnemies : function(delta) {
     var TEA_DISTANCE_DAMAGE = this.TEA_DISTANCE_DAMAGE;
-//    console.log(player.teaPower);
-    this.enemies.forEach(function(enemy){
-      TVEnemy.updateEnemy(enemy);
 
-//      console.log(player.teaPower);
-      if(enemy.type == Statics.ghost && player.teaPower && player.position.distance(enemy.position) <= TEA_DISTANCE_DAMAGE) {
-//        console.log(enemy.timeout);
+    this.enemies.forEach(function(enemy){
+      if(enemy.type != Statics.ghost){
         enemy.timeout -= delta;
       }
-//      console.log(enemy.timeout);
-      if(enemy.timeout <= 0) {
-        enemy.kill();
-      }
     });
+
+    for(var i=0;i<2;i++){
+      var player = this.players[i];
+      this.enemies.forEach(function(enemy){
+        if(enemy.type == Statics.ghost && player.teaPower && player.position.distance(enemy.position) <= TEA_DISTANCE_DAMAGE) {
+          enemy.timeout -= delta;
+
+          if(enemy.timeout <= 0) {
+            enemy.kill();
+          }
+        }
+      });
+    }
   },
   create: function() {
     music = game.add.audio('bgsound',1,true);
@@ -364,9 +369,11 @@ State.prototype = {
     return true;
   },
   donkeyAttack : function(player,donkey){
+    
     if(donkey.type == Statics.ghost || donkey.timeout > 0 || isNaN(donkey.timeout)){
       return false;
     }else{
+
       player.receiveDamage(donkey.damage);
       donkey.timeout = this.DONKEY_TIMEOUT;
     }
@@ -427,8 +434,7 @@ State.prototype = {
     this.updatePlayer(this.players[0],this.controls[0]);
     this.updatePlayer(this.players[1],this.controls[1]);
     this.mergedPlayersAction(this.players[0],this.players[1]);
-    this.updateEnemies(this.players[0], delta);
-    this.updateEnemies(this.players[1], delta);
+    this.updateEnemies(delta);
 
     this.updateTorchbar();
 
