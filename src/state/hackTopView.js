@@ -260,11 +260,9 @@ State.prototype = {
     return true;
   },
   donkeyAttack : function(player,donkey){
-    console.log(donkey.timeout);
     if(donkey.type == Statics.ghost || donkey.timeout > 0 || isNaN(donkey.timeout)){
       return false;
     }else{
-      
       player.receiveDamage(donkey.damage);
       donkey.timeout = this.DONKEY_TIMEOUT;
     }
