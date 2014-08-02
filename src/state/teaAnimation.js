@@ -31,7 +31,7 @@ State.prototype = {
       function(){
         var text = "Click to start\ngame!";
         var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
-        console.log('!');
+
         var t = game.add.text(X*2.0,Y*2.0, text, style);
       }
     );
