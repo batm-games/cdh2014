@@ -4,6 +4,7 @@ function State() {
   this.ALPHA_BLEND = 0.4;
   this.LIGHT_COLOR = 0x333333;
   this.BLEND_MODE = PIXI.blendModes.ADD;
+  this.TEA_DISTANCE_DAMAGE = 50;
 
   this.LIGHT_NORMAL_SIZE = 0.5;
   this.LIGHT_LARGE_SIZE = 1.0;
@@ -25,8 +26,8 @@ State.prototype = {
   preload: function () {
     game.load.audio('bgsound',['./sounds/bgsound.ogg']);
     game.load.audio('torch','./sounds/torch01.ogg');
-    game.load.image('tileset', './assets/tilemaps/tileset.png');
-    game.load.tilemap('map', './assets/tilemaps/tv_map1.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('tilesetvillage', './assets/tilemaps/tilesetvillage.png');
+    game.load.tilemap('map', './assets/tilemaps/tv_map01.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('pedro', './images/sprites/pedro.png',64,192);
     game.load.spritesheet('torch', './images/sprites/torch.png');
     game.load.spritesheet('bar', './images/sprites/bar.png');
@@ -42,13 +43,17 @@ State.prototype = {
     this.map = game.add.tilemap('map');
     //this.map.setTileSize(32,32);
     // Add the tileset to the map
-    this.map.addTilesetImage('tileset');
+    this.map.addTilesetImage('tilesetvillage');
     // Create the layer, by specifying the name of the Tiled layer
     this.layer = this.map.createLayer('Tile Layer 1');
+    this.layer2 = this.map.createLayer('Tile Layer 2');
     this.layer.resizeWorld();
+    this.layer2.resizeWorld();
     this.layer.alpha = this.ALPHA_BLEND;
     this.layer.blendMode = this.BLEND_MODE;
-    this.map.setCollision(1,true,this.layer);
+    this.layer2.alpha = this.ALPHA_BLEND;
+    this.layer2.blendMode = this.BLEND_MODE;
+    this.map.setCollisionBetween(1,2376,true,this.layer2);
   },
   //1.25,2,2.5
   createLightLayer : function(x, y, scale){
@@ -169,7 +174,7 @@ State.prototype = {
         enemy.type = Statics.ghost;
       }
       enemy.body.immovable = true;
-      enemy.timeout = 0;
+      enemy.timeout = 1;
       this.enemies.add(enemy);
       // enemy.alpha = this.ALPHA_BLEND;
       // enemy.tint = 0x111111;
@@ -252,10 +257,21 @@ State.prototype = {
     this.torches = game.add.group();
     this.zebras = game.add.group();
   },
-  updateEnemies : function(delta) {
+  updateEnemies : function(player, delta) {
+    var TEA_DISTANCE_DAMAGE = this.TEA_DISTANCE_DAMAGE;
+//    console.log(player.teaPower);
     this.enemies.forEach(function(enemy){
       TVEnemy.updateEnemy(enemy);
-      enemy.timeout -= delta;
+
+//      console.log(player.teaPower);
+      if(enemy.type == Statics.ghost && player.teaPower && player.position.distance(enemy.position) <= TEA_DISTANCE_DAMAGE) {
+//        console.log(enemy.timeout);
+        enemy.timeout -= delta;
+      }
+//      console.log(enemy.timeout);
+      if(enemy.timeout <= 0) {
+        enemy.kill();
+      }
     });
   },
   create: function() {
@@ -265,7 +281,7 @@ State.prototype = {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createMap();
     this.initVariables();
-    this.createGameObjects(X*0.25,Y*0.35);
+    this.createGameObjects(X*0.24,Y*0.47);
     this.createPlayers();
     this.createPlayers();
     this.createEnemies();
@@ -297,9 +313,10 @@ State.prototype = {
   update: function (event) {
     game.stats.update();
     var delta = event.time.elapsed / 1000.0;
-    game.physics.arcade.collide(this.players[0], this.layer);
-    game.physics.arcade.collide(this.players[1], this.layer);
-    game.physics.arcade.collide(this.torch, this.enemies);
+    game.physics.arcade.collide(this.players[0], this.layer2);
+    game.physics.arcade.collide(this.players[1], this.layer2);
+    game.physics.arcade.collide(this.torch,this.enemies);
+    game.physics.arcade.collide(this.layer2,this.enemies);
     game.physics.arcade.collide(this.players[0], this.enemies,this.donkeyAttack,this.donkeyEval,this);
     game.physics.arcade.collide(this.players[1], this.enemies,this.donkeyAttack,this.donkeyEval,this);
     game.physics.arcade.collide(
@@ -334,7 +351,8 @@ State.prototype = {
     this.updatePlayer(this.players[0],this.controls[0]);
     this.updatePlayer(this.players[1],this.controls[1]);
     this.mergedPlayersAction(this.players[0],this.players[1]);
-    this.updateEnemies(delta);
+    this.updateEnemies(this.players[0], delta);
+    this.updateEnemies(this.players[1], delta);
 
     this.updateTorchbar();
 

@@ -21,7 +21,7 @@ var Player = function (game, config) {
     this.sprite.animations.add('run', [1, 2, 3, 4, 5, 6, 7, 8]);
 
     this.sprite.anchor.setTo(0.5, 0.5);
-    this.sprite.scale.setTo(0.2, 0.3);
+    this.sprite.scale.setTo(this.sprite.width/410.0, this.sprite.height/410.0);
     game.physics.arcade.enable(this.sprite);
     this.sprite.body.gravity.y = 1000;
     this.sprite.collideWorldBounds = true;
@@ -158,6 +158,23 @@ Player.prototype.recruit = function (player, citizen) {
         }
         console.log('citizen recruited!');
     }
+
+
+};
+Player.prototype.moveCameraDamage = function() {
+    this.stopMoving();
+    this.game.camera.follow(null);
+    //this.game.world.setBounds(-10, 0, this.game.width + 20, this.game.height);
+
+    var tween = this.game.add.tween(this.game.camera)
+        .to({ x: this.game.camera.x - 10 }, 40, Phaser.Easing.Sinusoidal.InOut, false, 0, 5, true)
+        .start();
+
+    tween.onComplete.add(function() {
+        console.log("onComplete X");
+        // this.game.world.setBounds(0, 0, this.game.width, this.game.height);
+        this.game.camera.follow(this.sprite);
+    }, this);
 };
 Player.prototype.receiveEvilZebraDamage = function () {
     this.life -= Player.LIFE_TAKE_FACTOR * Statics.evilZebraDamage;
@@ -165,6 +182,7 @@ Player.prototype.receiveEvilZebraDamage = function () {
         this.kill();
         this.dead = true;
     }
+    this.moveCameraDamage();
 };
 Player.DEFAULT_SPEED = 500;
 Player.DEFAULT_JUMP_POWER = 600;

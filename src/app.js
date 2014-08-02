@@ -42,4 +42,6 @@ game.state.add('Level1', require('./state/level/Level1'), false);//(key,state,au
 //game.state.add('MainMenu', require('./state/mainMenu'), false);//(key,state,autoStart)
 //game.state.add('Light', require('./state/lightTest'), false);//(key,state,autoStart)
 
+
+
 game.state.start('boot');
