@@ -22,6 +22,7 @@ AbstractLevel.prototype = {
         game.world.setBounds(0, 0, world.width, world.height);
         this.map = instances.map;
         this.layers = instances.layers;
+        this.world = world;
     },
     createPlayer: function (config) {
         var conf = config || {};

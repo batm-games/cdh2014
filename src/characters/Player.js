@@ -18,7 +18,7 @@ var Player = function (game, config) {
     this.sprite.anchor.setTo(0.5, 0.5);
     this.sprite.scale.setTo(0.3, 0.3);
     game.physics.arcade.enable(this.sprite);
-    this.sprite.body.gravity.y = 1500;
+    this.sprite.body.gravity.y = 1000;
     this.sprite.collideWorldBounds = true;
 
     // player controls
@@ -28,6 +28,8 @@ var Player = function (game, config) {
     this.fire = new Fire(this);
     this.fire.setFrames([{ x: 0, y: -30 }]);
     this.lightMask = new LightMask(this.fire);
+    this.dead = false;
+    this.typeOfDead = 'fallen';
 };
 Player.prototype.createControls = function (controls) {
     this.controls = this.game.input.keyboard.createCursorKeys();
@@ -51,12 +53,14 @@ Player.prototype.jump = function (doubleJump) {
     }
 };
 Player.prototype.update = function (delta) {
-    if (!this.sprite.inWorld &&
-            this.sprite.x > 0 &&
-            this.sprite.y > 0) {
+    if (!this.sprite.inWorld && this.sprite.x > 0 && this.sprite.y > 0) {
         this.kill();
+        this.dead = true;
     }
-
+    if (this.fire.intensity <= 1) {
+        this.kill();
+        this.dead = true;
+    }
     if (this.controls.left.isDown) {
         this.sprite.animations.play('run', 7, true);
         this.sprite.scale.x = -1;
@@ -91,11 +95,12 @@ Player.prototype.recruit = function (player, citizen) {
     this.people += 1;
     if (!citizen.recruited) {
         citizen.recruited = true;
-        console.log('recruited');
+        this.fire.setIntensityDelta(Statics.zebraBonus);
+        console.log(this.fire.intensity);
     }
 };
 Player.DEFAULT_SPEED = 500;
-Player.DEFAULT_JUMP_POWER = 700;
+Player.DEFAULT_JUMP_POWER = 600;
 Player.DEFAULT_SPRITE = 'pedross';
 Player.DEFAULT_X = 50;
 Player.DEFAULT_Y = 500;

@@ -3,7 +3,8 @@
  */
 var Statics = {
     tileWidth: 32,
-    tileHeight: 32
+    tileHeight: 32,
+    zebraBonus: 3
 };
 window.Statics = Statics;
 module.exports = Statics;
