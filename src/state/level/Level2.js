@@ -60,11 +60,12 @@ _.merge(Level2.prototype, {
         ]);
 
         this.createCK();
+        this.winButton = game.input.keyboard.addKey(Phaser.Keyboard.U);
         this.createPlayer({
             x: 50,
             y: 1200
         });
-        this.createDoor();
+        this.createDoor(this.world.width - 100, this.world.height - 200);
         game.camera.follow(this.player.getSprite());
     },
     createCK: function () {
@@ -72,7 +73,7 @@ _.merge(Level2.prototype, {
         // checkpoint
         this.cks = [];
 
-        [{x: 6272, y: 1024}].forEach(function (v) {
+        [{x: 2848, y: 1056}, {x: 6272, y: 1024}, {x: 8992, y: 1024}].forEach(function (v) {
             ck = game.add.sprite(
                 100, 500, 'laPaz'
             );
@@ -97,6 +98,9 @@ _.merge(Level2.prototype, {
         game.physics.arcade.collide(this.player.getSprite(), this.door, this.goToNextLevel, null, this);
         game.physics.arcade.overlap(this.player.getSprite(), this.layers[1], this.foundZebra, null, this);
         game.physics.arcade.overlap(this.player.getSprite(), this.layers[2], this.zebraDamagePlayer, null, this);
+        if (this.winButton.isDown) {
+            this.goToNextLevel();
+        }
         this.cks.forEach(function (v) {
             game.physics.arcade.overlap(
                 me.player.getSprite(),
@@ -131,11 +135,7 @@ _.merge(Level2.prototype, {
 //        this.layers[2].alpha = this.player.fire.intensity / 10 / 2;
     },
     goToNextLevel: function () {
-        if (this.player.people >= this.minimumZebras) {
-            game.state.start('Level1');
-        } else {
-            this.door.body.velocity.x -= this.door.body.velocity.x * 2;
-        }
+        game.state.start('hackTopView');
     }
 });
 

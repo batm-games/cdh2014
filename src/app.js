@@ -42,6 +42,7 @@ game.state.add('Level0', require('./state/level/Level0'), false);//(key,state,au
 game.state.add('Level1', require('./state/level/Level1'), false);//(key,state,autoStart)
 game.state.add('Level2', require('./state/level/Level2'), false);
 game.state.add('teaAnimation', require('./state/teaAnimation'), false);//(key,state,autoStart)
+game.state.add('credits', require('./state/credits'), false);//(key,state,autoStart)
 //game.state.add('MainMenu', require('./state/mainMenu'), false);//(key,state,autoStart)
 //game.state.add('Light', require('./state/lightTest'), false);//(key,state,autoStart)
 

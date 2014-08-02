@@ -504,7 +504,12 @@ State.prototype = {
 
     if(this.ttime < 0){
       //Reset Game!
-      game.state.start('Level2');
+      if(game.TOPVIEW_LEVEL == 2){
+        game.state.start('credits');
+      }else{
+        game.state.start('Level2');
+      }
+      
       game.TOPVIEW_LEVEL = 2;
     }
   },

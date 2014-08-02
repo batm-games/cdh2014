@@ -43,8 +43,10 @@ AbstractLevel.prototype = {
             this.map.removeTile(evilZebra.x, evilZebra.y, 2);
         }
     },
-    createDoor: function () {
-        this.door = game.add.sprite(this.world.width - 300, this.world.height - 60, 'door');
+    createDoor: function (x, y) {
+        var xc = x || this.world.width - 300;
+        var yc = y || this.world.height - 60;
+        this.door = game.add.sprite(xc, yc, 'door');
         game.physics.arcade.enable(this.door);
         this.door.body.gravity.y = 200;
         this.door.body.immovable = true;

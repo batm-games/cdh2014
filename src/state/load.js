@@ -8,11 +8,13 @@ module.exports = {
         //assetManager.loadWorldAssets('world1');
         assetManager.loadWorldAssets('world2');
         assetManager.loadWorldAssets('world3');
+        ExtraUtils = require('../utils/ExtraUtils');;
     },
     create: function () {
         // game.state.start('Level1');
         // game.state.start('Level2');
        // game.state.start('hackTopView');
         game.state.start('teaAnimation');
+        // game.state.start('credits');
     }
 };

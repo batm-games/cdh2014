@@ -14,6 +14,8 @@ State.prototype = {
     bg.scale.set(1.5,1.5);
     bg.anchor.set(0.5,0.5);
 
+    this.winButton = game.input.keyboard.addKey(Phaser.Keyboard.U);
+
 
     game.TOPVIEW_LEVEL = 1;
 
@@ -82,7 +84,7 @@ State.prototype = {
 
         var t = game.add.text(X*2.0,Y*2.0, text, style);
         t.inputEnabled = true;
-        t.events.onInputDown.add(function(){game.state.start('Level1')},this);//(func,context)
+        t.events.onInputDown.add(function(){game.state.start('Level1');},this);//(func,context)
       }
     );
 
@@ -93,7 +95,9 @@ State.prototype = {
     game.stats.update();
     var delta = event.time.elapsed / 1000.0;
     //begin update
-    
+    if(this.winButton.isDown){
+        game.state.start('Level1');
+    }
   },
   shutdown: function(){}
 };
