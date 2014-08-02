@@ -30,6 +30,7 @@ var AssetManager = {
         images: {
             fire: './images/fire01.png',
             pedro: './images/pedrito.png',
+            door: './images/sprites/door.png',
             mask: './images/mask.png',
             maskInverse: './images/mask-inverse.png',
             maskInverseFlat: './images/mask-inverse_flat.png'
