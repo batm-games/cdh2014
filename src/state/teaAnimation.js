@@ -16,6 +16,8 @@ State.prototype = {
 
     this.winButton = game.input.keyboard.addKey(Phaser.Keyboard.U);
 
+    var title = game.add.sprite(X*2.5, Y*1.5, 'title');
+    title.tint = 0xffffff;
 
     game.TOPVIEW_LEVEL = 1;
 

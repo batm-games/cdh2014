@@ -50,7 +50,8 @@ var AssetManager = {
             cebron: './images/cebron.png',
             lifeBar: './images/sprites/bar.png',
             yaaa: './images/yaaa.png',
-            laser: './images/laser.png'
+            laser: './images/laser.png',
+            title: './images/title.png'
         },
 
         spritesheets: {
