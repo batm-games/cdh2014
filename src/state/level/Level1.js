@@ -12,7 +12,7 @@ Level1.prototype = Object.create(AbstractLevel.prototype);
 _.merge(Level1.prototype, {
     preload: function () {},
     create: function () {
-        this.timeEnd = moment().add('seconds', 45);
+        this.timeEnd = moment().add('seconds', 60);
         this.initWorld([
             {
                 name: 'Tile Layer 1',
@@ -33,13 +33,15 @@ _.merge(Level1.prototype, {
         game.physics.arcade.collide(this.player.getSprite(), this.layers[0]);
         game.physics.arcade.overlap(this.player.getSprite(), this.layers[1], this.player.recruit, null, this.player);
         this.player.update(delta);
-        if (!this.player.getSprite().inWorld) {
-            game.state.start('Level1');
-        }
 
         var now = moment();
         var left = this.timeEnd.diff(now);
         game.debug.text(moment(left).format('mm:ss'), halfX, 50);
+
+        if (!this.player.getSprite().inWorld ||
+                left < 100) {
+            game.state.start('Level1');
+        }
     }
 });
 
