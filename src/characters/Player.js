@@ -158,8 +158,6 @@ Player.prototype.recruit = function (player, citizen) {
         }
         console.log('citizen recruited!');
     }
-
-
 };
 Player.prototype.moveCameraDamage = function() {
     this.stopMoving();
