@@ -323,16 +323,15 @@ State.prototype = {
   },
   updateEnemies : function(player, delta) {
     var TEA_DISTANCE_DAMAGE = this.TEA_DISTANCE_DAMAGE;
-//    console.log(player.teaPower);
-    this.enemies.forEach(function(enemy){
+      this.enemies.forEach(function(enemy){
       TVEnemy.updateEnemy(enemy);
 
-//      console.log(player.teaPower);
+
       if(enemy.type == Statics.ghost && player.teaPower && player.position.distance(enemy.position) <= TEA_DISTANCE_DAMAGE) {
-//        console.log(enemy.timeout);
+
         enemy.timeout -= delta;
       }
-//      console.log(enemy.timeout);
+
       if(enemy.timeout <= 0) {
         enemy.kill();
       }

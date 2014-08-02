@@ -13,7 +13,6 @@ var TVEnemy = {
     enemy.scale.x *= -1;
     game.physics.arcade.enable(enemy);
     enemy.body.collideWorldBounds = true;
-    console.log(y);
     if(y <= Y * 0.1) {
       enemy.body.velocity.y = enemySpeed;
     }else if(y >= Y * 0.8){
