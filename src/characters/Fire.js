@@ -17,9 +17,9 @@ function Fire(owner) {
     emitter.gravity = -500;
     emitter.setScale(1, 0, 1, 0, 3000);
 
-    emitter.start(false, 2000, 15);
+    emitter.start(false, 2000, 5);
 
-    this.intensity = 5;
+    this.intensity = 2;
     this.frames = [];
     this.owner = owner;
 

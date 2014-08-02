@@ -16,8 +16,9 @@ var Player = function (game, config) {
     this.sprite.animations.add('run', [1, 2, 3, 4, 5, 6, 7, 8]);
 
     this.sprite.anchor.setTo(0.5, 0.5);
+    this.sprite.scale.setTo(0.3, 0.3);
     game.physics.arcade.enable(this.sprite);
-    this.sprite.body.gravity.y = 500;
+    this.sprite.body.gravity.y = 1500;
     this.sprite.collideWorldBounds = true;
 
     // player controls
@@ -55,6 +56,7 @@ Player.prototype.update = function (delta) {
             this.sprite.y > 0) {
         this.kill();
     }
+
     if (this.controls.left.isDown) {
         this.sprite.animations.play('run', 7, true);
         this.sprite.scale.x = -1;
@@ -85,11 +87,18 @@ Player.prototype.getSprite = function () {
 Player.prototype.kill = function () {
     this.sprite.kill();
 };
-Player.DEFAULT_SPEED = 200;
-Player.DEFAULT_JUMP_POWER = 500;
+Player.prototype.recruit = function (player, citizen) {
+    this.people += 1;
+    if (!citizen.recruited) {
+        citizen.recruited = true;
+        console.log('recruited');
+    }
+};
+Player.DEFAULT_SPEED = 500;
+Player.DEFAULT_JUMP_POWER = 700;
 Player.DEFAULT_SPRITE = 'pedross';
 Player.DEFAULT_X = 50;
-Player.DEFAULT_Y = 50;
+Player.DEFAULT_Y = 500;
 
 
 module.exports = Player;

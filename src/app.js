@@ -38,6 +38,7 @@ game.state.add('load', require('./state/load'), false);
 //game.state.add('TopView'   , require('./state/demoTopView')   , false);//(key,state,autoStart)
 game.state.add('hackTopView'   , require('./state/hackTopView')   , false);//(key,state,autoStart)
 game.state.add('Level0', require('./state/level/Level0'), false);//(key,state,autoStart)
+game.state.add('Level1', require('./state/level/Level1'), false);//(key,state,autoStart)
 //game.state.add('MainMenu', require('./state/mainMenu'), false);//(key,state,autoStart)
 //game.state.add('Light', require('./state/lightTest'), false);//(key,state,autoStart)
 
