@@ -47,6 +47,7 @@ State.prototype = {
     // Create the layer, by specifying the name of the Tiled layer
     this.layer = this.map.createLayer('Tile Layer 1');
     this.layer2 = this.map.createLayer('Tile Layer 2');
+    this.layer3 = this.map.createLayer('Tile Layer 3');
     this.layer.resizeWorld();
     this.layer2.resizeWorld();
     this.layer.alpha = this.ALPHA_BLEND;
