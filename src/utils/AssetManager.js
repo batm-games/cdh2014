@@ -48,14 +48,14 @@ var AssetManager = {
             city: './images/city.png',
             city2: './images/city2.png',
             cebron: './images/cebron.png',
-            lifeBar: './images/sprites/bar.png'
+            lifeBar: './images/sprites/bar.png',
+            yaaa: './images/yaaa.png'
         },
 
         spritesheets: {
             laPaz: './images/la_paz_flag.gif',
             gradient: './images/gradient.png',
-            cebron: './images/cebron.png',
-            yaaa: './images/yaaa.png'
+            cebron: './images/cebron.png'
         }
     },
     loadWorldAssets: function (world) {
