@@ -19,7 +19,7 @@ function Fire(owner) {
 
     emitter.start(false, 2000, 5);
 
-    this.intensity = 4;
+    this.intensity = 10;
     this.frames = [];
     this.owner = owner;
 
@@ -42,10 +42,10 @@ Fire.prototype = {
         if (n < 0) {
             throw 'less than zero';
         }
-        this.emitter.setAlpha(1, 0, n * 1000);
+        this.intensity = n;
+        this.emitter.setAlpha(this.intensity / 10, 0, 5000);
 //        this.emitter.minParticleSpeed.x = -n * scale;
 //        this.emitter.maxParticleSpeed.x = n * scale;
-        this.intensity = n;
         return this;
     },
 
