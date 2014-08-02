@@ -19,19 +19,23 @@ function BaseWorld (config) {
 }
 BaseWorld.prototype.createWorld = function () {
     var map = game.add.tilemap(this.map);
-    map.addTilesetImage('tileset');
+    map.addTilesetImage(this.tileset);
     this.width = map.width * Statics.tileWidth;
     this.height = map.height * Statics.tileHeight;
     console.log(this.width);
     console.log(this.height);
     var layers = [],
         layer,
+        collision = true,
         i;
     for(i = 0; i < this.layers.length; i += 1) {
         layer = map.createLayer(this.layers[i].name);
         layer.alpha = 0.4;
         layer.blendMode = PIXI.blendModes.ADD;
-        map.setCollision(this.layers[i].collisionTiles, true, layer);
+        if (layer.collision === false) {
+            collision = false;
+        }
+        map.setCollision(this.layers[i].collisionTiles, collision, layer);
         layers.push(layer);
     }
     return {

@@ -4,6 +4,7 @@
 var _ = require('lodash');
 var BaseWorld = require ('../../world/BaseWorld');
 var Player = require('../../characters/Player');
+var Citizen = require('../../characters/Citizen');
 var AbstractLevel = function (worldName) {
     this.worldName = worldName;
 };
@@ -26,6 +27,16 @@ AbstractLevel.prototype = {
     createPlayer: function (config) {
         var conf = config || {};
         this.player = new Player(game, conf);
+    },
+    createCitizensGroup: function (citizensConfigs) {
+        var citizen,
+            i;
+        this.citizens = game.add.group();
+        for (i = 0; i < citizensConfigs.length; i += 1) {
+            citizen = new Citizen(citizensConfigs[i]);
+            this.citizens.add(citizen.sprite);
+        }
+        return this.citizens;
     }
 };
 
