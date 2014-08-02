@@ -47,6 +47,7 @@ var AssetManager = {
             background: './images/backgroundA.jpg',
             city: './images/city.png',
             city2: './images/city2.png',
+            cebron: './images/cebron.png',
             lifeBar: './images/sprites/bar.png'
         },
 

@@ -4,7 +4,7 @@ function State() {
   this.ALPHA_BLEND = 0.4;
   this.LIGHT_COLOR = 0x333333;
   this.BLEND_MODE = PIXI.blendModes.ADD;
-  this.TEA_DISTANCE_DAMAGE = 50;
+  this.TEA_DISTANCE_DAMAGE = 100;
 
   this.LIGHT_NORMAL_SIZE = 0.5;
   this.LIGHT_LARGE_SIZE = 1.0;
@@ -47,6 +47,7 @@ State.prototype = {
     // Create the layer, by specifying the name of the Tiled layer
     this.layer = this.map.createLayer('Tile Layer 1');
     this.layer2 = this.map.createLayer('Tile Layer 2');
+    this.layer3 = this.map.createLayer('Tile Layer 3');
     this.layer.resizeWorld();
     this.layer2.resizeWorld();
     this.layer.alpha = this.ALPHA_BLEND;
@@ -87,7 +88,7 @@ State.prototype = {
   },
   createPlayers: function(){
     var state = this;
-    var player = game.add.sprite(X*0.30,Y*0.50, 'pedro');
+    var player = game.add.sprite(X*0.50,Y*0.50, 'pedro');
     player.anchor.set(0.5,0.5);
     player.scale.set(0.5,0.5);
     game.physics.arcade.enable(player);
@@ -95,6 +96,7 @@ State.prototype = {
 
     player.animations.add('normal',[0],1,true);
     player.animations.add('teaUp' ,[1],1,true);
+    player.animations.add('teaNo' ,[2],1,true);
 
     LifeUtils.giveLife(player,100);
 
@@ -107,24 +109,27 @@ State.prototype = {
       return function(){
         if(player.attacking){return;}        
 
-        state.torchSfx.play();
+        state.torchSfx.play();        
 
         player.attacking = true;
         var deltaX = player.width * 0.5;
-        var torch = game.add.sprite(player.x + deltaX,player.y, 'torch');
-        torch.anchor.set(0.5,0.5);
+        var torch = game.add.sprite(player.x + deltaX,player.y + player.height * 0.2, 'torch');
+        torch.anchor.set(0.5,1.0);
         torch.scale.set(0.25,0.25);
         game.physics.arcade.enable(torch);
         state.torches.add(torch);
         torch.player = player;
         torch.damage = 15;
 
+        var angle = player.width < 0 ? -60 : 60;
+
         var tween = game.add.tween(torch)
-        .to({alpha: 0.3}, 1000)
+        .to({alpha: 0.3,angle: angle}, 250)
         .start();
 
         tween.onComplete.add(function(){
           torch.kill();
+          player.animations.play('normal');
           player.attacking = false;  
         });
       }();
@@ -163,14 +168,47 @@ State.prototype = {
   },
 
   createEnemies: function() {
-    for(var i=1;i<=3;i++) {
-      var enemy = {};
+    //Enemies from bottom
+    for(var i=0; i<=3; i++){
       if(i%2) {
-        enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlasdonkey','standby-1.png', 40);
+        enemy = TVEnemy.createEnemy(X * 0.49,Y*0.9, 'atlasdonkey','standby-1.png', 3);
         enemy.type = Statics.swordEnemy;
       }
       else {
-        enemy = TVEnemy.createGhost(i * X * 0.1,Y*0.50, 40);
+        enemy = TVEnemy.createGhost(X * 0.52,Y*0.9, 8);
+        enemy.type = Statics.ghost;
+      }
+      enemy.body.immovable = true;
+      enemy.timeout = 1;
+      this.enemies.add(enemy);
+    }
+
+    //Enemies from top
+
+    for(var i=0; i<=3; i++){
+      if(i%2) {
+        enemy = TVEnemy.createEnemy(X * 0.49,Y*0.1, 'atlasdonkey','standby-1.png', 5);
+        enemy.type = Statics.swordEnemy;
+      }
+      else {
+        enemy = TVEnemy.createGhost(X * 0.52,Y*0.1, 10);
+        enemy.type = Statics.ghost;
+      }
+      enemy.body.immovable = true;
+      enemy.timeout = 1;
+      this.enemies.add(enemy);
+    }
+
+    //Enemies from left
+
+    for(var i=1;i<=3;i++) {
+      var enemy = {};
+      if(i%2) {
+        enemy = TVEnemy.createEnemy(i * X * 0.05,Y*0.50, 'atlasdonkey','standby-1.png', 8);
+        enemy.type = Statics.swordEnemy;
+      }
+      else {
+        enemy = TVEnemy.createGhost(i * X * 0.05,Y*0.50, 8);
         enemy.type = Statics.ghost;
       }
       enemy.body.immovable = true;
@@ -179,12 +217,34 @@ State.prototype = {
       // enemy.alpha = this.ALPHA_BLEND;
       // enemy.tint = 0x111111;
     }
+
+    //Enemies from right
+
+    for(var i=1;i<=3;i++) {
+      var enemy = {};
+      if(i%2) {
+        enemy = TVEnemy.createEnemy(X * 0.95,Y*0.50, 'atlasdonkey','standby-1.png', 8);
+        enemy.type = Statics.swordEnemy;
+      }
+      else {
+        enemy = TVEnemy.createGhost(X * 0.95,Y*0.50, 8);
+        enemy.type = Statics.ghost;
+      }
+      enemy.body.immovable = true;
+      enemy.timeout = 1;
+      this.enemies.add(enemy);
+      // enemy.alpha = this.ALPHA_BLEND;
+      // enemy.tint = 0x111111;
+    }
+
+
   },
 
   createSfx: function() {
     this.torchSfx = game.add.audio('torch');
   },
   updatePlayer : function(player,controls){
+
     var dir = new Phaser.Point(0,0);
     if(controls.l.isDown){dir.x -= 1;}
     if(controls.r.isDown){dir.x += 1;}
@@ -200,6 +260,10 @@ State.prototype = {
       // player.tint = 0xffffff;
       player.teaPower = false;
       player.animations.play('normal');
+    }
+
+    if(player.attacking){
+      player.animations.play('teaNo');
     }
 
     dir.setMagnitude(this.PLAYER_SPEED);
@@ -259,16 +323,15 @@ State.prototype = {
   },
   updateEnemies : function(player, delta) {
     var TEA_DISTANCE_DAMAGE = this.TEA_DISTANCE_DAMAGE;
-//    console.log(player.teaPower);
-    this.enemies.forEach(function(enemy){
+      this.enemies.forEach(function(enemy){
       TVEnemy.updateEnemy(enemy);
 
-//      console.log(player.teaPower);
+
       if(enemy.type == Statics.ghost && player.teaPower && player.position.distance(enemy.position) <= TEA_DISTANCE_DAMAGE) {
-//        console.log(enemy.timeout);
+
         enemy.timeout -= delta;
       }
-//      console.log(enemy.timeout);
+
       if(enemy.timeout <= 0) {
         enemy.kill();
       }
@@ -281,7 +344,7 @@ State.prototype = {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createMap();
     this.initVariables();
-    this.createGameObjects(X*0.24,Y*0.47);
+    this.createGameObjects(X*0.49,Y*0.46);
     this.createPlayers();
     this.createPlayers();
     this.createEnemies();
@@ -343,6 +406,18 @@ State.prototype = {
           }
         }
         torch.damage = 0;
+      }
+    );
+    game.physics.arcade.overlap(
+      this.torch,
+      this.enemies,
+      function(torch) {
+        torch.life -= delta * 5;
+        if(torch.life <= 0) {
+          torch.kill();
+          //Reset Game!
+          game.state.start('hackTopView');
+        }
       }
     );
     

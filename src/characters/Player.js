@@ -4,6 +4,7 @@
 var _ = require('lodash');
 var Fire = require('./Fire');
 var LightMask = require('./LightMask');
+var ExtraUtils = require('../utils/ExtraUtils');
 
 var LIFE_SCALE = 5;
 var cpStats;
@@ -110,6 +111,11 @@ Player.prototype.update = function (delta) {
     if (this.controls.up.isDown && this.sprite.body.onFloor()) {
         this.jump();
     }
+    if (this.controls.down.isDown) {
+        this.sprite.body.gravity.y = 4000;
+    } else {
+        this.sprite.body.gravity.y = 1000;
+    }
 
 //    // lifebar
     this.lifebar.x = this.sprite.x;
@@ -151,13 +157,16 @@ Player.prototype.recruit = function (player, citizen) {
     this.people += 1;
     if (!citizen.recruited) {
         citizen.recruited = true;
-        this.fire.setIntensityDelta(Statics.zebraBonus);
+        this.fire.setIntensityDelta(Statics.zebraBonus * Player.TORCH_FACTOR);
         this.life += Player.LIFE_INCREASE_FACTOR * Statics.zebraBonus;
         if (this.life > 100) {
             this.life = 100;
         }
         console.log('citizen recruited!');
     }
+
+
+    ExtraUtils.showCebron(this.game, this.game.camera.x + X*0.75, this.game.camera.y + Y);
 };
 Player.prototype.moveCameraDamage = function() {
     this.stopMoving();
@@ -190,7 +199,8 @@ Player.DEFAULT_SPRITE = 'pedross';
 Player.DEFAULT_X = 50;
 Player.DEFAULT_Y = 500;
 Player.LIFE_INCREASE_FACTOR = 5;
-Player.LIFE_TAKE_FACTOR = 10;
+Player.LIFE_TAKE_FACTOR = 7;
+Player.TORCH_FACTOR = 1.3;
 
 
 module.exports = Player;
