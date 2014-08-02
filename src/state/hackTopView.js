@@ -12,6 +12,8 @@ function State() {
 
 State.prototype = {
   preload: function () {
+    game.load.audio('bgsound',['./sounds/bgsound.ogg']);
+    game.load.audio('torch','./sounds/torch01.ogg');
     game.load.image('tileset', './assets/tilemaps/tileset.png');
     game.load.tilemap('map', './assets/tilemaps/tv_map1.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('pedro', './images/sprites/pedro.png',64,192);
@@ -140,6 +142,10 @@ State.prototype = {
       // enemy.tint = 0x111111;
     }
   },
+
+  createSfx: function() {
+    torchSfx = game.add.audio('torch');
+  },
   updatePlayer : function(player,controls){
     var dir = new Phaser.Point(0,0);
     if(controls.l.isDown){dir.x -= 1;}
@@ -168,6 +174,7 @@ State.prototype = {
 
     if(controls.attack.isDown || controls.tea.isDown){
       player.attack();
+      torchSfx.play();
     }
 
     var deltaX = (-player.width) * 0.25;
@@ -193,6 +200,9 @@ State.prototype = {
     });
   },
   create: function() {
+    music = game.add.audio('bgsound',1,true);
+    music.play('',0,1,true);
+
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createMap();
     this.initVariables();
@@ -202,6 +212,7 @@ State.prototype = {
     this.createEnemies();
     this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.NUMPAD_0,Phaser.Keyboard.NUMPAD_1);
     this.createControls(Phaser.Keyboard.W,Phaser.Keyboard.D,Phaser.Keyboard.S,Phaser.Keyboard.A,Phaser.Keyboard.C,Phaser.Keyboard.V);
+    this.createSfx();
 
     this.players[1].x += 10;
     
