@@ -19,7 +19,7 @@ function Fire(owner) {
 
     emitter.start(false, 2000, 5);
 
-    this.intensity = 2;
+    this.intensity = 4;
     this.frames = [];
     this.owner = owner;
 
@@ -38,7 +38,7 @@ Fire.prototype = {
 
     setIntensity: function (n) {
         var scale = 10;
-        n = Math.max(n, 0.5);
+        n = Math.max(n, 1);
         if (n < 0) {
             throw 'less than zero';
         }
@@ -70,7 +70,7 @@ Fire.prototype = {
 
     dim: function (delta) {
         this.setIntensity(
-            this.intensity - delta * 1.5
+            this.intensity - delta * 1.1
         );
     }
 };

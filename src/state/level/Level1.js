@@ -12,6 +12,7 @@ Level1.prototype = Object.create(AbstractLevel.prototype);
 _.merge(Level1.prototype, {
     preload: function () {},
     create: function () {
+        this.timeEnd = moment().add('seconds', 45);
         this.initWorld([
             {
                 name: 'Tile Layer 1',
@@ -35,6 +36,10 @@ _.merge(Level1.prototype, {
         if (!this.player.getSprite().inWorld) {
             game.state.start('Level1');
         }
+
+        var now = moment();
+        var left = this.timeEnd.diff(now);
+        game.debug.text(moment(left).format('mm:ss'), halfX, 50);
     }
 });
 
