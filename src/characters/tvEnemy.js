@@ -10,11 +10,12 @@ var TVEnemy = {
     enemy.animations.play('walk');
     enemy.anchor.set(0.5,0.5);
     enemy.scale.set(0.25,0.25);
+    enemy.scale.x *= -1;
     game.physics.arcade.enable(enemy);
     enemy.body.collideWorldBounds = true;
     enemy.body.velocity.x = enemySpeed;
     LifeUtils.giveLife(enemy, 30);
-
+    enemy.damage = 10;
     return enemy;
   },
   createGhost: function(x, y, enemySpeed) {

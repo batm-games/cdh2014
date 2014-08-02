@@ -4,7 +4,7 @@ var LifeUtils = {
         person.life = life;
         person.receiveDamage = function(damage){
             person.life -= damage;
-//            console.log(person.life);
+            console.log(person.life);
 
             if(person.life <= 0){
                 person.kill();

@@ -10,6 +10,15 @@ function State() {
   this.LIGHT_LARGEEEEEE_SIZE = 2.0;
 
   this.SUPER_ZEBRA_SPEED = 200;
+
+  this.TIMEOUT_SUPER = 5;
+  this.DONKEY_TIMEOUT = 0.5;
+  this.timeoutSuper = 0;
+
+  this.TORCH_BAR_WIDTH = 50;
+  this.TORCH_LIFE = 100;
+
+  this.ZEBRA_DAMAGE = 5;
 }
 
 State.prototype = {
@@ -20,10 +29,12 @@ State.prototype = {
     game.load.tilemap('map', './assets/tilemaps/tv_map1.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('pedro', './images/sprites/pedro.png',64,192);
     game.load.spritesheet('torch', './images/sprites/torch.png');
+    game.load.spritesheet('bar', './images/sprites/bar.png');
     game.load.spritesheet('ghost', './images/sprites/ghost.png', 34, 50);
     game.load.spritesheet('superZebra', './images/sprites/superZebra.png', 42, 50);
 
     game.load.atlas('atlaszebra', './images/spritesheets/atlaszebra.png', './images/spritesheets/atlaszebra.json');
+    game.load.atlas('atlasdonkey', './images/spritesheets/atlasdonkey.png', './images/spritesheets/atlasdonkey.json');
   },
   createMap : function(){
     // game.stage.backgroundColor = '#00ff00';
@@ -82,6 +93,11 @@ State.prototype = {
 
     LifeUtils.giveLife(player,100);
 
+    var lifebar = player.lifebar = game.add.sprite(player.x,player.y + player.height * 0.6, 'bar');
+    lifebar.anchor.set(0.5,0.5);
+    lifebar.width = this.TORCH_BAR_WIDTH;
+    lifebar.height = 5;
+
     player.attack = function(){
       return function(){
         if(player.attacking){return;}        
@@ -113,10 +129,20 @@ State.prototype = {
 
     this.players.push(player);
   },
-  createGameObjects : function(){
-    var torch = game.add.sprite(X*0.25,Y*0.35, 'torch');
+  createGameObjects : function(x,y){
+    var torch = this.torch = game.add.sprite(x,y, 'torch');
     torch.scale.set(0.5,0.5);
+    torch.anchor.set(0.5,0.5);
     torch.z = 0;
+    game.physics.arcade.enable(torch);
+    torch.body.immovable = true;
+
+    torch.life = 100;
+
+    var torchbar = this.torchbar = game.add.sprite(torch.x,torch.y + torch.height * 0.6, 'bar');
+    torchbar.anchor.set(0.5,0.5);
+    torchbar.width = this.TORCH_BAR_WIDTH;
+    torchbar.height = 5;
   },
   createControls: function(ku,kr,kd,kl,kAttack,kTea){
     //this.cursors = game.input.keyboard.createCursorKeys();
@@ -135,13 +161,15 @@ State.prototype = {
     for(var i=1;i<=3;i++) {
       var enemy = {};
       if(i%2) {
-        enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlaszebra','standby-1.png', 40);
+        enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlasdonkey','standby-1.png', 40);
         enemy.type = Statics.swordEnemy;
       }
       else {
         enemy = TVEnemy.createGhost(i * X * 0.1,Y*0.50, 40);
         enemy.type = Statics.ghost;
       }
+      enemy.body.immovable = true;
+      enemy.timeout = 0;
       this.enemies.add(enemy);
       // enemy.alpha = this.ALPHA_BLEND;
       // enemy.tint = 0x111111;
@@ -177,7 +205,7 @@ State.prototype = {
       player.scale.x *= -1;
     }
 
-    if(controls.attack.isDown || controls.tea.isDown){
+    if(controls.attack.isDown){
       player.attack();
     }
 
@@ -185,6 +213,9 @@ State.prototype = {
     var deltaY = player.teaPower ? (-player.height) * 0.25 : 0;    
     player.light.move(player.x + deltaX,player.y + deltaY);
     player.light.setScale(player.teaPower ? this.LIGHT_LARGE_SIZE: this.LIGHT_NORMAL_SIZE);
+
+    player.lifebar.width = this.TORCH_BAR_WIDTH * player.life / 100.0;
+    player.lifebar.position.set(player.x,player.y + player.height * 0.6);
   },
   mergedPlayersAction : function(player1,player2){
     if(player1.teaPower && player2.teaPower && player1.position.distance(player2.position) <= this.PLAYERS_JOINED_TEAS_DISTANCE){
@@ -198,12 +229,17 @@ State.prototype = {
     zebra.animations.add('fly',[0,1],8,true);
     zebra.animations.play('fly');
     zebra.angle = -45;
+    zebra.damage = this.ZEBRA_DAMAGE;
     game.physics.arcade.enable(zebra);
     zebra.body.velocity.x = -this.SUPER_ZEBRA_SPEED;
     
     this.zebras.add(zebra);
   },
   invokeSuperZebras : function(){
+    if(this.timeoutSuper > 0){
+      return;
+    }
+    this.timeoutSuper = this.TIMEOUT_SUPER;
     for(var i=-3;i<=3;i++){
       this.invokeSuperZebra(X*0.9,halfY + i * Y*0.1);
       this.invokeSuperZebra(X*0.8,halfY + i * Y*0.15);
@@ -216,9 +252,10 @@ State.prototype = {
     this.torches = game.add.group();
     this.zebras = game.add.group();
   },
-  updateEnemies : function() {
+  updateEnemies : function(delta) {
     this.enemies.forEach(function(enemy){
       TVEnemy.updateEnemy(enemy);
+      enemy.timeout -= delta;
     });
   },
   create: function() {
@@ -228,7 +265,7 @@ State.prototype = {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createMap();
     this.initVariables();
-    this.createGameObjects();
+    this.createGameObjects(X*0.25,Y*0.35);
     this.createPlayers();
     this.createPlayers();
     this.createEnemies();
@@ -240,10 +277,42 @@ State.prototype = {
     
     StateUtils.createDemoHomeButton();
   },
+  donkeyEval : function(player,donkey){
+    if(donkey.type == Statics.ghost || donkey.timeout > 0){
+      return false;
+    }
+    return true;
+  },
+  donkeyAttack : function(player,donkey){
+    if(donkey.type == Statics.ghost || donkey.timeout > 0 || isNaN(donkey.timeout)){
+      return false;
+    }else{
+      player.receiveDamage(donkey.damage);
+      donkey.timeout = this.DONKEY_TIMEOUT;
+    }
+  },
+  updateTorchbar : function(){
+    this.torchbar.width = this.TORCH_BAR_WIDTH * this.torch.life / 100.0;
+  },
   update: function (event) {
     game.stats.update();
+    var delta = event.time.elapsed / 1000.0;
     game.physics.arcade.collide(this.players[0], this.layer);
     game.physics.arcade.collide(this.players[1], this.layer);
+    game.physics.arcade.collide(this.torch, this.enemies);
+    game.physics.arcade.collide(this.players[0], this.enemies,this.donkeyAttack,this.donkeyEval,this);
+    game.physics.arcade.collide(this.players[1], this.enemies,this.donkeyAttack,this.donkeyEval,this);
+    game.physics.arcade.collide(
+      this.zebras, 
+      this.enemies,
+      function(zebra,enemy){
+        enemy.receiveDamage(zebra.damage);
+        zebra.kill();
+      }
+      ,
+      null,
+      this
+    );
     game.physics.arcade.overlap(
       this.torches, 
       this.enemies,
@@ -259,13 +328,17 @@ State.prototype = {
         torch.damage = 0;
       }
     );
-    var delta = event.time.elapsed / 1000.0;
+    
     
     //Players Action!
     this.updatePlayer(this.players[0],this.controls[0]);
     this.updatePlayer(this.players[1],this.controls[1]);
     this.mergedPlayersAction(this.players[0],this.players[1]);
-    this.updateEnemies();
+    this.updateEnemies(delta);
+
+    this.updateTorchbar();
+
+    this.timeoutSuper -= delta;
   },
   shutdown: function(){}
 };

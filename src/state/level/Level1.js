@@ -11,8 +11,13 @@ var Level1 = function () {
 };
 Level1.prototype = Object.create(AbstractLevel.prototype);
 _.merge(Level1.prototype, {
-    preload: function () {},
+    preload: function () {
+        game.load.audio('bgsound00','./sounds/bgsound00.ogg');
+    },
     create: function () {
+        bgmusic = game.add.audio('bgsound00',1,true);
+        bgmusic.play('',0,1,true);
+
         game.time.deltaCap = 1 / 40;
         this.timeEnd = moment().add('seconds', 60);
         this.backgrounds = [];
@@ -80,6 +85,7 @@ _.merge(Level1.prototype, {
 
         if (this.player.dead ||
                 left < 100) {
+            bgmusic.stop();
             game.state.start('Level1');
         }
 
