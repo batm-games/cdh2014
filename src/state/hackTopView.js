@@ -1,3 +1,5 @@
+var Fire = require('../characters/Fire');
+
 function State() {
   this.PLAYER_SPEED = 200;
   this.PLAYERS_JOINED_TEAS_DISTANCE = 50;
@@ -362,7 +364,22 @@ State.prototype = {
     this.createControls(Phaser.Keyboard.W,Phaser.Keyboard.D,Phaser.Keyboard.S,Phaser.Keyboard.A,Phaser.Keyboard.C,Phaser.Keyboard.V);
     this.createSfx();
 
-    this.players[1].x += 10;
+      var fire = new Fire(this.layer);
+      fire.setFrames([{ x: 0, y: 0 }]);
+      fire.setIntensity(100);
+      var k = 50;
+      fire.emitter.gravity = -1000;
+
+      fire.emitter.setScale(1, 0, 1, 0, 3000);
+//        fire.emitter.gravity = -1000;
+      fire.emitter.minParticleSpeed.x = -k;
+      fire.emitter.maxParticleSpeed.x = k;
+      fire.emitter.x = halfX - 15;
+      fire.emitter.y = halfY - 40;
+      fire.emitter.start(false, 2000, 50);
+
+
+      this.players[1].x += 10;
 
     StateUtils.createDemoHomeButton();
   },
