@@ -30,8 +30,7 @@ function State() {
   this.SPEED_DONKEY = 10;
   this.SPEED_GHOST = 15;
 
-
-
+  this.TIME_GAME = 30;
 }
 
 State.prototype = {
@@ -56,12 +55,15 @@ State.prototype = {
     // Create the tilemap
     if(game.TOPVIEW_LEVEL == 2) {
       this.TIME_OUT_ENEMIES = 7;
+      this.TIME_GAME = 45;
       this.RESTORE_TIME_ENEMIES = 7;
       this.LIMIT_ENEMIES = 4;
 
       this.SPEED_DONKEY = 12;
       this.SPEED_GHOST = 18;
     }
+
+    this.ttime = this.TIME_GAME;
 
 
     this.map = game.add.tilemap('map');
@@ -393,6 +395,9 @@ State.prototype = {
 
       this.players[1].x += 10;
 
+    var style = { font: "40px Arial", fill: "#00ff00", align: "center" };
+    var timeText = this.timeText = game.add.text(X*0.75,Y*0.025, "X>XX", style);
+
     StateUtils.createDemoHomeButton();
   },
   donkeyEval : function(player,donkey){
@@ -478,7 +483,21 @@ State.prototype = {
       this.TIME_OUT_ENEMIES = this.RESTORE_TIME_ENEMIES;
       this.LIMIT_ENEMIES--;
     }
+    var t = this.ttime;
+    var minute = Math.floor(t / 60);
+    var seconds = Math.floor(t % 60);
+    var filler = '';
+    if(seconds <= 9){
+      filler = '0';
+    }
 
+    this.timeText.text = minute + ':' + filler + seconds;
+    this.ttime -= delta;
+
+    if(this.ttime < 0){
+      //Reset Game!
+      game.state.start('hackTopView');
+    }
   },
   shutdown: function(){}
 };
