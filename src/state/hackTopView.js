@@ -36,7 +36,9 @@ function State() {
 
 State.prototype = {
   preload: function () {
-    game.load.audio('bgsound',['./sounds/bgsound.ogg']);
+    //game.load.audio('bgsound',['./sounds/bgsound.ogg']);
+    game.load.audio('bgsound',['./sounds/bkgMusic.mp3']);
+
     game.load.audio('torch','./sounds/torch01.ogg');
     game.load.image('tilesetvillage', './assets/tilemaps/tilesetvillage.png');
     game.load.tilemap('map', './assets/tilemaps/tv_map01.json', null, Phaser.Tilemap.TILED_JSON);

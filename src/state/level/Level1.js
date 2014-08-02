@@ -12,10 +12,11 @@ var Level1 = function () {
 Level1.prototype = Object.create(AbstractLevel.prototype);
 _.merge(Level1.prototype, {
     preload: function () {
-        game.load.audio('bgsound00','./sounds/bgsound00.ogg');
+        //game.load.audio('bgsound00','./sounds/bgsound00.ogg');
+        game.load.audio('bgsound',['./sounds/bkgMusic.mp3']);
     },
     create: function () {
-        bgmusic = game.add.audio('bgsound00',1,true);
+        bgmusic = game.add.audio('bgsound',1,true);
         bgmusic.play('',0,1,true);
 
         game.time.deltaCap = 1 / 40;

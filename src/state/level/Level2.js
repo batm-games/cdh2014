@@ -15,10 +15,11 @@ var Level2 = function () {
 Level2.prototype = Object.create(AbstractLevel.prototype);
 _.merge(Level2.prototype, {
     preload: function () {
-        game.load.audio('bgsound00','./sounds/bgsound00.ogg');
+        //game.load.audio('bgsound00','./sounds/bgsound00.ogg');
+        game.load.audio('bgsound',['./sounds/bkgMusic.mp3']);
     },
     create: function () {
-        var bgmusic = this.bgmusic = game.add.audio('bgsound00',1,true);
+        var bgmusic = this.bgmusic = game.add.audio('bgsound',1,true);
         bgmusic.play('',0,1,true);
 
         this.bg = game.add.sprite(-100, -100, 'gradient');
