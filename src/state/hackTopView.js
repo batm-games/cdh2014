@@ -8,15 +8,20 @@ function State() {
   this.LIGHT_NORMAL_SIZE = 0.5;
   this.LIGHT_LARGE_SIZE = 1.0;
   this.LIGHT_LARGEEEEEE_SIZE = 2.0;
+
+  this.SUPER_ZEBRA_SPEED = 200;
 }
 
 State.prototype = {
   preload: function () {
+    game.load.audio('bgsound',['./sounds/bgsound.ogg']);
+    game.load.audio('torch','./sounds/torch01.ogg');
     game.load.image('tileset', './assets/tilemaps/tileset.png');
     game.load.tilemap('map', './assets/tilemaps/tv_map1.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('pedro', './images/sprites/pedro.png',64,192);
     game.load.spritesheet('torch', './images/sprites/torch.png');
     game.load.spritesheet('ghost', './images/sprites/ghost.png', 34, 50);
+    game.load.spritesheet('superZebra', './images/sprites/superZebra.png', 42, 50);
 
     game.load.atlas('atlaszebra', './images/spritesheets/atlaszebra.png', './images/spritesheets/atlaszebra.json');
   },
@@ -79,7 +84,9 @@ State.prototype = {
 
     player.attack = function(){
       return function(){
-        if(player.attacking){return;}
+        if(player.attacking){return;}        
+
+        state.torchSfx.play();
 
         player.attacking = true;
         var deltaX = player.width * 0.5;
@@ -140,6 +147,10 @@ State.prototype = {
       // enemy.tint = 0x111111;
     }
   },
+
+  createSfx: function() {
+    this.torchSfx = game.add.audio('torch');
+  },
   updatePlayer : function(player,controls){
     var dir = new Phaser.Point(0,0);
     if(controls.l.isDown){dir.x -= 1;}
@@ -166,7 +177,7 @@ State.prototype = {
       player.scale.x *= -1;
     }
 
-    if(controls.attack.isDown){
+    if(controls.attack.isDown || controls.tea.isDown){
       player.attack();
     }
 
@@ -179,6 +190,23 @@ State.prototype = {
     if(player1.teaPower && player2.teaPower && player1.position.distance(player2.position) <= this.PLAYERS_JOINED_TEAS_DISTANCE){
       player1.light.setScale(this.LIGHT_LARGEEEEEE_SIZE);
       player2.light.setScale(this.LIGHT_LARGEEEEEE_SIZE);
+      this.invokeSuperZebras();
+    }
+  },
+  invokeSuperZebra : function(x,y){
+    var zebra = game.add.sprite(x,y,'superZebra');
+    zebra.animations.add('fly',[0,1],8,true);
+    zebra.animations.play('fly');
+    zebra.angle = -45;
+    game.physics.arcade.enable(zebra);
+    zebra.body.velocity.x = -this.SUPER_ZEBRA_SPEED;
+    
+    this.zebras.add(zebra);
+  },
+  invokeSuperZebras : function(){
+    for(var i=-3;i<=3;i++){
+      this.invokeSuperZebra(X*0.9,halfY + i * Y*0.1);
+      this.invokeSuperZebra(X*0.8,halfY + i * Y*0.15);
     }
   },
   initVariables : function(){
@@ -186,6 +214,7 @@ State.prototype = {
     this.controls = [];
     this.enemies = game.add.group();
     this.torches = game.add.group();
+    this.zebras = game.add.group();
   },
   updateEnemies : function() {
     this.enemies.forEach(function(enemy){
@@ -193,6 +222,9 @@ State.prototype = {
     });
   },
   create: function() {
+    music = game.add.audio('bgsound',1,true);
+    music.play('',0,1,true);
+
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createMap();
     this.initVariables();
@@ -202,6 +234,7 @@ State.prototype = {
     this.createEnemies();
     this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.NUMPAD_0,Phaser.Keyboard.NUMPAD_1);
     this.createControls(Phaser.Keyboard.W,Phaser.Keyboard.D,Phaser.Keyboard.S,Phaser.Keyboard.A,Phaser.Keyboard.C,Phaser.Keyboard.V);
+    this.createSfx();
 
     this.players[1].x += 10;
     
@@ -216,12 +249,12 @@ State.prototype = {
       this.enemies,
       function(torch,enemy){
         if(torch.damage > 0){
-          if(enemy.type == Statics.swordEnemy) {
-//            enemy.receiveDamage(torch.damage);
-          }else {
+          if(enemy.type == Statics.ghost && torch.player.teaPower) {
             enemy.receiveDamage(torch.damage);
           }
-
+          if(enemy.type == Statics.swordEnemy && !torch.player.teaPower) {
+            enemy.receiveDamage(torch.damage);
+          }
         }
         torch.damage = 0;
       }

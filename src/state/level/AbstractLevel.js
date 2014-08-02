@@ -4,8 +4,9 @@
 var _ = require('lodash');
 var BaseWorld = require ('../../world/BaseWorld');
 var Player = require('../../characters/Player');
-var AbstractLevel = function (worldName) {
+var AbstractLevel = function (worldName, minimumZebras) {
     this.worldName = worldName;
+    this.minimumZebras = minimumZebras;
 };
 
 AbstractLevel.prototype = {
@@ -27,6 +28,26 @@ AbstractLevel.prototype = {
     createPlayer: function (config) {
         var conf = config || {};
         this.player = new Player(game, conf);
+    },
+    foundZebra: function (playerSprite, zebra) {
+        if (!zebra.recruited) {
+            this.player.recruit(playerSprite, zebra);
+            zebra.recruited = true;
+            this.map.removeTile(zebra.x, zebra.y, 1);
+        }
+    },
+    zebraDamagePlayer: function (playerSprite, evilZebra) {
+        if (!evilZebra.hit) {
+            this.player.receiveEvilZebraDamage();
+            evilZebra.hit = true;
+            this.map.removeTile(evilZebra.x, evilZebra.y, 2);
+        }
+    },
+    createDoor: function () {
+        this.door = game.add.sprite(this.world.width - 300, this.world.height - 60, 'door');
+        game.physics.arcade.enable(this.door);
+        this.door.body.gravity.y = 200;
+        this.door.body.immovable = true;
     }
 };
 

@@ -30,7 +30,7 @@ BaseWorld.prototype.createWorld = function () {
         layer = map.createLayer(this.layers[i].name);
 //        layer.alpha = 0.4;
 //        layer.blendMode = PIXI.blendModes.ADD;
-        layer.tint = 0x222222;
+//        layer.tint = 0x222222;
         if (layer.collision === false) {
             collision = false;
         }

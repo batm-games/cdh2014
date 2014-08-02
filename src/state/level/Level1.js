@@ -6,29 +6,29 @@ var AbstractLevel = require('./AbstractLevel');
 var Fire = require('../../characters/Fire');
 var Background = require('../../world/Background');
 
-Level1 = function () {
-    AbstractLevel.call(this, 'world2');
+var Level1 = function () {
+    AbstractLevel.call(this, 'world2', 4);
 };
 Level1.prototype = Object.create(AbstractLevel.prototype);
 _.merge(Level1.prototype, {
     preload: function () {},
     create: function () {
-        game.time.deltaCap = 1 / 60;
+        game.time.deltaCap = 1 / 40;
         this.timeEnd = moment().add('seconds', 60);
         this.backgrounds = [];
-//        this.createBackground({
-//            w: X - 500,
-//            a: 0.1,
-//            v: -5
-//        });
-//        this.createBackground({
-//            w: X - 300,
-//            a: 0.3,
-//            v: -2
-//        });
+        this.createBackground({
+            w: X - 500,
+            a: 0.1,
+            v: -5
+        });
+        this.createBackground({
+            w: X - 300,
+            a: 0.3,
+            v: -2
+        });
         this.createBackground({
             a: 1,
-            v: -2
+            v: 0
         });
         this.initWorld([
             {
@@ -38,11 +38,14 @@ _.merge(Level1.prototype, {
             {
                 name: 'Tile Layer 2',
                 collisionTiles: [2]
+            },
+            {
+                name: 'Tile Layer 3',
+                collisionTiles: [3]
             }
         ]);
         this.createPlayer();
-        this.door = game.add.sprite(this.world.width - 300, this.world.height - 60, 'door');
-        game.physics.arcade.enable(this.door);
+        this.createDoor();
         game.camera.follow(this.player.getSprite());
     },
     createBackground: function(config) {
@@ -54,8 +57,10 @@ _.merge(Level1.prototype, {
 
         game.physics.arcade.collide(this.player.getSprite(), this.layers[0]);
         game.physics.arcade.collide(this.player.getSprite(), this.layers[0]);
-        game.physics.arcade.collide(this.player.getSprite(), this.door, this.goToNextLevel);
-        game.physics.arcade.overlap(this.player.getSprite(), this.layers[1], this.player.recruit, null, this.player);
+        game.physics.arcade.collide(this.door, this.layers[0]);
+        game.physics.arcade.collide(this.player.getSprite(), this.door, this.goToNextLevel, null, this);
+        game.physics.arcade.overlap(this.player.getSprite(), this.layers[1], this.foundZebra, null, this);
+        game.physics.arcade.overlap(this.player.getSprite(), this.layers[2], this.zebraDamagePlayer, null, this);
         game.stats.update();
         var delta = event.time.elapsed / 1000.0;
         this.player.update(delta);
@@ -68,12 +73,20 @@ _.merge(Level1.prototype, {
                 left < 100) {
             game.state.start('Level1');
         }
+
+//        this.layers[0].alpha = this.player.fire.intensity / 10 / 2;
+//        this.layers[1].alpha = this.player.fire.intensity / 10 / 2;
+//        this.layers[2].alpha = this.player.fire.intensity / 10 / 2;
         this.backgrounds.forEach(function (v) {
             v.update(me.player);
         });
     },
     goToNextLevel: function () {
-        game.state.start('Level1');
+        if (this.player.people >= this.minimumZebras) {
+            game.state.start('Level1');
+        } else {
+            this.door.body.velocity.x -= this.door.body.velocity.x * 2;
+        }
     }
 });
 

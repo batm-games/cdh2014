@@ -5,6 +5,7 @@ var Statics = {
     tileWidth: 32,
     tileHeight: 32,
     zebraBonus: 3,
+    evilZebraDamage: 3,
     ghost: 'GHOST',
     swordEnemy: 'SWORD_ENEMY'
 };
