@@ -1,6 +1,9 @@
 /**
  * Created by tlatif on 8/1/2014.
  */
+var Fire = require('./Fire');
+var LightMask = require('./LightMask');
+
 var Player = function (game, config) {
     this.speed = config.speed || Player.DEFAULT_SPEED;
     this.jumpPower = config.jumpPower || Player.DEFAULT_JUMP_POWER;
@@ -16,7 +19,14 @@ var Player = function (game, config) {
     game.physics.arcade.enable(this.sprite);
     this.sprite.body.gravity.y = 500;
     this.sprite.collideWorldBounds = true;
+
+    // player controls
     this.createControls(config.controls);
+
+    // fire
+    this.fire = new Fire(this);
+    this.fire.setFrames([{ x: 0, y: -30 }]);
+    this.lightMask = new LightMask(this.fire);
 };
 Player.prototype.createControls = function (controls) {
     this.controls = this.game.input.keyboard.createCursorKeys();
@@ -39,9 +49,11 @@ Player.prototype.jump = function (doubleJump) {
         this.movePlayer(0, -1);
     }
 };
-Player.prototype.controlPlayer = function () {
-    if (!this.sprite.inWorld) {
-        this.killPlayer();
+Player.prototype.update = function (delta) {
+    if (!this.sprite.inWorld &&
+            this.sprite.x > 0 &&
+            this.sprite.y > 0) {
+        this.kill();
     }
     if (this.controls.left.isDown) {
         this.sprite.animations.play('run', 7, true);
@@ -60,11 +72,17 @@ Player.prototype.controlPlayer = function () {
     if (this.controls.up.isDown && this.sprite.body.onFloor()) {
         this.jump();
     }
+
+    // fire + light mask update
+    // params: frame
+    this.fire.update(delta, 0);
+    this.lightMask.update(delta);
 };
+
 Player.prototype.getSprite = function () {
     return this.sprite;
 };
-Player.prototype.killPrite = function () {
+Player.prototype.kill = function () {
     this.sprite.kill();
 };
 Player.DEFAULT_SPEED = 200;

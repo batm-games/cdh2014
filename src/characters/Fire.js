@@ -19,7 +19,7 @@ function Fire(owner) {
 
     emitter.start(false, 2000, 15);
 
-    this.intensity = 1;
+    this.intensity = 5;
     this.frames = [];
     this.owner = owner;
 
@@ -37,8 +37,14 @@ Fire.prototype = {
     },
 
     setIntensity: function (n) {
-        n = Math.max(n, 0);
+        var scale = 10;
+        n = Math.max(n, 0.5);
+        if (n < 0) {
+            throw 'less than zero';
+        }
         this.emitter.setAlpha(1, 0, n * 1000);
+//        this.emitter.minParticleSpeed.x = -n * scale;
+//        this.emitter.maxParticleSpeed.x = n * scale;
         this.intensity = n;
         return this;
     },
@@ -52,13 +58,20 @@ Fire.prototype = {
         return this.emitter;
     },
 
-    update: function (frame) {
+    update: function (delta, frame) {
         var current = this.frames[frame];
         if (!current) {
             throw 'no current frame';
         }
+        this.dim(delta);
         this.emitter.x = this.owner.getSprite().x + current.x;
         this.emitter.y = this.owner.getSprite().y + current.y;
+    },
+
+    dim: function (delta) {
+        this.setIntensity(
+            this.intensity - delta * 1.5
+        );
     }
 };
 
