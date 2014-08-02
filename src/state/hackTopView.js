@@ -203,7 +203,7 @@ State.prototype = {
       player.scale.x *= -1;
     }
 
-    if(controls.attack.isDown || controls.tea.isDown){
+    if(controls.attack.isDown){
       player.attack();
     }
 
