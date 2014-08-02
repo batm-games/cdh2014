@@ -14,6 +14,9 @@ function State() {
   this.TIMEOUT_SUPER = 5;
   this.DONKEY_TIMEOUT = 0.5;
   this.timeoutSuper = 0;
+
+  this.TORCH_BAR_WIDTH = 50;
+  this.TORCH_LIFE = 100;
 }
 
 State.prototype = {
@@ -24,6 +27,7 @@ State.prototype = {
     game.load.tilemap('map', './assets/tilemaps/tv_map1.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('pedro', './images/sprites/pedro.png',64,192);
     game.load.spritesheet('torch', './images/sprites/torch.png');
+    game.load.spritesheet('bar', './images/sprites/bar.png');
     game.load.spritesheet('ghost', './images/sprites/ghost.png', 34, 50);
     game.load.spritesheet('superZebra', './images/sprites/superZebra.png', 42, 50);
 
@@ -87,6 +91,11 @@ State.prototype = {
 
     LifeUtils.giveLife(player,100);
 
+    var lifebar = player.lifebar = game.add.sprite(player.x,player.y + player.height * 0.6, 'bar');
+    lifebar.anchor.set(0.5,0.5);
+    lifebar.width = this.TORCH_BAR_WIDTH;
+    lifebar.height = 5;
+
     player.attack = function(){
       return function(){
         if(player.attacking){return;}        
@@ -118,12 +127,20 @@ State.prototype = {
 
     this.players.push(player);
   },
-  createGameObjects : function(){
-    var torch = this.torch = game.add.sprite(X*0.25,Y*0.35, 'torch');
+  createGameObjects : function(x,y){
+    var torch = this.torch = game.add.sprite(x,y, 'torch');
     torch.scale.set(0.5,0.5);
+    torch.anchor.set(0.5,0.5);
     torch.z = 0;
     game.physics.arcade.enable(torch);
     torch.body.immovable = true;
+
+    torch.life = 100;
+
+    var torchbar = this.torchbar = game.add.sprite(torch.x,torch.y + torch.height * 0.6, 'bar');
+    torchbar.anchor.set(0.5,0.5);
+    torchbar.width = this.TORCH_BAR_WIDTH;
+    torchbar.height = 5;
   },
   createControls: function(ku,kr,kd,kl,kAttack,kTea){
     //this.cursors = game.input.keyboard.createCursorKeys();
@@ -194,6 +211,9 @@ State.prototype = {
     var deltaY = player.teaPower ? (-player.height) * 0.25 : 0;    
     player.light.move(player.x + deltaX,player.y + deltaY);
     player.light.setScale(player.teaPower ? this.LIGHT_LARGE_SIZE: this.LIGHT_NORMAL_SIZE);
+
+    player.lifebar.width = this.TORCH_BAR_WIDTH * player.life / 100.0;
+    player.lifebar.position.set(player.x,player.y + player.height * 0.6);
   },
   mergedPlayersAction : function(player1,player2){
     if(player1.teaPower && player2.teaPower && player1.position.distance(player2.position) <= this.PLAYERS_JOINED_TEAS_DISTANCE){
@@ -242,7 +262,7 @@ State.prototype = {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createMap();
     this.initVariables();
-    this.createGameObjects();
+    this.createGameObjects(X*0.25,Y*0.35);
     this.createPlayers();
     this.createPlayers();
     this.createEnemies();
@@ -267,6 +287,9 @@ State.prototype = {
       player.receiveDamage(donkey.damage);
       donkey.timeout = this.DONKEY_TIMEOUT;
     }
+  },
+  updateTorchbar : function(){
+    this.torchbar.width = this.TORCH_BAR_WIDTH * this.torch.life / 100.0;
   },
   update: function (event) {
     game.stats.update();
@@ -298,6 +321,8 @@ State.prototype = {
     this.updatePlayer(this.players[1],this.controls[1]);
     this.mergedPlayersAction(this.players[0],this.players[1]);
     this.updateEnemies(delta);
+
+    this.updateTorchbar();
 
     this.timeoutSuper -= delta;
   },
