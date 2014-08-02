@@ -9,7 +9,7 @@ var LIFE_SCALE = 5;
 var cpStats;
 
 var Player = function (game, config) {
-    console.log(cpStats);
+//    console.log(cpStats);
     this.speed = config.speed || Player.DEFAULT_SPEED;
     this.jumpPower = config.jumpPower || Player.DEFAULT_JUMP_POWER;
     var sprite = config.sprite || Player.DEFAULT_SPRITE;

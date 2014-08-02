@@ -21,6 +21,11 @@ _.merge(Level1.prototype, {
         game.time.deltaCap = 1 / 40;
         this.timeEnd = moment().add('seconds', 60);
         this.backgrounds = [];
+
+        this.bg = game.add.sprite(-100, 0, 'gradient');
+        this.bg.width = X + 200;
+        this.bg.height = Y;
+
         this.createBackground({
             w: X - 500,
             a: 0.1,
@@ -90,6 +95,8 @@ _.merge(Level1.prototype, {
         game.stats.update();
         var delta = event.time.elapsed / 1000.0;
         this.player.update(delta);
+
+        this.bg.x = game.camera.x - 100;
 
         var now = moment();
         var left = this.timeEnd.diff(now);
