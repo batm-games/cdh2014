@@ -7,6 +7,7 @@ Globals:
     halfX, halfY
 **/
 StateUtils = require('./utils/stateUtils');
+require('./utils/Statics');
 TVEnemy = require('./characters/tvEnemy');
 LifeUtils = require('./utils/LifeUtils');
 

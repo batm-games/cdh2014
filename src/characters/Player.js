@@ -37,6 +37,9 @@ Player.prototype.jump = function (doubleJump) {
     }
 };
 Player.prototype.controlPlayer = function () {
+    if (!this.sprite.inWorld) {
+        this.killPlayer();
+    }
     if (this.controls.left.isDown) {
         this.movePlayer(-1);
     } else if (this.controls.right.isDown) {
@@ -51,6 +54,9 @@ Player.prototype.controlPlayer = function () {
 };
 Player.prototype.getSprite = function () {
     return this.sprite;
+};
+Player.prototype.killPrite = function () {
+    this.sprite.kill();
 };
 Player.DEFAULT_SPEED = 200;
 Player.DEFAULT_JUMP_POWER = 500;
