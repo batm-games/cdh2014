@@ -20,6 +20,15 @@ function State() {
   this.TORCH_LIFE = 100;
 
   this.ZEBRA_DAMAGE = 5;
+
+  this.TIME_OUT_ENEMIES = 10;
+  this.LIMIT_ENEMIES = 2;
+
+  this.SPEED_DONKEY = 10;
+  this.SPEED_GHOST = 15;
+
+
+
 }
 
 State.prototype = {
@@ -38,6 +47,7 @@ State.prototype = {
     game.load.atlas('atlasdonkey', './images/spritesheets/atlasdonkey.png', './images/spritesheets/atlasdonkey.json');
   },
   createMap : function(){
+
     // game.stage.backgroundColor = '#00ff00';
     // Create the tilemap
     this.map = game.add.tilemap('map');
@@ -107,9 +117,9 @@ State.prototype = {
 
     player.attack = function(){
       return function(){
-        if(player.attacking){return;}        
+        if(player.attacking){return;}
 
-        state.torchSfx.play();        
+        state.torchSfx.play();
 
         player.attacking = true;
         var deltaX = player.width * 0.5;
@@ -130,7 +140,7 @@ State.prototype = {
         tween.onComplete.add(function(){
           torch.kill();
           player.animations.play('normal');
-          player.attacking = false;  
+          player.attacking = false;
         });
       }();
     };
@@ -169,13 +179,13 @@ State.prototype = {
 
   createEnemies: function() {
     //Enemies from bottom
-    for(var i=0; i<=3; i++){
+    for(var i=0; i<=2; i++){
       if(i%2) {
-        enemy = TVEnemy.createEnemy(X * 0.49,Y*0.9, 'atlasdonkey','standby-1.png', 3);
+        enemy = TVEnemy.createEnemy(X * 0.49,Y*0.9, 'atlasdonkey','standby-1.png', this.SPEED_DONKEY);
         enemy.type = Statics.swordEnemy;
       }
       else {
-        enemy = TVEnemy.createGhost(X * 0.52,Y*0.9, 8);
+        enemy = TVEnemy.createGhost(X * 0.52,Y*0.9, this.SPEED_GHOST);
         enemy.type = Statics.ghost;
       }
       enemy.body.immovable = true;
@@ -185,13 +195,13 @@ State.prototype = {
 
     //Enemies from top
 
-    for(var i=0; i<=3; i++){
+    for(var i=0; i<=2; i++){
       if(i%2) {
-        enemy = TVEnemy.createEnemy(X * 0.49,Y*0.1, 'atlasdonkey','standby-1.png', 5);
+        enemy = TVEnemy.createEnemy(X * 0.49,Y*0.1, 'atlasdonkey','standby-1.png', this.SPEED_DONKEY);
         enemy.type = Statics.swordEnemy;
       }
       else {
-        enemy = TVEnemy.createGhost(X * 0.52,Y*0.1, 10);
+        enemy = TVEnemy.createGhost(X * 0.52,Y*0.1, this.SPEED_GHOST);
         enemy.type = Statics.ghost;
       }
       enemy.body.immovable = true;
@@ -201,14 +211,14 @@ State.prototype = {
 
     //Enemies from left
 
-    for(var i=1;i<=3;i++) {
+    for(var i=1;i<=2;i++) {
       var enemy = {};
       if(i%2) {
-        enemy = TVEnemy.createEnemy(i * X * 0.05,Y*0.50, 'atlasdonkey','standby-1.png', 8);
+        enemy = TVEnemy.createEnemy(i * X * 0.05,Y*0.50, 'atlasdonkey','standby-1.png', this.SPEED_DONKEY);
         enemy.type = Statics.swordEnemy;
       }
       else {
-        enemy = TVEnemy.createGhost(i * X * 0.05,Y*0.50, 8);
+        enemy = TVEnemy.createGhost(i * X * 0.05,Y*0.50, this.SPEED_GHOST);
         enemy.type = Statics.ghost;
       }
       enemy.body.immovable = true;
@@ -220,14 +230,14 @@ State.prototype = {
 
     //Enemies from right
 
-    for(var i=1;i<=3;i++) {
+    for(var i=1;i<=2;i++) {
       var enemy = {};
       if(i%2) {
-        enemy = TVEnemy.createEnemy(X * 0.95,Y*0.50, 'atlasdonkey','standby-1.png', 8);
+        enemy = TVEnemy.createEnemy(X * 0.95,Y*0.50, 'atlasdonkey','standby-1.png', this.SPEED_DONKEY);
         enemy.type = Statics.swordEnemy;
       }
       else {
-        enemy = TVEnemy.createGhost(X * 0.95,Y*0.50, 8);
+        enemy = TVEnemy.createGhost(X * 0.95,Y*0.50, this.SPEED_GHOST);
         enemy.type = Statics.ghost;
       }
       enemy.body.immovable = true;
@@ -279,7 +289,7 @@ State.prototype = {
     }
 
     var deltaX = (-player.width) * 0.25;
-    var deltaY = player.teaPower ? (-player.height) * 0.25 : 0;    
+    var deltaY = player.teaPower ? (-player.height) * 0.25 : 0;
     player.light.move(player.x + deltaX,player.y + deltaY);
     player.light.setScale(player.teaPower ? this.LIGHT_LARGE_SIZE: this.LIGHT_NORMAL_SIZE);
 
@@ -301,7 +311,7 @@ State.prototype = {
     zebra.damage = this.ZEBRA_DAMAGE;
     game.physics.arcade.enable(zebra);
     zebra.body.velocity.x = -this.SUPER_ZEBRA_SPEED;
-    
+
     this.zebras.add(zebra);
   },
   invokeSuperZebras : function(){
@@ -321,27 +331,21 @@ State.prototype = {
     this.torches = game.add.group();
     this.zebras = game.add.group();
   },
-  updateEnemies : function(delta) {
+  updateEnemies : function(player, delta) {
     var TEA_DISTANCE_DAMAGE = this.TEA_DISTANCE_DAMAGE;
+      this.enemies.forEach(function(enemy){
+      TVEnemy.updateEnemy(enemy);
 
-    this.enemies.forEach(function(enemy){
-      if(enemy.type != Statics.ghost){
+
+      if(enemy.type == Statics.ghost && player.teaPower && player.position.distance(enemy.position) <= TEA_DISTANCE_DAMAGE) {
+
         enemy.timeout -= delta;
       }
+
+      if(enemy.timeout <= 0) {
+        enemy.kill();
+      }
     });
-
-    for(var i=0;i<2;i++){
-      var player = this.players[i];
-      this.enemies.forEach(function(enemy){
-        if(enemy.type == Statics.ghost && player.teaPower && player.position.distance(enemy.position) <= TEA_DISTANCE_DAMAGE) {
-          enemy.timeout -= delta;
-
-          if(enemy.timeout <= 0) {
-            enemy.kill();
-          }
-        }
-      });
-    }
   },
   create: function() {
     music = game.add.audio('bgsound',1,true);
@@ -359,7 +363,7 @@ State.prototype = {
     this.createSfx();
 
     this.players[1].x += 10;
-    
+
     StateUtils.createDemoHomeButton();
   },
   donkeyEval : function(player,donkey){
@@ -369,11 +373,9 @@ State.prototype = {
     return true;
   },
   donkeyAttack : function(player,donkey){
-    
     if(donkey.type == Statics.ghost || donkey.timeout > 0 || isNaN(donkey.timeout)){
       return false;
     }else{
-
       player.receiveDamage(donkey.damage);
       donkey.timeout = this.DONKEY_TIMEOUT;
     }
@@ -391,7 +393,7 @@ State.prototype = {
     game.physics.arcade.collide(this.players[0], this.enemies,this.donkeyAttack,this.donkeyEval,this);
     game.physics.arcade.collide(this.players[1], this.enemies,this.donkeyAttack,this.donkeyEval,this);
     game.physics.arcade.collide(
-      this.zebras, 
+      this.zebras,
       this.enemies,
       function(zebra,enemy){
         enemy.receiveDamage(zebra.damage);
@@ -402,7 +404,7 @@ State.prototype = {
       this
     );
     game.physics.arcade.overlap(
-      this.torches, 
+      this.torches,
       this.enemies,
       function(torch,enemy){
         if(torch.damage > 0){
@@ -428,17 +430,26 @@ State.prototype = {
         }
       }
     );
-    
-    
+
+
     //Players Action!
     this.updatePlayer(this.players[0],this.controls[0]);
     this.updatePlayer(this.players[1],this.controls[1]);
     this.mergedPlayersAction(this.players[0],this.players[1]);
-    this.updateEnemies(delta);
+    this.updateEnemies(this.players[0], delta);
+    this.updateEnemies(this.players[1], delta);
 
     this.updateTorchbar();
 
     this.timeoutSuper -= delta;
+
+    this.TIME_OUT_ENEMIES -= delta;
+    if(this.TIME_OUT_ENEMIES <= 0 && this.LIMIT_ENEMIES > 0) {
+      this.createEnemies();
+      this.TIME_OUT_ENEMIES = 10;
+      this.LIMIT_ENEMIES--;
+    }
+
   },
   shutdown: function(){}
 };
