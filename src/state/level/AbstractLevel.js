@@ -4,7 +4,6 @@
 var _ = require('lodash');
 var BaseWorld = require ('../../world/BaseWorld');
 var Player = require('../../characters/Player');
-var Background = require('../../world/Background');
 var AbstractLevel = function (worldName) {
     this.worldName = worldName;
 };
@@ -28,10 +27,6 @@ AbstractLevel.prototype = {
     createPlayer: function (config) {
         var conf = config || {};
         this.player = new Player(game, conf);
-    },
-    createBackground: function(config) {
-        var conf = config || {};
-        this.background = new Background(game, conf);
     }
 };
 

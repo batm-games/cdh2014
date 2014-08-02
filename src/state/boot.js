@@ -7,6 +7,7 @@ module.exports = {
     },
     create: function () {
         //game.stage.backgroundColor = '#3498db';
+        game.stage.backgroundColor = 0x000000;
         game.physics.startSystem(Phaser.Physics.ARCADE);
         game.state.start('load');
     }

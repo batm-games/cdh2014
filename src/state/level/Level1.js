@@ -4,6 +4,7 @@
 var _ = require('lodash');
 var AbstractLevel = require('./AbstractLevel');
 var Fire = require('../../characters/Fire');
+var Background = require('../../world/Background');
 
 Level1 = function () {
     AbstractLevel.call(this, 'world2');
@@ -14,7 +15,21 @@ _.merge(Level1.prototype, {
     create: function () {
         game.time.deltaCap = 1 / 60;
         this.timeEnd = moment().add('seconds', 60);
-        this.createBackground();
+        this.backgrounds = [];
+//        this.createBackground({
+//            w: X - 500,
+//            a: 0.1,
+//            v: -5
+//        });
+//        this.createBackground({
+//            w: X - 300,
+//            a: 0.3,
+//            v: -2
+//        });
+        this.createBackground({
+            a: 1,
+            v: -2
+        });
         this.initWorld([
             {
                 name: 'Tile Layer 1',
@@ -30,7 +45,13 @@ _.merge(Level1.prototype, {
         game.physics.arcade.enable(this.door);
         game.camera.follow(this.player.getSprite());
     },
+    createBackground: function(config) {
+        var background = new Background(game, config || {});
+        this.backgrounds.push(background);
+    },
     update: function (event) {
+        var me = this;
+
         game.physics.arcade.collide(this.player.getSprite(), this.layers[0]);
         game.physics.arcade.collide(this.player.getSprite(), this.layers[0]);
         game.physics.arcade.collide(this.player.getSprite(), this.door, this.goToNextLevel);
@@ -47,10 +68,9 @@ _.merge(Level1.prototype, {
                 left < 100) {
             game.state.start('Level1');
         }
-        this.background.update(this.player.getX());
-
-        this.layers[0].alpha = this.player.fire.intensity / 10 / 2;
-        this.layers[1].alpha = this.player.fire.intensity / 10 / 2;
+        this.backgrounds.forEach(function (v) {
+            v.update(me.player);
+        });
     },
     goToNextLevel: function () {
         game.state.start('Level1');

@@ -34,7 +34,8 @@ var AssetManager = {
             mask: './images/mask.png',
             maskInverse: './images/mask-inverse.png',
             maskInverseFlat: './images/mask-inverse_flat.png',
-            background: './images/backgroundA.jpg'
+            background: './images/backgroundA.jpg',
+            city: './images/city.png'
         }
     },
     loadWorldAssets: function (world) {
