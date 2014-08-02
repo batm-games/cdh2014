@@ -7,11 +7,11 @@ var Background = function (game, config) {
     var w = this.w = config.w || Background.DEFAULT_W;
     var a = this.a = config.a || 1;
     this.v = config.v || 0;
-    console.log(this.v);
+//    console.log(this.v);
     this.game = game;
     this.camera = this.game.camera;
 
-    this.bg = game.add.tileSprite(0, 0, 1000, 1000, sprite);
+    this.bg = game.add.tileSprite(0, 0, X, Y, sprite);
 //    this.bg.blendMode = PIXI.blendModes.ADD;
     this.bg.scale.y = 1.5;
 //    this.bgLast2 = game.add.sprite(w, 0, sprite);
@@ -33,14 +33,9 @@ Background.prototype.update = function(player) {
     if(currentX > this.lastX) incX = -this.v;
     if(currentX < this.lastX) incX = this.v;
 
-    this.updateBackgroundLast(incX);
-
-//    var alpha = player.fire.intensity;
-//    this.bg.tint = alpha << 0x00FFFF +
-//        alpha << 0x0000FF +
-//        alpha;
-//    this.bgLast2.alpha = alpha;
-
+    this.bg.x = this.camera.x;
+    this.bg.tilePosition.x += incX;
+//    this.updateBackgroundLast(incX);
     this.lastX = currentX;
 };
 Background.prototype.updateBackgroundLast = function(incX) {

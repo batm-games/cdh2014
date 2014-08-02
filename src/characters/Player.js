@@ -16,7 +16,7 @@ var Player = function (game, config) {
     this.sprite.animations.add('run', [1, 2, 3, 4, 5, 6, 7, 8]);
 
     this.sprite.anchor.setTo(0.5, 0.5);
-    this.sprite.scale.setTo(0.3, 0.3);
+    this.sprite.scale.setTo(0.2, 0.3);
     game.physics.arcade.enable(this.sprite);
     this.sprite.body.gravity.y = 1000;
     this.sprite.collideWorldBounds = true;
@@ -105,7 +105,7 @@ Player.prototype.recruit = function (player, citizen) {
         if (this.life > 100) {
             this.life = 100;
         }
-        console.log(this.fire.intensity);
+        console.log('citizen recruited!');
     }
 };
 Player.prototype.receiveEvilZebraDamage = function () {

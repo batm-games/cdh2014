@@ -19,16 +19,17 @@ _.merge(Level1.prototype, {
         this.createBackground({
             w: X - 500,
             a: 0.1,
-            v: -5
+            v: 1,
+            sprite: 'city2'
         });
         this.createBackground({
             w: X - 300,
             a: 0.3,
-            v: -2
+            v: 2
         });
         this.createBackground({
             a: 1,
-            v: 0
+            v: 5
         });
         this.initWorld([
             {
@@ -45,8 +46,12 @@ _.merge(Level1.prototype, {
             }
         ]);
         this.createPlayer();
+        this.createLife();
         this.createDoor();
         game.camera.follow(this.player.getSprite());
+    },
+    createLife: function () {
+
     },
     createBackground: function(config) {
         var background = new Background(game, config || {});
@@ -67,19 +72,20 @@ _.merge(Level1.prototype, {
 
         var now = moment();
         var left = this.timeEnd.diff(now);
-        game.debug.text(moment(left).format('mm:ss'), halfX, 50);
+//        game.debug.text(moment(left).format('mm:ss'), halfX, 50);
+
+        this.backgrounds.forEach(function (v) {
+            v.update(me.player);
+        });
 
         if (this.player.dead ||
                 left < 100) {
             game.state.start('Level1');
         }
 
-//        this.layers[0].alpha = this.player.fire.intensity / 10 / 2;
-//        this.layers[1].alpha = this.player.fire.intensity / 10 / 2;
+//        this.layers[0].alpha = this.player.fire.intensity / 10;
+//        this.layers[1].alpha = this.player.fire.intensity / 10;
 //        this.layers[2].alpha = this.player.fire.intensity / 10 / 2;
-        this.backgrounds.forEach(function (v) {
-            v.update(me.player);
-        });
     },
     goToNextLevel: function () {
         if (this.player.people >= this.minimumZebras) {

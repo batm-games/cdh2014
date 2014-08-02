@@ -43,7 +43,7 @@ Fire.prototype = {
             throw 'less than zero';
         }
         this.intensity = n;
-        this.emitter.setAlpha(this.intensity / 10, 0, 5000);
+        this.emitter.setAlpha(this.intensity / 10, 0, 1000);
 //        this.emitter.minParticleSpeed.x = -n * scale;
 //        this.emitter.maxParticleSpeed.x = n * scale;
         return this;
