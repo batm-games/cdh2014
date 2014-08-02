@@ -14,7 +14,7 @@ var TVEnemy = {
     enemy.body.collideWorldBounds = true;
     enemy.body.velocity.x = enemySpeed;
     LifeUtils.giveLife(enemy, 30);
-
+    enemy.damage = 10;
     return enemy;
   },
   createGhost: function(x, y, enemySpeed) {
