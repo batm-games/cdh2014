@@ -25,6 +25,16 @@ var AssetManager = {
                 url: './assets/tilemaps/tileset32.png'
             }
         },
+        world3: {
+            map: {
+                id: 'worldmap2',
+                url: './assets/tilemaps/world-map2.json'
+            },
+            tileset: {
+                id: 'tileset32',
+                url: './assets/tilemaps/tileset32.png'
+            }
+        },
 
         // created before the states are added
         images: {
@@ -48,10 +58,10 @@ var AssetManager = {
     },
     loadWorldAssets: function (world) {
         var worldAssets = this.assetMap[world];
-//        if (!this.tileSetLoaded) {
+        if (!this.tileSetLoaded) {
         game.load.image(worldAssets.tileset.id, worldAssets.tileset.url);
         this.tileSetLoaded = true;
-//        }
+        }
         game.load.tilemap(worldAssets.map.id, worldAssets.map.url, null, Phaser.Tilemap.TILED_JSON);
     },
     getConfig: function (name) {
