@@ -25,7 +25,7 @@ _.merge(Level2.prototype, {
         this.bg.width = X + 200;
         this.bg.height = Y + 200;
 
-        game.time.deltaCap = 1 / 60;
+        game.time.deltaCap = 1 / 70;
         this.timeEnd = moment().add('seconds', 60);
         this.backgrounds = [];
         this.createBackground({
@@ -73,8 +73,8 @@ _.merge(Level2.prototype, {
         );
         this.ck.width = 30;
         this.ck.height = 20;
-        this.ck.x = 1000;
-        this.ck.y = 500;
+        this.ck.x = 6272;
+        this.ck.y = 1024;
         game.physics.arcade.enable(this.ck);
     },
     createBackground: function(config) {
