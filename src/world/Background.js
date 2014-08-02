@@ -34,6 +34,7 @@ Background.prototype.update = function(player) {
     if(currentX < this.lastX) incX = this.v;
 
     this.bg.x = this.camera.x;
+    this.bg.y = this.camera.y;
     this.bg.tilePosition.x += incX;
 //    this.updateBackgroundLast(incX);
     this.lastX = currentX;

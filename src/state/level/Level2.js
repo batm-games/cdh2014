@@ -18,8 +18,12 @@ _.merge(Level2.prototype, {
         game.load.audio('bgsound00','./sounds/bgsound00.ogg');
     },
     create: function () {
-        bgmusic = game.add.audio('bgsound00',1,true);
+        var bgmusic = this.bgmusic = game.add.audio('bgsound00',1,true);
         bgmusic.play('',0,1,true);
+
+        this.bg = game.add.sprite(-100, -100, 'gradient');
+        this.bg.width = X + 200;
+        this.bg.height = Y + 200;
 
         game.time.deltaCap = 1 / 60;
         this.timeEnd = moment().add('seconds', 60);
@@ -97,6 +101,9 @@ _.merge(Level2.prototype, {
         var delta = event.time.elapsed / 1000.0;
         this.player.update(delta);
 
+        this.bg.x = game.camera.x - 100;
+        this.bg.y = game.camera.y - 100;
+
         var now = moment();
         var left = this.timeEnd.diff(now);
 //        game.debug.text(moment(left).format('mm:ss'), halfX, 50);
@@ -105,9 +112,8 @@ _.merge(Level2.prototype, {
             v.update(me.player);
         });
 
-        if (this.player.dead ||
-            left < 100) {
-            bgmusic.stop();
+        if (this.player.dead) {
+            this.bgmusic.stop();
             game.state.start('Level2');
         }
 
