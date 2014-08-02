@@ -140,18 +140,15 @@ Player.prototype.kill = function () {
 };
 Player.prototype.checkPoint = function () {
     // saving stats
-    if (!cpStats) {
-        console.log('saving stats!');
-        cpStats = {};
-        _.merge(cpStats, {
-            sprite: {
-                x: this.sprite.x,
-                y: this.sprite.y
-            },
-            life: this.life,
-            people: this.people
-        });
-    }
+    cpStats = {};
+    _.merge(cpStats, {
+        sprite: {
+            x: this.sprite.x,
+            y: this.sprite.y
+        },
+        life: this.life,
+        people: this.people
+    });
 };
 Player.prototype.recruit = function (player, citizen) {
     this.people += 1;

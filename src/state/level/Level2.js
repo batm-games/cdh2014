@@ -67,15 +67,21 @@ _.merge(Level2.prototype, {
         game.camera.follow(this.player.getSprite());
     },
     createCK: function () {
+        var me = this, ck;
         // checkpoint
-        this.ck = game.add.sprite(
-            100, 500, 'laPaz'
-        );
-        this.ck.width = 30;
-        this.ck.height = 20;
-        this.ck.x = 6272;
-        this.ck.y = 1024;
-        game.physics.arcade.enable(this.ck);
+        this.cks = [];
+
+        [{x: 6272, y: 1024}].forEach(function (v) {
+            ck = game.add.sprite(
+                100, 500, 'laPaz'
+            );
+            ck.width = 30;
+            ck.height = 20;
+            ck.x = v.x;
+            ck.y = v.y;
+            game.physics.arcade.enable(ck);
+            me.cks.push(ck);
+        });
     },
     createBackground: function(config) {
         var background = new Background(game, config || {});
@@ -90,13 +96,15 @@ _.merge(Level2.prototype, {
         game.physics.arcade.collide(this.player.getSprite(), this.door, this.goToNextLevel, null, this);
         game.physics.arcade.overlap(this.player.getSprite(), this.layers[1], this.foundZebra, null, this);
         game.physics.arcade.overlap(this.player.getSprite(), this.layers[2], this.zebraDamagePlayer, null, this);
-        game.physics.arcade.overlap(
-            this.player.getSprite(),
-            this.ck,
-            function () {
-                me.player.checkPoint();
-            }
-        );
+        this.cks.forEach(function (v) {
+            game.physics.arcade.overlap(
+                me.player.getSprite(),
+                v,
+                function () {
+                    me.player.checkPoint();
+                }
+            );
+        });
         game.stats.update();
         var delta = event.time.elapsed / 1000.0;
         this.player.update(delta);
