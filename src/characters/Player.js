@@ -4,7 +4,6 @@
 var _ = require('lodash');
 var Fire = require('./Fire');
 var LightMask = require('./LightMask');
-var ExtraUtils = require('../utils/ExtraUtils');
 
 var LIFE_SCALE = 5;
 var cpStats;

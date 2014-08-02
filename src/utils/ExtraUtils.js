@@ -11,6 +11,8 @@ ExtraUtils.showCebron = function(game, x, y){
     );
     yaa.anchor.setTo(0.5, 0.5);
 
+    var yaaaa = game.add.audio('yaaaa',1,false);
+    yaaaa.play('', 0, 1, false);
     game.add.tween(yaa)
         .to({
             y: game.camera.y + 100

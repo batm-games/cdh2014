@@ -32,7 +32,8 @@ State.prototype = {
     torch.anchor.set(0.5,0.5);
     var tween = game.add.tween(torch).to(
       {y:-Y*0.47 + Y*2.5}
-      ,1200
+      ,12000
+      // ,1000
     )
     .easing(Phaser.Easing.Exponential.Out)
     .start();
@@ -79,6 +80,8 @@ State.prototype = {
 //        );
 
         var t = game.add.text(X*2.0,Y*2.0, text, style);
+        t.inputEnabled = true;
+        t.events.onInputDown.add(function(){game.state.start('Level1')},this);//(func,context)
       }
     );
 

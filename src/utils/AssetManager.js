@@ -78,6 +78,8 @@ var AssetManager = {
             game.load.spritesheet(k, v);
         });
         game.load.atlasJSONHash('pedross', './images/sprites/pedross.png', './images/spritesheets/pedross.json');
+
+        game.load.audio('yaaaa',['./sounds/yaaa.oggvorbis.ogg']);
     }
 };
 window.AssetManager = AssetManager;
