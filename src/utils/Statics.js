@@ -4,7 +4,9 @@
 var Statics = {
     tileWidth: 32,
     tileHeight: 32,
-    zebraBonus: 3
+    zebraBonus: 3,
+    ghost: 'GHOST',
+    swordEnemy: 'SWORD_ENEMY'
 };
 window.Statics = Statics;
 module.exports = Statics;
