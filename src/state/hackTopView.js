@@ -84,9 +84,7 @@ State.prototype = {
 
     player.attack = function(){
       return function(){
-        if(player.attacking){return;}
-
-        state.invokeSuperZebras();
+        if(player.attacking){return;}        
 
         player.attacking = true;
         var deltaX = player.width * 0.5;
@@ -191,6 +189,7 @@ State.prototype = {
     if(player1.teaPower && player2.teaPower && player1.position.distance(player2.position) <= this.PLAYERS_JOINED_TEAS_DISTANCE){
       player1.light.setScale(this.LIGHT_LARGEEEEEE_SIZE);
       player2.light.setScale(this.LIGHT_LARGEEEEEE_SIZE);
+      state.invokeSuperZebras();
     }
   },
   invokeSuperZebra : function(x,y){
