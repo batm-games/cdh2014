@@ -86,6 +86,8 @@ State.prototype = {
       return function(){
         if(player.attacking){return;}        
 
+        state.torchSfx.play();
+
         player.attacking = true;
         var deltaX = player.width * 0.5;
         var torch = game.add.sprite(player.x + deltaX,player.y, 'torch');
@@ -147,7 +149,7 @@ State.prototype = {
   },
 
   createSfx: function() {
-    torchSfx = game.add.audio('torch');
+    this.torchSfx = game.add.audio('torch');
   },
   updatePlayer : function(player,controls){
     var dir = new Phaser.Point(0,0);
@@ -177,7 +179,6 @@ State.prototype = {
 
     if(controls.attack.isDown || controls.tea.isDown){
       player.attack();
-      torchSfx.play();
     }
 
     var deltaX = (-player.width) * 0.25;
