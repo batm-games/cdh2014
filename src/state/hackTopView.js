@@ -8,6 +8,8 @@ function State() {
   this.LIGHT_NORMAL_SIZE = 0.5;
   this.LIGHT_LARGE_SIZE = 1.0;
   this.LIGHT_LARGEEEEEE_SIZE = 2.0;
+
+  this.SUPER_ZEBRA_SPEED = 200;
 }
 
 State.prototype = {
@@ -19,6 +21,7 @@ State.prototype = {
     game.load.spritesheet('pedro', './images/sprites/pedro.png',64,192);
     game.load.spritesheet('torch', './images/sprites/torch.png');
     game.load.spritesheet('ghost', './images/sprites/ghost.png', 34, 50);
+    game.load.spritesheet('superZebra', './images/sprites/superZebra.png', 42, 50);
 
     game.load.atlas('atlaszebra', './images/spritesheets/atlaszebra.png', './images/spritesheets/atlaszebra.json');
   },
@@ -82,6 +85,8 @@ State.prototype = {
     player.attack = function(){
       return function(){
         if(player.attacking){return;}
+
+        state.invokeSuperZebras();
 
         player.attacking = true;
         var deltaX = player.width * 0.5;
@@ -188,11 +193,28 @@ State.prototype = {
       player2.light.setScale(this.LIGHT_LARGEEEEEE_SIZE);
     }
   },
+  invokeSuperZebra : function(x,y){
+    var zebra = game.add.sprite(x,y,'superZebra');
+    zebra.animations.add('fly',[0,1],8,true);
+    zebra.animations.play('fly');
+    zebra.angle = -45;
+    game.physics.arcade.enable(zebra);
+    zebra.body.velocity.x = -this.SUPER_ZEBRA_SPEED;
+    
+    this.zebras.add(zebra);
+  },
+  invokeSuperZebras : function(){
+    for(var i=-3;i<=3;i++){
+      this.invokeSuperZebra(X*0.9,halfY + i * Y*0.1);
+      this.invokeSuperZebra(X*0.8,halfY + i * Y*0.15);
+    }
+  },
   initVariables : function(){
     this.players = [];
     this.controls = [];
     this.enemies = game.add.group();
     this.torches = game.add.group();
+    this.zebras = game.add.group();
   },
   updateEnemies : function() {
     this.enemies.forEach(function(enemy){
