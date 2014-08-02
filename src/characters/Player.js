@@ -4,6 +4,8 @@
 var Fire = require('./Fire');
 var LightMask = require('./LightMask');
 
+var LIFE_SCALE = 5;
+
 var Player = function (game, config) {
     this.speed = config.speed || Player.DEFAULT_SPEED;
     this.jumpPower = config.jumpPower || Player.DEFAULT_JUMP_POWER;
@@ -20,6 +22,18 @@ var Player = function (game, config) {
     game.physics.arcade.enable(this.sprite);
     this.sprite.body.gravity.y = 1000;
     this.sprite.collideWorldBounds = true;
+
+    // life
+    var lifebar = this.lifebar =
+        game.add.sprite(
+            halfX,
+            halfY,
+            'lifeBar'
+        );
+    lifebar.anchor.set(0.5, -2.5);
+    lifebar.scale.set(LIFE_SCALE, LIFE_SCALE);
+//    lifebar.width = this.LIFE_WIDTH;
+//    lifebar.height = 60;
 
     // player controls
     this.createControls(config.controls);
@@ -80,6 +94,12 @@ Player.prototype.update = function (delta) {
     if (this.controls.up.isDown && this.sprite.body.onFloor()) {
         this.jump();
     }
+
+//    // lifebar
+    this.lifebar.x = this.sprite.x;
+    this.lifebar.y = this.sprite.y;
+    this.lifebar.scale.x = this.life / 100 * LIFE_SCALE;
+    this.lifebar.alpha = this.life / 100;
 
     // fire + light mask update
     // params: frame

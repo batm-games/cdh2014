@@ -36,7 +36,11 @@ var AssetManager = {
             maskInverseFlat: './images/mask-inverse_flat.png',
             background: './images/backgroundA.jpg',
             city: './images/city.png',
-            city2: './images/city2.png'
+            city2: './images/city2.png',
+            lifeBar: './images/sprites/bar.png'
+        },
+
+        spritesheets: {
         }
     },
     loadWorldAssets: function (world) {
@@ -53,6 +57,9 @@ var AssetManager = {
     loadImages: function () {
         _.forOwn(this.assetMap.images, function (v, k) {
              game.load.image(k, v);
+        });
+        _.forOwn(this.assetMap.spritesheets, function (v, k) {
+            game.load.spritesheet(k, v);
         });
         game.load.atlasJSONHash('pedross', './images/sprites/pedross.png', './images/spritesheets/pedross.json');
     }
