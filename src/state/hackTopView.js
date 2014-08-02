@@ -315,7 +315,8 @@ State.prototype = {
     var delta = event.time.elapsed / 1000.0;
     game.physics.arcade.collide(this.players[0], this.layer2);
     game.physics.arcade.collide(this.players[1], this.layer2);
-    game.physics.arcade.collide(this.torch, this.enemies);
+    game.physics.arcade.collide(this.torch,this.enemies);
+    game.physics.arcade.collide(this.layer2,this.enemies);
     game.physics.arcade.collide(this.players[0], this.enemies,this.donkeyAttack,this.donkeyEval,this);
     game.physics.arcade.collide(this.players[1], this.enemies,this.donkeyAttack,this.donkeyEval,this);
     game.physics.arcade.collide(
