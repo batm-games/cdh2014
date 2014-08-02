@@ -13,7 +13,18 @@ var TVEnemy = {
     enemy.scale.x *= -1;
     game.physics.arcade.enable(enemy);
     enemy.body.collideWorldBounds = true;
-    enemy.body.velocity.x = enemySpeed;
+    console.log(y);
+    if(y <= Y * 0.1) {
+      enemy.body.velocity.y = enemySpeed;
+    }else if(y >= Y * 0.8){
+      enemy.body.velocity.y = -enemySpeed;
+    }else if(x >= X * 0.9){
+      enemy.body.velocity.x = -enemySpeed;
+      enemy.scale.x *= -1;
+    }else {
+      enemy.body.velocity.x = enemySpeed;
+    }
+
     LifeUtils.giveLife(enemy, 30);
     enemy.damage = 10;
     return enemy;
@@ -25,8 +36,9 @@ var TVEnemy = {
     return enemy;
   },
   updateEnemy: function(enemy) {
-    if(enemy.body.onWall()) {
+    if(enemy.body.onWall() && enemy.position.x >= X*0.4) {
       enemy.position.x = 0;
+      enemy.kill();
       enemy.body.velocity.x = this.enemySpeed;
     }
   }

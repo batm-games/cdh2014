@@ -4,7 +4,7 @@ function State() {
   this.ALPHA_BLEND = 0.4;
   this.LIGHT_COLOR = 0x333333;
   this.BLEND_MODE = PIXI.blendModes.ADD;
-  this.TEA_DISTANCE_DAMAGE = 50;
+  this.TEA_DISTANCE_DAMAGE = 100;
 
   this.LIGHT_NORMAL_SIZE = 0.5;
   this.LIGHT_LARGE_SIZE = 1.0;
@@ -164,14 +164,47 @@ State.prototype = {
   },
 
   createEnemies: function() {
-    for(var i=1;i<=3;i++) {
-      var enemy = {};
+    //Enemies from bottom
+    for(var i=0; i<=3; i++){
       if(i%2) {
-        enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlasdonkey','standby-1.png', 40);
+        enemy = TVEnemy.createEnemy(X * 0.24,Y*0.9, 'atlasdonkey','standby-1.png', 3);
         enemy.type = Statics.swordEnemy;
       }
       else {
-        enemy = TVEnemy.createGhost(i * X * 0.1,Y*0.50, 40);
+        enemy = TVEnemy.createGhost(X * 0.25,Y*0.9, 8);
+        enemy.type = Statics.ghost;
+      }
+      enemy.body.immovable = true;
+      enemy.timeout = 1;
+      this.enemies.add(enemy);
+    }
+
+    //Enemies from top
+
+    for(var i=0; i<=3; i++){
+      if(i%2) {
+        enemy = TVEnemy.createEnemy(X * 0.24,Y*0.1, 'atlasdonkey','standby-1.png', 5);
+        enemy.type = Statics.swordEnemy;
+      }
+      else {
+        enemy = TVEnemy.createGhost(X * 0.26,Y*0.1, 10);
+        enemy.type = Statics.ghost;
+      }
+      enemy.body.immovable = true;
+      enemy.timeout = 1;
+      this.enemies.add(enemy);
+    }
+
+    //Enemies from left
+
+    for(var i=1;i<=3;i++) {
+      var enemy = {};
+      if(i%2) {
+        enemy = TVEnemy.createEnemy(i * X * 0.05,Y*0.50, 'atlasdonkey','standby-1.png', 8);
+        enemy.type = Statics.swordEnemy;
+      }
+      else {
+        enemy = TVEnemy.createGhost(i * X * 0.05,Y*0.50, 8);
         enemy.type = Statics.ghost;
       }
       enemy.body.immovable = true;
@@ -180,6 +213,27 @@ State.prototype = {
       // enemy.alpha = this.ALPHA_BLEND;
       // enemy.tint = 0x111111;
     }
+
+    //Enemies from right
+
+    for(var i=1;i<=3;i++) {
+      var enemy = {};
+      if(i%2) {
+        enemy = TVEnemy.createEnemy(X * 0.95,Y*0.50, 'atlasdonkey','standby-1.png', 8);
+        enemy.type = Statics.swordEnemy;
+      }
+      else {
+        enemy = TVEnemy.createGhost(X * 0.95,Y*0.50, 8);
+        enemy.type = Statics.ghost;
+      }
+      enemy.body.immovable = true;
+      enemy.timeout = 1;
+      this.enemies.add(enemy);
+      // enemy.alpha = this.ALPHA_BLEND;
+      // enemy.tint = 0x111111;
+    }
+
+
   },
 
   createSfx: function() {
@@ -344,6 +398,17 @@ State.prototype = {
           }
         }
         torch.damage = 0;
+      }
+    );
+    game.physics.arcade.overlap(
+      this.torch,
+      this.enemies,
+      function(torch) {
+        torch.life -= delta * 5;
+        if(torch.life <= 0) {
+          torch.kill();
+          //Reset Game!
+        }
       }
     );
     
