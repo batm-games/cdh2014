@@ -12,6 +12,7 @@ Level1.prototype = Object.create(AbstractLevel.prototype);
 _.merge(Level1.prototype, {
     preload: function () {},
     create: function () {
+        game.time.deltaCap = 1 / 60;
         this.timeEnd = moment().add('seconds', 60);
         this.initWorld([
             {
@@ -45,6 +46,9 @@ _.merge(Level1.prototype, {
                 left < 100) {
             game.state.start('Level1');
         }
+
+        this.layers[0].alpha = this.player.fire.intensity / 10 / 2;
+        this.layers[1].alpha = this.player.fire.intensity / 10 / 2;
     },
     goToNextLevel: function () {
         game.state.start('Level1');
