@@ -6,7 +6,9 @@ var LifeUtils = {
             person.life -= damage;
             console.log(person.life);
 
-            person.kill();
+            if(person.life <= 0){
+                person.kill();
+            }
         };
     }
 };
