@@ -3,13 +3,14 @@ function State() {
   this.PLAYERS_JOINED_TEAS_DISTANCE = 50;
   this.ALPHA_BLEND = 0.4;
   this.LIGHT_COLOR = 0x333333;
+  this.BLEND_MODE = PIXI.blendModes.ADD;
 }
 
 State.prototype = {
   preload: function () {
     game.load.image('tileset', './assets/tilemaps/tileset.png');
     game.load.tilemap('map', './assets/tilemaps/tv_map1.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.spritesheet('pedro', './images/sprites/pedro.png');
+    game.load.spritesheet('pedro', './images/sprites/pedro.png',64,192);
     game.load.spritesheet('torch', './images/sprites/torch.png');
 
     game.load.atlas('atlaszebra', './images/spritesheets/atlaszebra.png', './images/spritesheets/atlaszebra.json');    
@@ -25,7 +26,7 @@ State.prototype = {
     this.layer = this.map.createLayer('Tile Layer 1');
     this.layer.resizeWorld();
     this.layer.alpha = this.ALPHA_BLEND;
-    this.layer.blendMode = PIXI.blendModes.ADD;
+    this.layer.blendMode = this.BLEND_MODE;
     this.map.setCollision(1,true,this.layer);
   },
   createMask : function(){
@@ -34,21 +35,21 @@ State.prototype = {
     this.mask.scale.setTo(1.25,1.25);
     this.mask.alpha = 0.4;
     this.mask.tint = this.LIGHT_COLOR;
-    this.mask.blendMode = PIXI.blendModes.ADD;
+    this.mask.blendMode = this.BLEND_MODE;
 
     this.mask2 = game.add.sprite(halfX + 30, halfY, 'maskInverseFlat');
     this.mask2.anchor.setTo(0.5, 0.5);
     this.mask2.scale.setTo(2.0,2.0);
     this.mask2.alpha = 0.4;
     this.mask2.tint = this.LIGHT_COLOR;
-    this.mask2.blendMode = PIXI.blendModes.ADD;
+    this.mask2.blendMode = this.BLEND_MODE;
 
     this.mask3 = game.add.sprite(halfX + 30, halfY, 'maskInverseFlat');
     this.mask3.anchor.setTo(0.5, 0.5);
     this.mask3.scale.setTo(2.5,2.5);
     this.mask3.alpha = 0.4;
     this.mask3.tint = this.LIGHT_COLOR;
-    this.mask3.blendMode = PIXI.blendModes.ADD;
+    this.mask3.blendMode = this.BLEND_MODE;
 //        PIXI.blendModes = {
 //            NORMAL:0,
 //            ADD:1,
@@ -77,6 +78,9 @@ State.prototype = {
     player.scale.set(0.5,0.5);
     game.physics.arcade.enable(player);
     player.body.collideWorldBounds = true;
+
+    player.animations.add('normal',[0],1,true);
+    player.animations.add('teaUp' ,[1],1,true);
 
     LifeUtils.giveLife(player,100);
 
@@ -129,7 +133,8 @@ State.prototype = {
     for(var i=1;i<=3;i++) {
       var enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlaszebra','standby-1.png', 40);
       this.enemies.add(enemy);
-      enemy.alpha = this.ALPHA_BLEND;
+      // enemy.alpha = this.ALPHA_BLEND;
+      // enemy.tint = 0x111111;
     }
   },
   updatePlayer : function(player,controls){
@@ -140,12 +145,14 @@ State.prototype = {
     if(controls.d.isDown){dir.y += 1;}
 
     if(controls.tea.isDown){
-      player.tint = 0x00ff00;
+      // player.tint = 0x00ff00;
+      player.animations.play('teaUp');
       player.teaPower = true;
       dir = new Phaser.Point(0,0);
     }else{
-      player.tint = 0xffffff;
+      // player.tint = 0xffffff;
       player.teaPower = false;
+      player.animations.play('normal');
     }
 
     dir.setMagnitude(this.PLAYER_SPEED);
@@ -179,12 +186,12 @@ State.prototype = {
   },
   create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.initVariables();
     this.createMap();
+    this.initVariables();
     this.createGameObjects();
+    this.createPlayers();
+    this.createPlayers();
     this.createEnemies();
-    this.createPlayers();
-    this.createPlayers();
     this.createMask();
     this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.NUMPAD_0,Phaser.Keyboard.NUMPAD_1);
     this.createControls(Phaser.Keyboard.W,Phaser.Keyboard.D,Phaser.Keyboard.S,Phaser.Keyboard.A,Phaser.Keyboard.C,Phaser.Keyboard.V);
