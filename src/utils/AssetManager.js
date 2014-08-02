@@ -41,6 +41,7 @@ var AssetManager = {
         },
 
         spritesheets: {
+            laPaz: './images/la_paz_flag.gif'
         }
     },
     loadWorldAssets: function (world) {

@@ -1,12 +1,15 @@
 /**
  * Created by tlatif on 8/1/2014.
  */
+var _ = require('lodash');
 var Fire = require('./Fire');
 var LightMask = require('./LightMask');
 
 var LIFE_SCALE = 5;
+var cpStats;
 
 var Player = function (game, config) {
+    console.log(cpStats);
     this.speed = config.speed || Player.DEFAULT_SPEED;
     this.jumpPower = config.jumpPower || Player.DEFAULT_JUMP_POWER;
     var sprite = config.sprite || Player.DEFAULT_SPRITE;
@@ -32,8 +35,6 @@ var Player = function (game, config) {
         );
     lifebar.anchor.set(0.5, -2.5);
     lifebar.scale.set(LIFE_SCALE, LIFE_SCALE);
-//    lifebar.width = this.LIFE_WIDTH;
-//    lifebar.height = 60;
 
     // player controls
     this.createControls(config.controls);
@@ -42,10 +43,23 @@ var Player = function (game, config) {
     this.fire = new Fire(this);
     this.fire.setFrames([{ x: 0, y: -30 }]);
     this.lightMask = new LightMask(this.fire);
+
+//    this.ck = game.add.sprite(
+//        100, 500, 'laPaz'
+//    );
+
     this.dead = false;
     this.typeOfDead = 'fallen';
     this.life = 100;
     this.people = 0;
+
+    if (cpStats) {
+        this.sprite.x = cpStats.sprite.x;
+        this.sprite.y = cpStats.sprite.y;
+        this.life = cpStats.life;
+        this.people = cpStats.people;
+//        _.merge(this, cpStats);
+    }
 };
 Player.prototype.createControls = function (controls) {
     this.controls = this.game.input.keyboard.createCursorKeys();
@@ -86,9 +100,11 @@ Player.prototype.update = function (delta) {
         this.sprite.scale.x = 1;
         this.movePlayer(1);
     } else {
-        this.sprite.animations.stop();
-        this.sprite.frame = 0;
-        this.stopMoving();
+        if (this.sprite.alive) {
+            this.sprite.animations.stop();
+            this.sprite.frame = 0;
+            this.stopMoving();
+        }
     }
 
     if (this.controls.up.isDown && this.sprite.body.onFloor()) {
@@ -114,7 +130,22 @@ Player.prototype.getX = function() {
     return this.sprite.x;
 };
 Player.prototype.kill = function () {
-    this.sprite.kill();
+//    this.sprite.kill();
+};
+Player.prototype.checkPoint = function () {
+    // saving stats
+    if (!cpStats) {
+        console.log('saving stats!');
+        cpStats = {};
+        _.merge(cpStats, {
+            sprite: {
+                x: this.sprite.x,
+                y: this.sprite.y
+            },
+            life: this.life,
+            people: this.people
+        });
+    }
 };
 Player.prototype.recruit = function (player, citizen) {
     this.people += 1;
@@ -145,3 +176,11 @@ Player.LIFE_TAKE_FACTOR = 10;
 
 
 module.exports = Player;
+module.exports.hasCheckpointStats = function () {
+    return cpStats;
+};
+module.exports.restore = function (player) {
+//    setTimeout(function () {
+//        _.merge(player, cpStats || {});
+//    }, 100);
+};

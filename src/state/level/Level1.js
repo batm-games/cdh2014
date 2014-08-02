@@ -50,13 +50,22 @@ _.merge(Level1.prototype, {
                 collisionTiles: [3]
             }
         ]);
+
+        this.createCK();
         this.createPlayer();
-        this.createLife();
         this.createDoor();
         game.camera.follow(this.player.getSprite());
     },
-    createLife: function () {
-
+    createCK: function () {
+        // checkpoint
+        this.ck = game.add.sprite(
+            100, 500, 'laPaz'
+        );
+        this.ck.width = 30;
+        this.ck.height = 20;
+        this.ck.x = 1000;
+        this.ck.y = 500;
+        game.physics.arcade.enable(this.ck);
     },
     createBackground: function(config) {
         var background = new Background(game, config || {});
@@ -71,6 +80,13 @@ _.merge(Level1.prototype, {
         game.physics.arcade.collide(this.player.getSprite(), this.door, this.goToNextLevel, null, this);
         game.physics.arcade.overlap(this.player.getSprite(), this.layers[1], this.foundZebra, null, this);
         game.physics.arcade.overlap(this.player.getSprite(), this.layers[2], this.zebraDamagePlayer, null, this);
+        game.physics.arcade.overlap(
+            this.player.getSprite(),
+            this.ck,
+            function () {
+                me.player.checkPoint();
+            }
+        );
         game.stats.update();
         var delta = event.time.elapsed / 1000.0;
         this.player.update(delta);
