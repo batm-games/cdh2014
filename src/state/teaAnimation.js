@@ -85,6 +85,7 @@ State.prototype = {
 //        );
 
         var t = game.add.text(X*2.0,Y*2.0, text, style);
+          t.alpha = 0.1;
         t.inputEnabled = true;
         t.events.onInputDown.add(function(){game.state.start('Level1');},this);//(func,context)
       }
