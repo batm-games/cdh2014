@@ -30,47 +30,29 @@ State.prototype = {
     this.layer.blendMode = this.BLEND_MODE;
     this.map.setCollision(1,true,this.layer);
   },
-  createMask : function(){
-    this.mask = game.add.sprite(halfX + 30, halfY, 'maskInverseFlat');
-    this.mask.anchor.setTo(0.5, 0.5);
-    this.mask.scale.setTo(1.25,1.25);
-    this.mask.alpha = 0.4;
-    this.mask.tint = this.LIGHT_COLOR;
-    this.mask.blendMode = this.BLEND_MODE;
+  //1.25,2,2.5
+  createLightLayer : function(x, y, scale){
+    var mask = game.add.sprite(x,y, 'maskInverseFlat');
+    mask.anchor.setTo(0.5, 0.5);
+    mask.scale.setTo(scale,scale);
+    mask.alpha = 0.4;
+    mask.tint = this.LIGHT_COLOR;
+    mask.blendMode = this.BLEND_MODE;
 
-    this.mask2 = game.add.sprite(halfX + 30, halfY, 'maskInverseFlat');
-    this.mask2.anchor.setTo(0.5, 0.5);
-    this.mask2.scale.setTo(2.0,2.0);
-    this.mask2.alpha = 0.4;
-    this.mask2.tint = this.LIGHT_COLOR;
-    this.mask2.blendMode = this.BLEND_MODE;
+    return mask;
+  },
+  createLight : function(){
+    var mask = {
+      masks : [this.createLightLayer(0,0,1.25),this.createLightLayer(0,0,2.0),this.createLightLayer(0,0,2.5)]
+    };
+    mask.move = function(x,y){
+      for(var i=0;i<mask.masks.length;i++){
+        mask.masks[i].x = x;
+        mask.masks[i].y = y;
+      }
+    };
 
-    this.mask3 = game.add.sprite(halfX + 30, halfY, 'maskInverseFlat');
-    this.mask3.anchor.setTo(0.5, 0.5);
-    this.mask3.scale.setTo(2.5,2.5);
-    this.mask3.alpha = 0.4;
-    this.mask3.tint = this.LIGHT_COLOR;
-    this.mask3.blendMode = this.BLEND_MODE;
-//        PIXI.blendModes = {
-//            NORMAL:0,
-//            ADD:1,
-//            MULTIPLY:2,
-//            SCREEN:3,
-//            OVERLAY:4,
-//            DARKEN:5,
-//            LIGHTEN:6,
-//            COLOR_DODGE:7,
-//            COLOR_BURN:8,
-//            HARD_LIGHT:9,
-//            SOFT_LIGHT:10,
-//            DIFFERENCE:11,
-//            EXCLUSION:12,
-//            HUE:13,
-//            SATURATION:14,
-//            COLOR:15,
-//            LUMINOSITY:16
-//        };
-        
+    return mask;
   },
   createPlayers: function(){
     var state = this;
@@ -109,6 +91,8 @@ State.prototype = {
         });
       }();
     };
+
+    player.light = this.createLight();
 
     this.players.push(player);
   },
@@ -168,6 +152,10 @@ State.prototype = {
     if(controls.attack.isDown){
       player.attack();
     }
+
+    var deltaX = (-player.width) * 0.25;
+    var deltaY = player.teaPower ? (-player.height) * 0.25 : 0;
+    player.light.move(player.x + deltaX,player.y + deltaY);
   },
   mergedPlayersAction : function(player1,player2){
     if(player1.teaPower && player2.teaPower && player1.position.distance(player2.position) <= this.PLAYERS_JOINED_TEAS_DISTANCE){
@@ -194,7 +182,6 @@ State.prototype = {
     this.createPlayers();
     this.createPlayers();
     this.createEnemies();
-    this.createMask();
     this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.NUMPAD_0,Phaser.Keyboard.NUMPAD_1);
     this.createControls(Phaser.Keyboard.W,Phaser.Keyboard.D,Phaser.Keyboard.S,Phaser.Keyboard.A,Phaser.Keyboard.C,Phaser.Keyboard.V);
 
@@ -223,15 +210,6 @@ State.prototype = {
     this.updatePlayer(this.players[1],this.controls[1]);
     this.mergedPlayersAction(this.players[0],this.players[1]);
     this.updateEnemies();
-
-    this.mask.x = this.players[0].x;
-    this.mask.y = this.players[0].y;
-
-    this.mask2.x = this.players[0].x;
-    this.mask2.y = this.players[0].y;
-
-    this.mask3.x = this.players[0].x;
-    this.mask3.y = this.players[0].y;
   },
   shutdown: function(){}
 };
