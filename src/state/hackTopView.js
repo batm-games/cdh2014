@@ -189,7 +189,7 @@ State.prototype = {
     if(player1.teaPower && player2.teaPower && player1.position.distance(player2.position) <= this.PLAYERS_JOINED_TEAS_DISTANCE){
       player1.light.setScale(this.LIGHT_LARGEEEEEE_SIZE);
       player2.light.setScale(this.LIGHT_LARGEEEEEE_SIZE);
-      state.invokeSuperZebras();
+      this.invokeSuperZebras();
     }
   },
   invokeSuperZebra : function(x,y){
