@@ -14,13 +14,15 @@ var AssetManager = {
                 url: './assets/tilemaps/tileset.png'
             },
             width: 2000,
-            height: 1400
+            height: 640
         },
 
         // created before the states are added
         images: {
             fire: './images/fire01.png',
-            pedro: './images/pedrito.png'
+            pedro: './images/pedrito.png',
+            mask: './images/mask.png',
+            maskInverse: './images/mask-inverse.png'
         }
     },
     loadWorldAssets: function (world) {

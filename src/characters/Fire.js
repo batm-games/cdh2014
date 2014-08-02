@@ -48,6 +48,10 @@ Fire.prototype = {
         return this;
     },
 
+    getSprite: function () {
+        return this.emitter;
+    },
+
     update: function (frame) {
         var current = this.frames[frame];
         if (!current) {
