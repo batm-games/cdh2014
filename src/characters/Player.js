@@ -4,6 +4,7 @@
 var _ = require('lodash');
 var Fire = require('./Fire');
 var LightMask = require('./LightMask');
+var ExtraUtils = require('../utils/ExtraUtils');
 
 var LIFE_SCALE = 5;
 var cpStats;
@@ -158,6 +159,9 @@ Player.prototype.recruit = function (player, citizen) {
         }
         console.log('citizen recruited!');
     }
+
+
+    ExtraUtils.showCebron(this.game, this.game.camera.x + X*0.75, this.game.camera.y + Y);
 };
 Player.prototype.moveCameraDamage = function() {
     this.stopMoving();
