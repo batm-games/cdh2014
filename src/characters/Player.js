@@ -10,7 +10,7 @@ var Player = function (game, config) {
 
     this.game = game;
     this.sprite = game.add.sprite(x, y, sprite);
-    this.sprite.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7]);
+    this.sprite.animations.add('run', [1, 2, 3, 4, 5, 6, 7, 8]);
 
     this.sprite.anchor.setTo(0.5, 0.5);
     game.physics.arcade.enable(this.sprite);
@@ -44,16 +44,16 @@ Player.prototype.controlPlayer = function () {
         this.killPlayer();
     }
     if (this.controls.left.isDown) {
-        this.sprite.animations.play('run', 15, true);
+        this.sprite.animations.play('run', 7, true);
         this.sprite.scale.x = -1;
         this.movePlayer(-1);
     } else if (this.controls.right.isDown) {
-        this.sprite.animations.play('run', 15, true);
+        this.sprite.animations.play('run', 7, true);
         this.sprite.scale.x = 1;
         this.movePlayer(1);
     } else {
         this.sprite.animations.stop();
-        this.sprite.frame = 8;
+        this.sprite.frame = 0;
         this.stopMoving();
     }
 

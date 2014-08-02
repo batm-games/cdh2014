@@ -24,6 +24,7 @@ State.prototype = {
     this.map.setCollision(1,true,this.layer);
   },
   createPlayers: function(){
+    var state = this;
     var player = game.add.sprite(X*0.30,Y*0.50, 'pedro');
     player.anchor.set(0.5,0.5);
     player.scale.set(0.5,0.5);
@@ -38,10 +39,13 @@ State.prototype = {
 
         player.attacking = true;
         var deltaX = player.width * 0.5;
-        console.log(deltaX);
         var torch = game.add.sprite(player.x + deltaX,player.y, 'torch');
         torch.anchor.set(0.5,0.5);
         torch.scale.set(0.25,0.25);
+        game.physics.arcade.enable(torch);
+        state.torches.add(torch);
+        torch.player = player;
+        torch.damage = 15;
 
         var tween = game.add.tween(torch)
         .to({alpha: 0.3}, 1000)
@@ -49,7 +53,7 @@ State.prototype = {
 
         tween.onComplete.add(function(){
           torch.kill();
-          player.attacking = false;
+          player.attacking = false;  
         });
       }();
     };
@@ -77,7 +81,7 @@ State.prototype = {
   createEnemies: function() {
     for(var i=1;i<=3;i++) {
       var enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlaszebra','standby-1.png', 40);
-      this.enemies.push(enemy);
+      this.enemies.add(enemy);
     }
   },
   updatePlayer : function(player,controls){
@@ -117,12 +121,13 @@ State.prototype = {
   initVariables : function(){
     this.players = [];
     this.controls = [];
-    this.enemies = [];
+    this.enemies = game.add.group();
+    this.torches = game.add.group();
   },
   updateEnemies : function() {
-    for(var enemy in this.enemies) {
-      TVEnemy.updateEnemy(this.enemies[enemy]);
-    }
+    // for(var enemy in this.enemies) {
+    //   TVEnemy.updateEnemy(this.enemies[enemy]);
+    // }
   },
   create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -143,6 +148,17 @@ State.prototype = {
     game.stats.update();
     game.physics.arcade.collide(this.players[0], this.layer);
     game.physics.arcade.collide(this.players[1], this.layer);
+    game.physics.arcade.overlap(
+      this.torches, 
+      this.enemies,
+      function(torch,enemy){
+        
+        if(torch.damage > 0){
+          enemy.receiveDamage(torch.damage)
+        }
+        torch.damage = 0;
+      }
+    );
     var delta = event.time.elapsed / 1000.0;
     
     //Players Action!
