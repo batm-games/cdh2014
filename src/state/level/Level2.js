@@ -1,4 +1,7 @@
 /**
+ * Created by tlatif on 8/2/2014.
+ */
+/**
  * Created by tlatif on 8/1/2014.
  */
 var _ = require('lodash');
@@ -6,11 +9,11 @@ var AbstractLevel = require('./AbstractLevel');
 var Fire = require('../../characters/Fire');
 var Background = require('../../world/Background');
 
-var Level1 = function () {
-    AbstractLevel.call(this, 'world2', 4);
+var Level2 = function () {
+    AbstractLevel.call(this, 'world3', 20);
 };
-Level1.prototype = Object.create(AbstractLevel.prototype);
-_.merge(Level1.prototype, {
+Level2.prototype = Object.create(AbstractLevel.prototype);
+_.merge(Level2.prototype, {
     preload: function () {
         game.load.audio('bgsound00','./sounds/bgsound00.ogg');
     },
@@ -18,14 +21,9 @@ _.merge(Level1.prototype, {
         bgmusic = game.add.audio('bgsound00',1,true);
         bgmusic.play('',0,1,true);
 
-        game.time.deltaCap = 1 / 40;
+        game.time.deltaCap = 1 / 60;
         this.timeEnd = moment().add('seconds', 60);
         this.backgrounds = [];
-
-        this.bg = game.add.sprite(-100, 0, 'gradient');
-        this.bg.width = X + 200;
-        this.bg.height = Y;
-
         this.createBackground({
             w: X - 500,
             a: 0.1,
@@ -57,7 +55,10 @@ _.merge(Level1.prototype, {
         ]);
 
         this.createCK();
-        this.createPlayer();
+        this.createPlayer({
+            x: 50,
+            y: 1200
+        });
         this.createDoor();
         game.camera.follow(this.player.getSprite());
     },
@@ -96,8 +97,6 @@ _.merge(Level1.prototype, {
         var delta = event.time.elapsed / 1000.0;
         this.player.update(delta);
 
-        this.bg.x = game.camera.x - 100;
-
         var now = moment();
         var left = this.timeEnd.diff(now);
 //        game.debug.text(moment(left).format('mm:ss'), halfX, 50);
@@ -107,9 +106,9 @@ _.merge(Level1.prototype, {
         });
 
         if (this.player.dead ||
-                left < 100) {
+            left < 100) {
             bgmusic.stop();
-            game.state.start('Level1');
+            game.state.start('Level2');
         }
 
 //        this.layers[0].alpha = this.player.fire.intensity / 10;
@@ -118,11 +117,11 @@ _.merge(Level1.prototype, {
     },
     goToNextLevel: function () {
         if (this.player.people >= this.minimumZebras) {
-            game.state.start('Level2');
+            game.state.start('Level1');
         } else {
             this.door.body.velocity.x -= this.door.body.velocity.x * 2;
         }
     }
 });
 
-module.exports = Level1;
+module.exports = Level2;

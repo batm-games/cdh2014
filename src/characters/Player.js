@@ -177,7 +177,9 @@ Player.prototype.moveCameraDamage = function() {
     }, this);
 };
 Player.prototype.receiveEvilZebraDamage = function () {
-    this.life -= Player.LIFE_TAKE_FACTOR * Statics.evilZebraDamage;
+    if (this.fire.intensity < 12) {
+        this.life -= Player.LIFE_TAKE_FACTOR * Statics.evilZebraDamage;
+    }
     if (this.life <= 0) {
         this.kill();
         this.dead = true;
