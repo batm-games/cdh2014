@@ -45,7 +45,7 @@ LightMask.prototype = {
     },
 
     dim: function (delta) {
-        this.mask.alpha = this.owner.intensity / 10;
+        this.mask.alpha = Math.min(this.owner.intensity / 10, 1.1);
     },
 
     resetLight: function () {
