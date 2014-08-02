@@ -4,6 +4,9 @@ function State() {
   this.ALPHA_BLEND = 0.4;
   this.LIGHT_COLOR = 0x333333;
   this.BLEND_MODE = PIXI.blendModes.ADD;
+
+  this.LIGHT_NORMAL_SIZE = 0.5;
+  this.LIGHT_LARGE_SIZE = 1.0;
 }
 
 State.prototype = {
@@ -34,7 +37,8 @@ State.prototype = {
   createLightLayer : function(x, y, scale){
     var mask = game.add.sprite(x,y, 'maskInverseFlat');
     mask.anchor.setTo(0.5, 0.5);
-    mask.scale.setTo(scale,scale);
+    // mask.scale.setTo(scale,scale);
+    mask.baseScale = scale;
     mask.alpha = 0.4;
     mask.tint = this.LIGHT_COLOR;
     mask.blendMode = this.BLEND_MODE;
@@ -49,6 +53,11 @@ State.prototype = {
       for(var i=0;i<mask.masks.length;i++){
         mask.masks[i].x = x;
         mask.masks[i].y = y;
+      }
+    };
+    mask.setScale = function(scale){
+      for(var i=0;i<mask.masks.length;i++){
+        mask.masks[i].scale.set(mask.masks[i].baseScale * scale,mask.masks[i].baseScale * scale);
       }
     };
 
@@ -154,8 +163,9 @@ State.prototype = {
     }
 
     var deltaX = (-player.width) * 0.25;
-    var deltaY = player.teaPower ? (-player.height) * 0.25 : 0;
+    var deltaY = player.teaPower ? (-player.height) * 0.25 : 0;    
     player.light.move(player.x + deltaX,player.y + deltaY);
+    player.light.setScale(player.teaPower ? this.LIGHT_LARGE_SIZE: this.LIGHT_NORMAL_SIZE);
   },
   mergedPlayersAction : function(player1,player2){
     if(player1.teaPower && player2.teaPower && player1.position.distance(player2.position) <= this.PLAYERS_JOINED_TEAS_DISTANCE){
