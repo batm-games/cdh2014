@@ -216,7 +216,6 @@ State.prototype = {
       this.enemies,
       function(torch,enemy){
         if(torch.damage > 0){
-          console.log(enemy.type);
           if(enemy.type == Statics.swordEnemy) {
 //            enemy.receiveDamage(torch.damage);
           }else {
