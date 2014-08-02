@@ -4,6 +4,7 @@ function State() {
   this.ALPHA_BLEND = 0.4;
   this.LIGHT_COLOR = 0x333333;
   this.BLEND_MODE = PIXI.blendModes.ADD;
+  this.TEA_DISTANCE_DAMAGE = 50;
 
   this.LIGHT_NORMAL_SIZE = 0.5;
   this.LIGHT_LARGE_SIZE = 1.0;
@@ -173,7 +174,7 @@ State.prototype = {
         enemy.type = Statics.ghost;
       }
       enemy.body.immovable = true;
-      enemy.timeout = 0;
+      enemy.timeout = 1;
       this.enemies.add(enemy);
       // enemy.alpha = this.ALPHA_BLEND;
       // enemy.tint = 0x111111;
@@ -256,10 +257,21 @@ State.prototype = {
     this.torches = game.add.group();
     this.zebras = game.add.group();
   },
-  updateEnemies : function(delta) {
+  updateEnemies : function(player, delta) {
+    var TEA_DISTANCE_DAMAGE = this.TEA_DISTANCE_DAMAGE;
+//    console.log(player.teaPower);
     this.enemies.forEach(function(enemy){
       TVEnemy.updateEnemy(enemy);
-      enemy.timeout -= delta;
+
+//      console.log(player.teaPower);
+      if(enemy.type == Statics.ghost && player.teaPower && player.position.distance(enemy.position) <= TEA_DISTANCE_DAMAGE) {
+//        console.log(enemy.timeout);
+        enemy.timeout -= delta;
+      }
+//      console.log(enemy.timeout);
+      if(enemy.timeout <= 0) {
+        enemy.kill();
+      }
     });
   },
   create: function() {
@@ -338,7 +350,8 @@ State.prototype = {
     this.updatePlayer(this.players[0],this.controls[0]);
     this.updatePlayer(this.players[1],this.controls[1]);
     this.mergedPlayersAction(this.players[0],this.players[1]);
-    this.updateEnemies(delta);
+    this.updateEnemies(this.players[0], delta);
+    this.updateEnemies(this.players[1], delta);
 
     this.updateTorchbar();
 
