@@ -400,6 +400,8 @@ State.prototype = {
     var style = { font: "40px Arial", fill: "#00ff00", align: "center" };
     var timeText = this.timeText = game.add.text(X*0.75,Y*0.025, "X>XX", style);
 
+    this.winButton = game.input.keyboard.addKey(Phaser.Keyboard.U);
+
     StateUtils.createDemoHomeButton();
   },
   donkeyEval : function(player,donkey){
@@ -496,9 +498,14 @@ State.prototype = {
     this.timeText.text = minute + ':' + filler + seconds;
     this.ttime -= delta;
 
+    if(this.winButton.isDown){
+      this.ttime = 0;
+    }
+
     if(this.ttime < 0){
       //Reset Game!
-      game.state.start('hackTopView');
+      game.state.start('Level2');
+      game.TOPVIEW_LEVEL = 2;
     }
   },
   shutdown: function(){}
