@@ -16,7 +16,7 @@ _.merge(Level0.prototype, {
     },
     createFire: function () {
         this.fire = new Fire(this.player);
-        this.fire.setFrames([{ x: -25, y: -30 }]);
+        this.fire.setFrames([{ x: 0, y: -30 }]);
     },
     createMask: function () {
         this.mask = game.add.sprite(halfX + 30, halfY, 'maskInverse');

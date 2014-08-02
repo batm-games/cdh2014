@@ -5,6 +5,8 @@ var LifeUtils = {
         person.receiveDamage = function(damage){
             person.life -= damage;
             console.log(person.life);
+
+            person.kill();
         };
     }
 };

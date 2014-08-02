@@ -20,6 +20,10 @@ function BaseWorld (config) {
 BaseWorld.prototype.createWorld = function () {
     var map = game.add.tilemap(this.map);
     map.addTilesetImage('tileset');
+    this.width = map.width * Statics.tileWidth;
+    this.height = map.height * Statics.tileHeight;
+    console.log(this.width);
+    console.log(this.height);
     var layers = [],
         layer,
         i;

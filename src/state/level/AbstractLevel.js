@@ -16,12 +16,10 @@ AbstractLevel.prototype = {
         var world = new BaseWorld({
             map: mapId,
             tileset: tilesetId,
-            layers: layerConfig,
-            width: worldIds.width,
-            height: worldIds.height
+            layers: layerConfig
         });
-        game.world.setBounds(0, 0, world.width, world.height);
         var instances = world.createWorld();
+        game.world.setBounds(0, 0, world.width, world.height);
         this.map = instances.map;
         this.layers = instances.layers;
     },

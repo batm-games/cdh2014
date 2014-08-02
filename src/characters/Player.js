@@ -10,6 +10,8 @@ var Player = function (game, config) {
 
     this.game = game;
     this.sprite = game.add.sprite(x, y, sprite);
+    this.sprite.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7]);
+
     this.sprite.anchor.setTo(0.5, 0.5);
     game.physics.arcade.enable(this.sprite);
     this.sprite.body.gravity.y = 500;
@@ -21,6 +23,7 @@ Player.prototype.createControls = function (controls) {
 };
 Player.prototype.movePlayer = function (dx, dy) {
     this.sprite.body.velocity.x = dx * this.speed;
+
     if (typeof dy === 'number') {
         this.sprite.body.velocity.y = dy * this.jumpPower;
     }
@@ -37,11 +40,20 @@ Player.prototype.jump = function (doubleJump) {
     }
 };
 Player.prototype.controlPlayer = function () {
+    if (!this.sprite.inWorld) {
+        this.killPlayer();
+    }
     if (this.controls.left.isDown) {
+        this.sprite.animations.play('run', 15, true);
+        this.sprite.scale.x = -1;
         this.movePlayer(-1);
     } else if (this.controls.right.isDown) {
+        this.sprite.animations.play('run', 15, true);
+        this.sprite.scale.x = 1;
         this.movePlayer(1);
     } else {
+        this.sprite.animations.stop();
+        this.sprite.frame = 8;
         this.stopMoving();
     }
 
@@ -52,9 +64,12 @@ Player.prototype.controlPlayer = function () {
 Player.prototype.getSprite = function () {
     return this.sprite;
 };
+Player.prototype.killPrite = function () {
+    this.sprite.kill();
+};
 Player.DEFAULT_SPEED = 200;
 Player.DEFAULT_JUMP_POWER = 500;
-Player.DEFAULT_SPRITE = 'pedro';
+Player.DEFAULT_SPRITE = 'pedross';
 Player.DEFAULT_X = 50;
 Player.DEFAULT_Y = 50;
 
