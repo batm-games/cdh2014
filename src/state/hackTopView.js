@@ -152,7 +152,6 @@ State.prototype = {
       this.torches, 
       this.enemies,
       function(torch,enemy){
-        
         if(torch.damage > 0){
           enemy.receiveDamage(torch.damage)
         }
