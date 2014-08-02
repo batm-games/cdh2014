@@ -96,6 +96,7 @@ State.prototype = {
 
     player.animations.add('normal',[0],1,true);
     player.animations.add('teaUp' ,[1],1,true);
+    player.animations.add('teaNo' ,[2],1,true);
 
     LifeUtils.giveLife(player,100);
 
@@ -108,24 +109,27 @@ State.prototype = {
       return function(){
         if(player.attacking){return;}        
 
-        state.torchSfx.play();
+        state.torchSfx.play();        
 
         player.attacking = true;
         var deltaX = player.width * 0.5;
-        var torch = game.add.sprite(player.x + deltaX,player.y, 'torch');
-        torch.anchor.set(0.5,0.5);
+        var torch = game.add.sprite(player.x + deltaX,player.y + player.height * 0.2, 'torch');
+        torch.anchor.set(0.5,1.0);
         torch.scale.set(0.25,0.25);
         game.physics.arcade.enable(torch);
         state.torches.add(torch);
         torch.player = player;
         torch.damage = 15;
 
+        var angle = player.width < 0 ? -60 : 60;
+
         var tween = game.add.tween(torch)
-        .to({alpha: 0.3}, 1000)
+        .to({alpha: 0.3,angle: angle}, 250)
         .start();
 
         tween.onComplete.add(function(){
           torch.kill();
+          player.animations.play('normal');
           player.attacking = false;  
         });
       }();
@@ -240,6 +244,7 @@ State.prototype = {
     this.torchSfx = game.add.audio('torch');
   },
   updatePlayer : function(player,controls){
+
     var dir = new Phaser.Point(0,0);
     if(controls.l.isDown){dir.x -= 1;}
     if(controls.r.isDown){dir.x += 1;}
@@ -255,6 +260,10 @@ State.prototype = {
       // player.tint = 0xffffff;
       player.teaPower = false;
       player.animations.play('normal');
+    }
+
+    if(player.attacking){
+      player.animations.play('teaNo');
     }
 
     dir.setMagnitude(this.PLAYER_SPEED);
