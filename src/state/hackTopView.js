@@ -126,8 +126,15 @@ State.prototype = {
 
   createEnemies: function() {
     for(var i=1;i<=3;i++) {
-//      var enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlaszebra','standby-1.png', 40);
-      var enemy = TVEnemy.createGhost(i * X * 0.1,Y*0.50, 40);
+      var enemy = {};
+      if(i%2) {
+        enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlaszebra','standby-1.png', 40);
+        enemy.type = Statics.swordEnemy;
+      }
+      else {
+        enemy = TVEnemy.createGhost(i * X * 0.1,Y*0.50, 40);
+        enemy.type = Statics.ghost;
+      }
       this.enemies.add(enemy);
       // enemy.alpha = this.ALPHA_BLEND;
       // enemy.tint = 0x111111;
@@ -209,7 +216,13 @@ State.prototype = {
       this.enemies,
       function(torch,enemy){
         if(torch.damage > 0){
-          enemy.receiveDamage(torch.damage)
+          console.log(enemy.type);
+          if(enemy.type == Statics.swordEnemy) {
+//            enemy.receiveDamage(torch.damage);
+          }else {
+            enemy.receiveDamage(torch.damage);
+          }
+
         }
         torch.damage = 0;
       }
