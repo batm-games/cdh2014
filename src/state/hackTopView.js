@@ -320,6 +320,8 @@ State.prototype = {
     }
   },
   invokeSuperZebra : function(x,y){
+    ExtraUtils.showCebron(game,halfX,halfY);
+
     var zebra = game.add.sprite(x,y,'superZebra');
     zebra.animations.add('fly',[0,1],8,true);
     zebra.animations.play('fly');
