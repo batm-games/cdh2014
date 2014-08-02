@@ -34,7 +34,7 @@ function LightMask(owner) {
 
 LightMask.prototype = {
     update: function (delta) {
-        this.dim(delta);
+        this.dim();
         this.mask.x = this.owner.getSprite().x;
         this.mask.y = this.owner.getSprite().y;
 
@@ -45,8 +45,7 @@ LightMask.prototype = {
     },
 
     dim: function (delta) {
-        this.mask.alpha -= Math.max(delta / 30, 0);
-        this.mask.alpha = Math.max(this.mask.alpha, 0.1);
+        this.mask.alpha = this.owner.intensity / 10 / 2;
     },
 
     resetLight: function () {
