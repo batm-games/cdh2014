@@ -12,6 +12,7 @@ State.prototype = {
     game.load.tilemap('map', './assets/tilemaps/tv_map1.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.spritesheet('pedro', './images/sprites/pedro.png',64,192);
     game.load.spritesheet('torch', './images/sprites/torch.png');
+    game.load.spritesheet('ghost', './images/sprites/ghost.png', 34, 50);
 
     game.load.atlas('atlaszebra', './images/spritesheets/atlaszebra.png', './images/spritesheets/atlaszebra.json');    
   },
@@ -131,7 +132,8 @@ State.prototype = {
 
   createEnemies: function() {
     for(var i=1;i<=3;i++) {
-      var enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlaszebra','standby-1.png', 40);
+//      var enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlaszebra','standby-1.png', 40);
+      var enemy = TVEnemy.createGhost(i * X * 0.1,Y*0.50, 40);
       this.enemies.add(enemy);
       // enemy.alpha = this.ALPHA_BLEND;
       // enemy.tint = 0x111111;
