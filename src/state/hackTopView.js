@@ -17,6 +17,8 @@ function State() {
 
   this.TORCH_BAR_WIDTH = 50;
   this.TORCH_LIFE = 100;
+
+  this.ZEBRA_DAMAGE = 5;
 }
 
 State.prototype = {
@@ -227,6 +229,7 @@ State.prototype = {
     zebra.animations.add('fly',[0,1],8,true);
     zebra.animations.play('fly');
     zebra.angle = -45;
+    zebra.damage = this.ZEBRA_DAMAGE;
     game.physics.arcade.enable(zebra);
     zebra.body.velocity.x = -this.SUPER_ZEBRA_SPEED;
     
@@ -299,6 +302,17 @@ State.prototype = {
     game.physics.arcade.collide(this.torch, this.enemies);
     game.physics.arcade.collide(this.players[0], this.enemies,this.donkeyAttack,this.donkeyEval,this);
     game.physics.arcade.collide(this.players[1], this.enemies,this.donkeyAttack,this.donkeyEval,this);
+    game.physics.arcade.collide(
+      this.zebras, 
+      this.enemies,
+      function(zebra,enemy){
+        enemy.receiveDamage(zebra.damage);
+        zebra.kill();
+      }
+      ,
+      null,
+      this
+    );
     game.physics.arcade.overlap(
       this.torches, 
       this.enemies,
