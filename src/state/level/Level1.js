@@ -106,8 +106,9 @@ _.merge(Level1.prototype, {
             v.update(me.player);
         });
 
-        if (this.player.dead ||
-                left < 100) {
+        if (this.player.dead
+//                || left < 100)
+                ) {
             bgmusic.stop();
             game.state.start('Level1');
         }
