@@ -14,6 +14,9 @@ State.prototype = {
     bg.scale.set(1.5,1.5);
     bg.anchor.set(0.5,0.5);
 
+
+    game.TOPVIEW_LEVEL = 1;
+
     var player = game.add.sprite(X*2.5,Y*2.5, 'pedro');
     player.anchor.set(0.5,0.5);
     player.scale.set(5,5);

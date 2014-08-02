@@ -24,6 +24,7 @@ function State() {
   this.ZEBRA_DAMAGE = 5;
 
   this.TIME_OUT_ENEMIES = 10;
+  this.RESTORE_TIME_ENEMIES = 10;
   this.LIMIT_ENEMIES = 2;
 
   this.SPEED_DONKEY = 10;
@@ -35,7 +36,9 @@ function State() {
 
 State.prototype = {
   preload: function () {
-    game.load.audio('bgsound',['./sounds/bgsound.ogg']);
+    //game.load.audio('bgsound',['./sounds/bgsound.ogg']);
+    game.load.audio('bgsound',['./sounds/bkgMusic.mp3']);
+
     game.load.audio('torch','./sounds/torch01.ogg');
     game.load.image('tilesetvillage', './assets/tilemaps/tilesetvillage.png');
     game.load.tilemap('map', './assets/tilemaps/tv_map01.json', null, Phaser.Tilemap.TILED_JSON);
@@ -49,9 +52,18 @@ State.prototype = {
     game.load.atlas('atlasdonkey', './images/spritesheets/atlasdonkey.png', './images/spritesheets/atlasdonkey.json');
   },
   createMap : function(){
-
     // game.stage.backgroundColor = '#00ff00';
     // Create the tilemap
+    if(game.TOPVIEW_LEVEL == 2) {
+      this.TIME_OUT_ENEMIES = 7;
+      this.RESTORE_TIME_ENEMIES = 7;
+      this.LIMIT_ENEMIES = 4;
+
+      this.SPEED_DONKEY = 12;
+      this.SPEED_GHOST = 18;
+    }
+
+
     this.map = game.add.tilemap('map');
     //this.map.setTileSize(32,32);
     // Add the tileset to the map
@@ -463,7 +475,7 @@ State.prototype = {
     this.TIME_OUT_ENEMIES -= delta;
     if(this.TIME_OUT_ENEMIES <= 0 && this.LIMIT_ENEMIES > 0) {
       this.createEnemies();
-      this.TIME_OUT_ENEMIES = 10;
+      this.TIME_OUT_ENEMIES = this.RESTORE_TIME_ENEMIES;
       this.LIMIT_ENEMIES--;
     }
 
