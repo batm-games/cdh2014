@@ -49,7 +49,8 @@ var AssetManager = {
             city2: './images/city2.png',
             cebron: './images/cebron.png',
             lifeBar: './images/sprites/bar.png',
-            yaaa: './images/yaaa.png'
+            yaaa: './images/yaaa.png',
+            laser: './images/laser.png'
         },
 
         spritesheets: {

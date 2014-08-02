@@ -32,7 +32,7 @@ State.prototype = {
     torch.anchor.set(0.5,0.5);
     var tween = game.add.tween(torch).to(
       {y:-Y*0.47 + Y*2.5}
-      ,12000
+      ,1200
     )
     .easing(Phaser.Easing.Exponential.Out)
     .start();
@@ -55,6 +55,22 @@ State.prototype = {
         fire.emitter.x = torch.x;
         fire.emitter.y = torch.y;
         fire.emitter.start(false, 2000, 50);
+
+        var emitter = game.add.emitter(0, 0, 400);
+        emitter.blendMode = PIXI.blendModes.ADD;
+        emitter.minParticleAlpha = 1;
+        emitter.maxParticleAlpha = 1;
+        emitter.minParticleSpeed.y = 0;
+        emitter.maxParticleSpeed.y = -5;
+        emitter.minParticleSpeed.x = -10;
+        emitter.maxParticleSpeed.x = 10;
+        emitter.makeParticles(['laser']);
+
+        emitter.x = torch.x;
+        emitter.y = torch.y;
+        emitter.gravity = 10;
+        emitter.setScale(50, 70, 1, 1, 3000);
+        emitter.start(false, 2000, 400);
 
 //        var lightMask = new LightMask(this.fire);
 //        var tween = game.add.tween(torch).to(
