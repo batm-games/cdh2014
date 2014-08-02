@@ -408,6 +408,7 @@ State.prototype = {
         if(torch.life <= 0) {
           torch.kill();
           //Reset Game!
+          game.state.start('hackTopView');
         }
       }
     );
