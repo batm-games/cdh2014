@@ -33,6 +33,7 @@ var AssetManager = {
         _.forOwn(this.assetMap.images, function (v, k) {
              game.load.image(k, v);
         });
+        game.load.atlasJSONHash('pedross', './images/sprites/pedross.png', './images/spritesheets/pedross.json');
     }
 };
 window.AssetManager = AssetManager;
