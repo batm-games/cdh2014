@@ -10,6 +10,7 @@ var TVEnemy = {
     enemy.animations.play('walk');
     enemy.anchor.set(0.5,0.5);
     enemy.scale.set(0.25,0.25);
+    enemy.scale.x *= -1;
     game.physics.arcade.enable(enemy);
     enemy.body.collideWorldBounds = true;
     enemy.body.velocity.x = enemySpeed;
