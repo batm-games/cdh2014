@@ -88,6 +88,9 @@ Player.prototype.update = function (delta) {
 Player.prototype.getSprite = function () {
     return this.sprite;
 };
+Player.prototype.getX = function() {
+    return this.sprite.x;
+};
 Player.prototype.kill = function () {
     this.sprite.kill();
 };

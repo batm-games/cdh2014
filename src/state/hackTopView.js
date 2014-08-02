@@ -18,7 +18,7 @@ State.prototype = {
     game.load.spritesheet('torch', './images/sprites/torch.png');
     game.load.spritesheet('ghost', './images/sprites/ghost.png', 34, 50);
 
-    game.load.atlas('atlaszebra', './images/spritesheets/atlaszebra.png', './images/spritesheets/atlaszebra.json');    
+    game.load.atlas('atlaszebra', './images/spritesheets/atlaszebra.png', './images/spritesheets/atlaszebra.json');
   },
   createMap : function(){
     // game.stage.backgroundColor = '#00ff00';

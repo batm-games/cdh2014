@@ -33,7 +33,8 @@ var AssetManager = {
             door: './images/sprites/door.png',
             mask: './images/mask.png',
             maskInverse: './images/mask-inverse.png',
-            maskInverseFlat: './images/mask-inverse_flat.png'
+            maskInverseFlat: './images/mask-inverse_flat.png',
+            background: './images/backgroundA.jpg'
         }
     },
     loadWorldAssets: function (world) {

@@ -33,7 +33,7 @@ BaseWorld.prototype.createWorld = function () {
         if (layer.collision === false) {
             collision = false;
         }
-        map.setCollision(this.layers[i].collisionTiles, collision, layer);
+        map.setCollision(this.layers[i].collisionTiles, true, layer);
         layers.push(layer);
     }
     return {

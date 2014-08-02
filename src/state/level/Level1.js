@@ -14,6 +14,7 @@ _.merge(Level1.prototype, {
     create: function () {
         game.time.deltaCap = 1 / 60;
         this.timeEnd = moment().add('seconds', 60);
+        this.createBackground();
         this.initWorld([
             {
                 name: 'Tile Layer 1',
@@ -46,6 +47,7 @@ _.merge(Level1.prototype, {
                 left < 100) {
             game.state.start('Level1');
         }
+        this.background.update(this.player.getX());
 
         this.layers[0].alpha = this.player.fire.intensity / 10 / 2;
         this.layers[1].alpha = this.player.fire.intensity / 10 / 2;

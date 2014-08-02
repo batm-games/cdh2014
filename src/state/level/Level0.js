@@ -14,6 +14,8 @@ _.merge(Level0.prototype, {
     preload: function () {
     },
     create: function () {
+        this.createBackground();
+
         this.start = new Date();
         this.initWorld([
             {
@@ -21,8 +23,12 @@ _.merge(Level0.prototype, {
                 collisionTiles: [1]
             }
         ]);
+
         this.createPlayer();
+        this.createFire();
+        this.createMask();
         game.camera.follow(this.player.getSprite());
+        this.background.setInitialX(this.player.getX());
     },
     update: function (event) {
         var delta = event.time.elapsed / 1000.0;
@@ -32,7 +38,7 @@ _.merge(Level0.prototype, {
             this.layers[0]
         );
         this.player.update(delta);
-
+        this.background.update(this.player.getX());
     }
 
 });
