@@ -188,9 +188,9 @@ State.prototype = {
     this.torches = game.add.group();
   },
   updateEnemies : function() {
-    // for(var enemy in this.enemies) {
-    //   TVEnemy.updateEnemy(this.enemies[enemy]);
-    // }
+    this.enemies.forEach(function(enemy){
+      TVEnemy.updateEnemy(enemy);
+    });
   },
   create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
