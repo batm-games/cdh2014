@@ -8,6 +8,7 @@ module.exports = {
         assetManager.loadWorldAssets('world1');
     },
     create: function () {
-        game.state.start('Level0');
+        // game.state.start('Level0');
+        game.state.start('hackTopView');
     }
 };

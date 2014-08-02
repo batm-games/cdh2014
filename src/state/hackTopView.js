@@ -1,6 +1,8 @@
 function State() {
   this.PLAYER_SPEED = 200;
   this.PLAYERS_JOINED_TEAS_DISTANCE = 50;
+  this.ALPHA_BLEND = 0.4;
+  this.LIGHT_COLOR = 0x333333;
 }
 
 State.prototype = {
@@ -13,6 +15,7 @@ State.prototype = {
     game.load.atlas('atlaszebra', './images/spritesheets/atlaszebra.png', './images/spritesheets/atlaszebra.json');    
   },
   createMap : function(){
+    // game.stage.backgroundColor = '#00ff00';
     // Create the tilemap
     this.map = game.add.tilemap('map');
     //this.map.setTileSize(32,32);
@@ -21,7 +24,51 @@ State.prototype = {
     // Create the layer, by specifying the name of the Tiled layer
     this.layer = this.map.createLayer('Tile Layer 1');
     this.layer.resizeWorld();
+    this.layer.alpha = this.ALPHA_BLEND;
+    this.layer.blendMode = PIXI.blendModes.ADD;
     this.map.setCollision(1,true,this.layer);
+  },
+  createMask : function(){
+    this.mask = game.add.sprite(halfX + 30, halfY, 'maskInverseFlat');
+    this.mask.anchor.setTo(0.5, 0.5);
+    this.mask.scale.setTo(1.25,1.25);
+    this.mask.alpha = 0.4;
+    this.mask.tint = this.LIGHT_COLOR;
+    this.mask.blendMode = PIXI.blendModes.ADD;
+
+    this.mask2 = game.add.sprite(halfX + 30, halfY, 'maskInverseFlat');
+    this.mask2.anchor.setTo(0.5, 0.5);
+    this.mask2.scale.setTo(2.0,2.0);
+    this.mask2.alpha = 0.4;
+    this.mask2.tint = this.LIGHT_COLOR;
+    this.mask2.blendMode = PIXI.blendModes.ADD;
+
+    this.mask3 = game.add.sprite(halfX + 30, halfY, 'maskInverseFlat');
+    this.mask3.anchor.setTo(0.5, 0.5);
+    this.mask3.scale.setTo(2.5,2.5);
+    this.mask3.alpha = 0.4;
+    this.mask3.tint = this.LIGHT_COLOR;
+    this.mask3.blendMode = PIXI.blendModes.ADD;
+//        PIXI.blendModes = {
+//            NORMAL:0,
+//            ADD:1,
+//            MULTIPLY:2,
+//            SCREEN:3,
+//            OVERLAY:4,
+//            DARKEN:5,
+//            LIGHTEN:6,
+//            COLOR_DODGE:7,
+//            COLOR_BURN:8,
+//            HARD_LIGHT:9,
+//            SOFT_LIGHT:10,
+//            DIFFERENCE:11,
+//            EXCLUSION:12,
+//            HUE:13,
+//            SATURATION:14,
+//            COLOR:15,
+//            LUMINOSITY:16
+//        };
+        
   },
   createPlayers: function(){
     var state = this;
@@ -82,6 +129,7 @@ State.prototype = {
     for(var i=1;i<=3;i++) {
       var enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlaszebra','standby-1.png', 40);
       this.enemies.add(enemy);
+      enemy.alpha = this.ALPHA_BLEND;
     }
   },
   updatePlayer : function(player,controls){
@@ -137,6 +185,7 @@ State.prototype = {
     this.createEnemies();
     this.createPlayers();
     this.createPlayers();
+    this.createMask();
     this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.NUMPAD_0,Phaser.Keyboard.NUMPAD_1);
     this.createControls(Phaser.Keyboard.W,Phaser.Keyboard.D,Phaser.Keyboard.S,Phaser.Keyboard.A,Phaser.Keyboard.C,Phaser.Keyboard.V);
 
@@ -165,6 +214,15 @@ State.prototype = {
     this.updatePlayer(this.players[1],this.controls[1]);
     this.mergedPlayersAction(this.players[0],this.players[1]);
     this.updateEnemies();
+
+    this.mask.x = this.players[0].x;
+    this.mask.y = this.players[0].y;
+
+    this.mask2.x = this.players[0].x;
+    this.mask2.y = this.players[0].y;
+
+    this.mask3.x = this.players[0].x;
+    this.mask3.y = this.players[0].y;
   },
   shutdown: function(){}
 };

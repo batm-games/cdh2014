@@ -20,7 +20,8 @@ var AssetManager = {
             fire: './images/fire01.png',
             pedro: './images/pedrito.png',
             mask: './images/mask.png',
-            maskInverse: './images/mask-inverse.png'
+            maskInverse: './images/mask-inverse.png',
+            maskInverseFlat: './images/mask-inverse_flat.png'
         }
     },
     loadWorldAssets: function (world) {
