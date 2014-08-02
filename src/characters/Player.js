@@ -30,6 +30,8 @@ var Player = function (game, config) {
     this.lightMask = new LightMask(this.fire);
     this.dead = false;
     this.typeOfDead = 'fallen';
+    this.life = 100;
+    this.people = 0;
 };
 Player.prototype.createControls = function (controls) {
     this.controls = this.game.input.keyboard.createCursorKeys();
@@ -99,7 +101,18 @@ Player.prototype.recruit = function (player, citizen) {
     if (!citizen.recruited) {
         citizen.recruited = true;
         this.fire.setIntensityDelta(Statics.zebraBonus);
+        this.life += Player.LIFE_INCREASE_FACTOR * Statics.zebraBonus;
+        if (this.life > 100) {
+            this.life = 100;
+        }
         console.log(this.fire.intensity);
+    }
+};
+Player.prototype.receiveEvilZebraDamage = function () {
+    this.life -= Player.LIFE_TAKE_FACTOR * Statics.evilZebraDamage;
+    if (this.life <= 0) {
+        this.kill();
+        this.dead = true;
     }
 };
 Player.DEFAULT_SPEED = 500;
@@ -107,6 +120,8 @@ Player.DEFAULT_JUMP_POWER = 600;
 Player.DEFAULT_SPRITE = 'pedross';
 Player.DEFAULT_X = 50;
 Player.DEFAULT_Y = 500;
+Player.LIFE_INCREASE_FACTOR = 5;
+Player.LIFE_TAKE_FACTOR = 10;
 
 
 module.exports = Player;
