@@ -7,6 +7,7 @@ function State() {
 
   this.LIGHT_NORMAL_SIZE = 0.5;
   this.LIGHT_LARGE_SIZE = 1.0;
+  this.LIGHT_LARGEEEEEE_SIZE = 2.0;
 }
 
 State.prototype = {
@@ -169,8 +170,8 @@ State.prototype = {
   },
   mergedPlayersAction : function(player1,player2){
     if(player1.teaPower && player2.teaPower && player1.position.distance(player2.position) <= this.PLAYERS_JOINED_TEAS_DISTANCE){
-      player1.tint = 0x0000ff;
-      player2.tint = 0x0000ff;
+      player1.light.setScale(this.LIGHT_LARGEEEEEE_SIZE);
+      player2.light.setScale(this.LIGHT_LARGEEEEEE_SIZE);
     }
   },
   initVariables : function(){
