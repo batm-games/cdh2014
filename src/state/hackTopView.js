@@ -376,7 +376,7 @@ State.prototype = {
     this.createPlayers();
     this.createPlayers();
     this.createEnemies();
-    this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.CONTROL,Phaser.Keyboard.ALT);
+    this.createControls(Phaser.Keyboard.UP,Phaser.Keyboard.RIGHT,Phaser.Keyboard.DOWN,Phaser.Keyboard.LEFT,Phaser.Keyboard.O,Phaser.Keyboard.P);
     this.createControls(Phaser.Keyboard.W,Phaser.Keyboard.D,Phaser.Keyboard.S,Phaser.Keyboard.A,Phaser.Keyboard.C,Phaser.Keyboard.V);
     this.createSfx();
 
