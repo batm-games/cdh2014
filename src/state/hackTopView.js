@@ -28,6 +28,7 @@ State.prototype = {
     game.load.spritesheet('superZebra', './images/sprites/superZebra.png', 42, 50);
 
     game.load.atlas('atlaszebra', './images/spritesheets/atlaszebra.png', './images/spritesheets/atlaszebra.json');
+    game.load.atlas('atlasdonkey', './images/spritesheets/atlasdonkey.png', './images/spritesheets/atlasdonkey.json');
   },
   createMap : function(){
     // game.stage.backgroundColor = '#00ff00';
@@ -141,7 +142,7 @@ State.prototype = {
     for(var i=1;i<=3;i++) {
       var enemy = {};
       if(i%2) {
-        enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlaszebra','standby-1.png', 40);
+        enemy = TVEnemy.createEnemy(i * X * 0.1,Y*0.50, 'atlasdonkey','standby-1.png', 40);
         enemy.type = Statics.swordEnemy;
       }
       else {
