@@ -20,8 +20,12 @@ _.merge(Level0.prototype, {
     },
     createMask: function () {
         this.mask = game.add.sprite(halfX + 30, halfY, 'maskInverse');
+        // tungsten http://planetpixelemporium.com/tutorialpages/light.html
+        this.mask.tint = 0xffc58f;
         this.mask.anchor.setTo(0.5, 0.5);
         this.mask.scale.setTo(10, 10);
+        this.mask.alpha = 0.4;
+        this.mask.blendMode = PIXI.blendModes.ADD;
 //        PIXI.blendModes = {
 //            NORMAL:0,
 //            ADD:1,
@@ -41,8 +45,6 @@ _.merge(Level0.prototype, {
 //            COLOR:15,
 //            LUMINOSITY:16
 //        };
-        this.mask.alpha = 0.4;
-        this.mask.blendMode = PIXI.blendModes.ADD;
     },
     create: function () {
         this.initWorld([

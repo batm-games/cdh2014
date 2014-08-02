@@ -29,7 +29,7 @@ BaseWorld.prototype.createWorld = function () {
         i;
     for(i = 0; i < this.layers.length; i += 1) {
         layer = map.createLayer(this.layers[i].name);
-        layer.alpha = 0.7;
+        layer.alpha = 0.4;
         layer.blendMode = PIXI.blendModes.ADD;
         map.setCollision(this.layers[i].collisionTiles, true, layer);
         layers.push(layer);
