@@ -150,6 +150,12 @@ Player.prototype.checkPoint = function () {
     });
 };
 Player.prototype.recruit = function (player, citizen) {
+    if (this.people % 3 === 0) {
+        ExtraUtils.showCebron(
+            this.game, this.game.camera.x + X * 0.75, this.game.camera.y + Y
+        );
+    }
+
     this.people += 1;
     if (!citizen.recruited) {
         citizen.recruited = true;
@@ -160,9 +166,6 @@ Player.prototype.recruit = function (player, citizen) {
         }
         console.log('citizen recruited!');
     }
-
-
-    ExtraUtils.showCebron(this.game, this.game.camera.x + X*0.75, this.game.camera.y + Y);
 };
 Player.prototype.moveCameraDamage = function() {
     this.stopMoving();

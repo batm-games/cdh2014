@@ -59,7 +59,7 @@ State.prototype = {
 
         var emitter = game.add.emitter(0, 0, 400);
         emitter.blendMode = PIXI.blendModes.ADD;
-        emitter.minParticleAlpha = 1;
+        emitter.minParticleAlpha = 0.3;
         emitter.maxParticleAlpha = 1;
         emitter.minParticleSpeed.y = 0;
         emitter.maxParticleSpeed.y = -5;
@@ -71,7 +71,8 @@ State.prototype = {
         emitter.y = torch.y;
         emitter.gravity = 10;
         emitter.setScale(50, 70, 1, 1, 3000);
-        emitter.start(false, 2000, 400);
+        emitter.setAlpha(1, 0, 2000);
+        emitter.start(false, 2000, 200);
 
 //        var lightMask = new LightMask(this.fire);
 //        var tween = game.add.tween(torch).to(
