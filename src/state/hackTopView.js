@@ -166,7 +166,7 @@ State.prototype = {
       player.scale.x *= -1;
     }
 
-    if(controls.attack.isDown){
+    if(controls.attack.isDown || controls.tea.isDown){
       player.attack();
     }
 
@@ -216,12 +216,12 @@ State.prototype = {
       this.enemies,
       function(torch,enemy){
         if(torch.damage > 0){
-          if(enemy.type == Statics.swordEnemy) {
-//            enemy.receiveDamage(torch.damage);
-          }else {
+          if(enemy.type == Statics.ghost && torch.player.teaPower) {
             enemy.receiveDamage(torch.damage);
           }
-
+          if(enemy.type == Statics.swordEnemy && !torch.player.teaPower) {
+            enemy.receiveDamage(torch.damage);
+          }
         }
         torch.damage = 0;
       }
