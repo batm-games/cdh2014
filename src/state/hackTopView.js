@@ -88,7 +88,7 @@ State.prototype = {
   },
   createPlayers: function(){
     var state = this;
-    var player = game.add.sprite(X*0.30,Y*0.50, 'pedro');
+    var player = game.add.sprite(X*0.50,Y*0.50, 'pedro');
     player.anchor.set(0.5,0.5);
     player.scale.set(0.5,0.5);
     game.physics.arcade.enable(player);
@@ -167,11 +167,11 @@ State.prototype = {
     //Enemies from bottom
     for(var i=0; i<=3; i++){
       if(i%2) {
-        enemy = TVEnemy.createEnemy(X * 0.24,Y*0.9, 'atlasdonkey','standby-1.png', 3);
+        enemy = TVEnemy.createEnemy(X * 0.49,Y*0.9, 'atlasdonkey','standby-1.png', 3);
         enemy.type = Statics.swordEnemy;
       }
       else {
-        enemy = TVEnemy.createGhost(X * 0.25,Y*0.9, 8);
+        enemy = TVEnemy.createGhost(X * 0.52,Y*0.9, 8);
         enemy.type = Statics.ghost;
       }
       enemy.body.immovable = true;
@@ -183,11 +183,11 @@ State.prototype = {
 
     for(var i=0; i<=3; i++){
       if(i%2) {
-        enemy = TVEnemy.createEnemy(X * 0.24,Y*0.1, 'atlasdonkey','standby-1.png', 5);
+        enemy = TVEnemy.createEnemy(X * 0.49,Y*0.1, 'atlasdonkey','standby-1.png', 5);
         enemy.type = Statics.swordEnemy;
       }
       else {
-        enemy = TVEnemy.createGhost(X * 0.26,Y*0.1, 10);
+        enemy = TVEnemy.createGhost(X * 0.52,Y*0.1, 10);
         enemy.type = Statics.ghost;
       }
       enemy.body.immovable = true;
@@ -336,7 +336,7 @@ State.prototype = {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     this.createMap();
     this.initVariables();
-    this.createGameObjects(X*0.24,Y*0.47);
+    this.createGameObjects(X*0.49,Y*0.46);
     this.createPlayers();
     this.createPlayers();
     this.createEnemies();
